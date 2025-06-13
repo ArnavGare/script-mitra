@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -62,35 +61,41 @@ const Index = () => {
 
     setIsLoading(true);
     
-    // Simulate API call with mock data
-    setTimeout(() => {
-      const mockScript = `🎬 ${formData.style} Script: ${formData.topic}
+    try {
+      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topic: formData.topic,
+          style: formData.style,
+          language: formData.language,
+          length: formData.length
+        })
+      });
 
-[Opening Hook - 0:00-0:05]
-"Did you know that most people lose money because of this ONE mistake?"
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-[Problem Statement - 0:05-0:15]
-Today I'm going to break down ${formData.topic.toLowerCase()} in simple terms that anyone can understand.
-
-[Main Content - 0:15-0:45]
-${formData.topic === "SIP Ka Magic" ? 
-  "SIP isn't just about investing ₹1000 every month. It's about the power of compounding that can turn your small amounts into lakhs. Let me show you exactly how..." :
-  "Here's what every financial advisor won't tell you about this topic..."
-}
-
-[Call to Action - 0:45-${formData.length}]
-If this helped you, follow for more financial tips. And remember, start today - your future self will thank you!
-
-#FinancialPlanning #${formData.topic.replace(/\s+/g, '')} #MoneyTips #WealthBuilding`;
-
-      setScript(mockScript);
-      setIsLoading(false);
+      const result = await response.text();
+      setScript(result);
       
       toast({
         title: "Script Generated!",
         description: "Your personalized video script is ready to use.",
       });
-    }, 2000);
+    } catch (error) {
+      console.error('Error generating script:', error);
+      toast({
+        title: "Generation Failed",
+        description: "Unable to generate script. Please check your connection and try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCopy = () => {
