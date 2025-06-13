@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -377,13 +376,11 @@ const Index = () => {
               </h3>
               
               <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8 mb-6 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
-                <ScrollArea className="max-h-80 w-full">
-                  <div className="pr-4">
-                    <div 
-                      className="text-gray-800 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro space-y-2"
-                      dangerouslySetInnerHTML={{ __html: script }}
-                    />
-                  </div>
+                <ScrollArea className="max-h-96 w-full pr-4">
+                  <div 
+                    className="text-gray-800 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro space-y-2"
+                    dangerouslySetInnerHTML={{ __html: script }}
+                  />
                 </ScrollArea>
               </div>
 
