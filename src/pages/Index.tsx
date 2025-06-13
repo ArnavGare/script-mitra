@@ -349,12 +349,7 @@ const Index = () => {
   ];
 
   return (
-    <div className={`min-h-screen premium-gradient-bg transition-all duration-700 ${isDarkMode ? 'dark' : ''}`}>
-      {/* Premium Animated Background */}
-      <div className="absolute inset-0 premium-animated-bg opacity-30 dark:opacity-20"></div>
-      
-      {/* Premium Glass Overlay */}
-      <div className="absolute inset-0 premium-glass-overlay"></div>
+    <div className={`min-h-screen transition-all duration-700 ${isDarkMode ? 'dark animated-dark-bg' : 'clean-blue-bg'}`}>
       
       {/* Dark Mode Toggle */}
       <div className="fixed top-6 right-6 z-50">
@@ -362,7 +357,7 @@ const Index = () => {
           onClick={toggleDarkMode}
           variant="outline"
           size="icon"
-          className="premium-toggle-btn rounded-full border-2 backdrop-blur-md bg-white/80 dark:bg-black/30 hover:bg-white/95 dark:hover:bg-black/40 transition-all duration-500 border-white/30 dark:border-white/20 shadow-2xl hover:shadow-xl hover:scale-110"
+          className="rounded-full border-2 backdrop-blur-md bg-white/80 dark:bg-black/30 hover:bg-white/95 dark:hover:bg-black/40 transition-all duration-500 border-white/30 dark:border-white/20 shadow-lg hover:shadow-xl hover:scale-110"
         >
           {isDarkMode ? <Sun className="h-5 w-5 text-amber-500" /> : <Moon className="h-5 w-5 text-slate-700" />}
         </Button>
@@ -375,40 +370,40 @@ const Index = () => {
             onClick={scrollToTop}
             variant="outline"
             size="icon"
-            className="premium-toggle-btn rounded-full border-2 backdrop-blur-md bg-white/80 dark:bg-black/30 hover:bg-white/95 dark:hover:bg-black/40 transition-all duration-500 border-white/30 dark:border-white/20 shadow-2xl hover:shadow-xl hover:scale-110"
+            className="rounded-full border-2 backdrop-blur-md bg-white/80 dark:bg-black/30 hover:bg-white/95 dark:hover:bg-black/40 transition-all duration-500 border-white/30 dark:border-white/20 shadow-lg hover:shadow-xl hover:scale-110"
           >
             <ArrowUp className="h-5 w-5 text-slate-700 dark:text-slate-300" />
           </Button>
         </div>
       )}
 
-      {/* Premium Header Section */}
+      {/* Header Section */}
       <div className="relative z-10 text-center pt-16 pb-12 px-4">
-        <div className="premium-hero-animation">
-          <h1 className="text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6 tracking-tight">
+        <div className="fade-in">
+          <h1 className="text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-800 to-blue-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6 tracking-tight">
             Script Mitra
           </h1>
-          <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-6 rounded-full premium-shine"></div>
-          <p className="text-2xl md:text-3xl text-slate-600 dark:text-slate-300 font-light mb-8 max-w-3xl mx-auto leading-relaxed">
+          <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mb-6 rounded-full"></div>
+          <p className="text-2xl md:text-3xl text-slate-700 dark:text-slate-300 font-light mb-8 max-w-3xl mx-auto leading-relaxed">
             Your AI-Powered Partner for Premium Video Scripts
           </p>
-          <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Crafted for Financial Creators Who Demand Excellence
           </p>
         </div>
         
-        {/* Premium Feature highlights */}
+        {/* Feature highlights */}
         <div className="flex justify-center items-center gap-12 mt-12 text-sm text-slate-600 dark:text-slate-400">
-          <div className="flex items-center gap-3 premium-feature-card">
+          <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
             <Brain className="w-6 h-6 text-blue-500" />
             <span className="font-medium">AI-Powered</span>
           </div>
-          <div className="flex items-center gap-3 premium-feature-card">
-            <Clock className="w-6 h-6 text-purple-500" />
+          <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+            <Clock className="w-6 h-6 text-blue-500" />
             <span className="font-medium">60-180 Seconds</span>
           </div>
-          <div className="flex items-center gap-3 premium-feature-card">
-            <Users className="w-6 h-6 text-emerald-500" />
+          <div className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm">
+            <Users className="w-6 h-6 text-blue-500" />
             <span className="font-medium">Finance Focused</span>
           </div>
         </div>
@@ -416,24 +411,24 @@ const Index = () => {
 
       {/* Main Content Container */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 pb-16">
-        {/* Premium Form Card */}
-        <Card className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_32px_64px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_32px_64px_-8px_rgba(0,0,0,0.4)] rounded-3xl mb-12 premium-card-hover">
+        {/* Form Card */}
+        <Card className="clean-glass-card rounded-3xl mb-12 clean-card-hover">
           <CardContent className="p-10">
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Topic Selection */}
-                <div className="space-y-3 premium-form-group">
+                <div className="space-y-3 fade-in">
                   <Label className="text-xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-3">
                     <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     Choose a Topic
                   </Label>
                   <Select value={formData.topic} onValueChange={handleTopicChange}>
-                    <SelectTrigger className="premium-select h-14 border-2 border-slate-200/60 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 rounded-2xl bg-white/80 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 font-medium backdrop-blur-sm">
+                    <SelectTrigger className="clean-select h-14 rounded-2xl text-slate-800 dark:text-slate-200 font-medium">
                       <SelectValue placeholder="Select your topic..." />
                     </SelectTrigger>
-                    <SelectContent className="premium-dropdown rounded-2xl border-2 border-slate-200/60 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl">
+                    <SelectContent className="clean-dropdown rounded-2xl shadow-xl">
                       {topics.map((topic) => (
-                        <SelectItem key={topic} value={topic} className="premium-option rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-all duration-300 flex items-center gap-2 text-slate-800 dark:text-slate-200 font-medium py-3">
+                        <SelectItem key={topic} value={topic} className="rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-all duration-300 flex items-center gap-2 text-slate-800 dark:text-slate-200 font-medium py-3">
                           {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
                           {topic}
                         </SelectItem>
@@ -443,30 +438,30 @@ const Index = () => {
                   
                   {/* Custom Topic Input */}
                   {showCustomTopic && (
-                    <div className="mt-4 premium-slide-in">
+                    <div className="mt-4 slide-in">
                       <Input
                         placeholder="Enter your custom topic..."
                         value={formData.customTopic}
                         onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
-                        className="premium-input h-14 border-2 border-slate-200/60 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 rounded-2xl bg-white/80 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 font-medium backdrop-blur-sm"
+                        className="clean-input h-14 rounded-2xl text-slate-800 dark:text-slate-200 font-medium"
                       />
                     </div>
                   )}
                 </div>
 
                 {/* Style Selection */}
-                <div className="space-y-3 premium-form-group">
+                <div className="space-y-3 fade-in">
                   <Label className="text-xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-3">
-                    <Brain className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    <Brain className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     Choose Script Style
                   </Label>
                   <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
-                    <SelectTrigger className="premium-select h-14 border-2 border-slate-200/60 dark:border-slate-700 focus:border-purple-500 dark:focus:border-purple-400 rounded-2xl bg-white/80 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 font-medium backdrop-blur-sm">
+                    <SelectTrigger className="clean-select h-14 rounded-2xl text-slate-800 dark:text-slate-200 font-medium">
                       <SelectValue placeholder="Select your style..." />
                     </SelectTrigger>
-                    <SelectContent className="premium-dropdown rounded-2xl border-2 border-slate-200/60 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl">
+                    <SelectContent className="clean-dropdown rounded-2xl shadow-xl">
                       {styles.map((style) => (
-                        <SelectItem key={style} value={style} className="premium-option rounded-xl hover:bg-purple-50 dark:hover:bg-purple-950/50 transition-all duration-300 text-slate-800 dark:text-slate-200 font-medium py-3">
+                        <SelectItem key={style} value={style} className="rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-all duration-300 text-slate-800 dark:text-slate-200 font-medium py-3">
                           {style}
                         </SelectItem>
                       ))}
@@ -475,18 +470,18 @@ const Index = () => {
                 </div>
 
                 {/* Language Selection */}
-                <div className="space-y-3 premium-form-group">
+                <div className="space-y-3 fade-in">
                   <Label className="text-xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-3">
-                    <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                    <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     Select Language
                   </Label>
                   <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
-                    <SelectTrigger className="premium-select h-14 border-2 border-slate-200/60 dark:border-slate-700 focus:border-emerald-500 dark:focus:border-emerald-400 rounded-2xl bg-white/80 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 font-medium backdrop-blur-sm">
+                    <SelectTrigger className="clean-select h-14 rounded-2xl text-slate-800 dark:text-slate-200 font-medium">
                       <SelectValue placeholder="Select language..." />
                     </SelectTrigger>
-                    <SelectContent className="premium-dropdown rounded-2xl border-2 border-slate-200/60 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl">
+                    <SelectContent className="clean-dropdown rounded-2xl shadow-xl">
                       {languages.map((language) => (
-                        <SelectItem key={language} value={language} className="premium-option rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition-all duration-300 text-slate-800 dark:text-slate-200 font-medium py-3">
+                        <SelectItem key={language} value={language} className="rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-all duration-300 text-slate-800 dark:text-slate-200 font-medium py-3">
                           {language}
                         </SelectItem>
                       ))}
@@ -495,18 +490,18 @@ const Index = () => {
                 </div>
 
                 {/* Length Selection */}
-                <div className="space-y-3 premium-form-group">
+                <div className="space-y-3 fade-in">
                   <Label className="text-xl font-bold text-slate-800 dark:text-slate-200 flex items-center gap-3">
-                    <Clock className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                    <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     Choose Video Length
                   </Label>
                   <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
-                    <SelectTrigger className="premium-select h-14 border-2 border-slate-200/60 dark:border-slate-700 focus:border-amber-500 dark:focus:border-amber-400 rounded-2xl bg-white/80 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 font-medium backdrop-blur-sm">
+                    <SelectTrigger className="clean-select h-14 rounded-2xl text-slate-800 dark:text-slate-200 font-medium">
                       <SelectValue placeholder="Select duration..." />
                     </SelectTrigger>
-                    <SelectContent className="premium-dropdown rounded-2xl border-2 border-slate-200/60 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl">
+                    <SelectContent className="clean-dropdown rounded-2xl shadow-xl">
                       {lengths.map((length) => (
-                        <SelectItem key={length} value={length} className="premium-option rounded-xl hover:bg-amber-50 dark:hover:bg-amber-950/50 transition-all duration-300 text-slate-800 dark:text-slate-200 font-medium py-3">
+                        <SelectItem key={length} value={length} className="rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-all duration-300 text-slate-800 dark:text-slate-200 font-medium py-3">
                           {length}
                         </SelectItem>
                       ))}
@@ -515,16 +510,16 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Premium Submit and Reset Buttons */}
+              {/* Submit and Reset Buttons */}
               <div className="flex flex-col sm:flex-row gap-6 pt-8">
                 <Button 
                   type="submit" 
                   disabled={isLoading}
-                  className="premium-primary-btn flex-1 h-16 text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 rounded-2xl transition-all duration-500 transform hover:scale-[1.02] hover:shadow-2xl shadow-xl backdrop-blur-sm"
+                  className="clean-primary-btn flex-1 h-16 text-xl font-bold text-white rounded-2xl shadow-lg"
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-4">
-                      <div className="premium-spinner w-6 h-6 border-3 border-white border-t-transparent rounded-full"></div>
+                      <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
                       Generating Script...
                     </div>
                   ) : (
@@ -539,7 +534,7 @@ const Index = () => {
                   type="button"
                   variant="outline"
                   onClick={handleReset}
-                  className="premium-secondary-btn h-16 px-10 text-xl font-bold border-2 border-slate-300/60 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50/80 dark:hover:bg-slate-800/50 rounded-2xl transition-all duration-500 hover:scale-[1.02] bg-white/60 dark:bg-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl"
+                  className="h-16 px-10 text-xl font-bold border-2 border-blue-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-800/50 rounded-2xl transition-all duration-300 bg-white/60 dark:bg-slate-800/30 shadow-lg hover:shadow-xl"
                 >
                   <RotateCcw className="w-6 h-6 mr-3" />
                   Reset
@@ -549,18 +544,16 @@ const Index = () => {
           </CardContent>
         </Card>
 
-        {/* Premium Script Output Area */}
+        {/* Script Output Area */}
         {script && (
-          <Card className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_32px_64px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_32px_64px_-8px_rgba(0,0,0,0.4)] rounded-3xl premium-output-animation mb-20">
+          <Card className="clean-glass-card rounded-3xl slide-up mb-20">
             <CardContent className="p-10">
               <h3 className="text-3xl font-black text-slate-800 dark:text-slate-200 mb-8 flex items-center gap-4">
-                <div className="premium-glow-icon">
-                  <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                </div>
+                <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 Your Generated Script
               </h3>
               
-              <div className="premium-script-container bg-gradient-to-br from-slate-50/80 via-white/60 to-blue-50/40 dark:from-slate-800/50 dark:via-slate-900/40 dark:to-blue-900/20 rounded-3xl p-8 mb-8 border border-slate-200/60 dark:border-slate-700/50 shadow-inner backdrop-blur-sm">
+              <div className="bg-gradient-to-br from-blue-50/80 via-white/60 to-blue-50/40 dark:from-slate-800/50 dark:via-slate-900/40 dark:to-blue-900/20 rounded-3xl p-8 mb-8 border border-blue-200/60 dark:border-slate-700/50 shadow-inner">
                 <ScrollArea className="h-96 w-full pr-6">
                   <div className="text-slate-800 dark:text-slate-300 font-medium text-lg leading-relaxed font-sf-pro">
                     {formatScriptWithColors(script)}
@@ -568,11 +561,11 @@ const Index = () => {
                 </ScrollArea>
               </div>
 
-              {/* Premium Action Buttons */}
+              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-6">
                 <Button 
                   onClick={handleCopy}
-                  className="premium-success-btn flex-1 h-14 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-2xl transition-all duration-500 hover:scale-[1.02] shadow-xl hover:shadow-2xl backdrop-blur-sm font-bold text-lg"
+                  className="flex-1 h-14 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl font-bold text-lg"
                 >
                   <Copy className="w-6 h-6 mr-3" />
                   Copy Script
@@ -581,7 +574,7 @@ const Index = () => {
                 <Button 
                   onClick={handleDownload}
                   variant="outline"
-                  className="premium-download-btn flex-1 h-14 border-2 border-slate-300/60 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50/80 dark:hover:bg-slate-800/50 rounded-2xl transition-all duration-500 hover:scale-[1.02] bg-white/60 dark:bg-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl font-bold text-lg"
+                  className="flex-1 h-14 border-2 border-blue-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-800/50 rounded-2xl transition-all duration-300 bg-white/60 dark:bg-slate-800/30 shadow-lg hover:shadow-xl font-bold text-lg"
                 >
                   <Download className="w-6 h-6 mr-3" />
                   Download as .txt
@@ -595,8 +588,8 @@ const Index = () => {
       {/* Section 1: Video Making Tips */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 premium-hero-animation">
-            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-800 to-blue-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
               🎥 Smart Video-Making Tips
             </h2>
             <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
@@ -606,9 +599,9 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {videoTips.map((tip, index) => (
-              <Card key={index} className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_20px_40px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.4)] rounded-2xl premium-card-hover animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
+              <Card key={index} className="clean-glass-card rounded-2xl clean-card-hover fade-in" style={{animationDelay: `${index * 100}ms`}}>
                 <CardContent className="p-8 text-center">
-                  <div className="mb-6 premium-glow-icon flex justify-center">
+                  <div className="mb-6 flex justify-center">
                     {tip.icon}
                   </div>
                   <p className="text-lg font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -622,10 +615,10 @@ const Index = () => {
       </section>
 
       {/* Section 2: Voice Modulation */}
-      <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-blue-50/50 to-purple-50/50 dark:from-blue-900/10 dark:to-purple-900/10">
+      <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-blue-50/50 to-blue-100/50 dark:from-blue-900/10 dark:to-purple-900/10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 premium-hero-animation">
-            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-800 to-blue-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
               🗣️ Talk Like a Pro
             </h2>
             <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
@@ -636,8 +629,8 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               {voiceTips.map((tip, index) => (
-                <div key={index} className="flex items-start gap-6 p-6 rounded-2xl bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm premium-card-hover animate-slide-in" style={{animationDelay: `${index * 150}ms`}}>
-                  <div className="premium-glow-icon">
+                <div key={index} className="flex items-start gap-6 p-6 rounded-2xl bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm clean-card-hover slide-in" style={{animationDelay: `${index * 150}ms`}}>
+                  <div>
                     {tip.icon}
                   </div>
                   <div>
@@ -653,7 +646,7 @@ const Index = () => {
             </div>
             
             <div className="flex justify-center items-center">
-              <div className="w-80 h-80 rounded-full bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-800/50 dark:to-purple-800/50 flex items-center justify-center premium-glow-icon">
+              <div className="w-80 h-80 rounded-full bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-800/50 dark:to-purple-800/50 flex items-center justify-center">
                 <Mic className="w-32 h-32 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
@@ -664,8 +657,8 @@ const Index = () => {
       {/* Section 3: Social Media Growth */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 premium-hero-animation">
-            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-800 to-blue-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
               🚀 Social Media Growth
             </h2>
             <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
@@ -675,10 +668,10 @@ const Index = () => {
           
           <div className="space-y-8">
             {growthSteps.map((step, index) => (
-              <Card key={index} className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_20px_40px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.4)] rounded-2xl premium-card-hover animate-slide-up" style={{animationDelay: `${index * 100}ms`}}>
+              <Card key={index} className="clean-glass-card rounded-2xl clean-card-hover slide-up" style={{animationDelay: `${index * 100}ms`}}>
                 <CardContent className="p-8">
                   <div className="flex items-center gap-8">
-                    <div className="premium-glow-icon">
+                    <div>
                       {step.icon}
                     </div>
                     <div className="flex-1">
@@ -704,7 +697,7 @@ const Index = () => {
             <p className="text-xl text-slate-600 dark:text-slate-400 mb-6">
               Need Content Ideas?
             </p>
-            <Button className="premium-primary-btn h-14 px-8 text-lg font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 rounded-2xl transition-all duration-500 transform hover:scale-[1.02] hover:shadow-2xl shadow-xl backdrop-blur-sm">
+            <Button className="clean-primary-btn h-14 px-8 text-lg font-bold text-white rounded-2xl shadow-lg">
               <Sparkles className="w-5 h-5 mr-2" />
               Use Script Mitra!
             </Button>
@@ -713,10 +706,10 @@ const Index = () => {
       </section>
 
       {/* Section 4: Testimonials */}
-      <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-green-50/50 to-blue-50/50 dark:from-green-900/10 dark:to-blue-900/10">
+      <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-blue-50/50 to-blue-100/50 dark:from-blue-900/10 dark:to-purple-900/10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 premium-hero-animation">
-            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-800 to-blue-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
               💬 What Other Advisors
             </h2>
             <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
@@ -726,10 +719,10 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_20px_40px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.4)] rounded-2xl premium-card-hover animate-scale-in" style={{animationDelay: `${index * 150}ms`}}>
+              <Card key={index} className="clean-glass-card rounded-2xl clean-card-hover fade-in" style={{animationDelay: `${index * 150}ms`}}>
                 <CardContent className="p-8">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
                       {testimonial.avatar}
                     </div>
                     <div>
@@ -761,8 +754,8 @@ const Index = () => {
       {/* Section 5: Resources */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 premium-hero-animation">
-            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-800 to-blue-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
               📥 Free Tools
             </h2>
             <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
@@ -772,9 +765,9 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {resources.map((resource, index) => (
-              <Button key={index} variant="outline" className="premium-download-btn h-32 p-8 border-2 border-slate-300/60 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50/80 dark:hover:bg-slate-800/50 rounded-2xl transition-all duration-500 hover:scale-[1.02] bg-white/60 dark:bg-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
+              <Button key={index} variant="outline" className="h-32 p-8 border-2 border-blue-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-800/50 rounded-2xl transition-all duration-300 bg-white/60 dark:bg-slate-800/30 shadow-lg hover:shadow-xl fade-in" style={{animationDelay: `${index * 100}ms`}}>
                 <div className="text-center">
-                  <div className="premium-glow-icon mb-4 flex justify-center">
+                  <div className="mb-4 flex justify-center">
                     {resource.icon}
                   </div>
                   <h3 className="font-bold text-lg mb-2">{resource.title}</h3>
@@ -787,11 +780,11 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-16 px-6 bg-gradient-to-br from-slate-900 to-blue-900 dark:from-slate-950 dark:to-blue-950 text-white">
+      <footer className="relative z-10 py-16 px-6 bg-gradient-to-br from-slate-800 to-slate-900 dark:from-slate-950 dark:to-blue-950 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
-              <h3 className="text-3xl font-bold mb-4 premium-footer-glow">Script Mitra</h3>
+              <h3 className="text-3xl font-bold mb-4">Script Mitra</h3>
               <p className="text-lg text-slate-300 mb-6 leading-relaxed">
                 Empowering financial advisors with AI-generated premium video scripts for social media success.
               </p>
