@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -204,14 +203,35 @@ const Index = () => {
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
-      {/* Animated Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-black">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-400/10 to-transparent animate-pulse"></div>
-          <div className="absolute bottom-0 right-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-bounce-slow"></div>
-          <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl animate-pulse"></div>
-        </div>
+      {/* Sophisticated Moving Background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-black overflow-hidden">
+        {/* Base gradient layers */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x"></div>
+        
+        {/* Floating geometric shapes */}
+        <div className="absolute inset-0">
+          {/* Large floating orbs */}
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl animate-float-delayed"></div>
+          <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-cyan-400/10 rounded-full blur-xl animate-float"></div>
+          
+          {/* Drifting particles */}
+          <div className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift" style={{ animationDelay: '0s', animationDuration: '25s' }}></div>
+          <div className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift" style={{ animationDelay: '5s', animationDuration: '30s' }}></div>
+          <div className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift" style={{ animationDelay: '10s', animationDuration: '20s' }}></div>
+          <div className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift" style={{ animationDelay: '15s', animationDuration: '35s' }}></div>
+          
+          {/* Orbiting elements */}
+          <div className="absolute top-1/5 left-1/5">
+            <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{ animationDelay: '0s' }}></div>
+          </div>
+          <div className="absolute bottom-1/5 right-1/5">
+            <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{ animationDelay: '12s', animationDuration: '20s' }}></div>
+          </div>
+          
+          {/* Subtle grid pattern */}
+          <div className="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse"></div>
+        </div>
       </div>
       
       {/* Dark Mode Toggle */}
@@ -220,9 +240,9 @@ const Index = () => {
           onClick={toggleDarkMode}
           variant="outline"
           size="icon"
-          className="rounded-full border-2 backdrop-blur-sm bg-white/80 dark:bg-black/20 hover:bg-white/90 dark:hover:bg-black/30 transition-all duration-300 border-white/30 dark:border-white/20"
+          className="notion-button rounded-full w-10 h-10"
         >
-          {isDarkMode ? <Sun className="h-4 w-4 text-gray-900" /> : <Moon className="h-4 w-4 text-gray-900" />}
+          {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
       </div>
 
@@ -364,7 +384,7 @@ const Index = () => {
                   <Button 
                     type="submit" 
                     disabled={isLoading}
-                    className="flex-1 h-11 text-base font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg shadow-md"
+                    className="notion-button-primary flex-1 h-11 text-base font-semibold"
                   >
                     {isLoading ? (
                       <div className="flex items-center gap-2">
@@ -383,7 +403,7 @@ const Index = () => {
                     type="button"
                     variant="outline"
                     onClick={handleReset}
-                    className="h-11 px-6 text-base font-semibold border-2 border-blue-400/60 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50/80 dark:hover:bg-blue-950 rounded-lg transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-transparent"
+                    className="notion-button-secondary h-11 px-6 text-base font-semibold"
                   >
                     <RotateCcw className="w-4 h-4 mr-2" />
                     Reset
@@ -414,7 +434,7 @@ const Index = () => {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button 
                     onClick={handleCopy}
-                    className="flex-1 h-10 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition-all duration-300 hover:scale-[1.02] shadow-md"
+                    className="notion-button-primary flex-1 h-10 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
                   >
                     <Copy className="w-4 h-4 mr-2" />
                     Copy Script
@@ -423,7 +443,7 @@ const Index = () => {
                   <Button 
                     onClick={handleDownload}
                     variant="outline"
-                    className="flex-1 h-10 border-2 border-blue-400/60 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50/80 dark:hover:bg-blue-950 rounded-lg transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-transparent"
+                    className="notion-button-secondary flex-1 h-10"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Download as .txt
@@ -437,7 +457,7 @@ const Index = () => {
         {/* Section 1: Video Making Tips */}
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="text-center mb-8 animate-fade-in-up">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center gap-3">
               <Video className="w-8 h-8 text-blue-300" />
               Smart Video-Making Tips for Financial Advisors
             </h2>
@@ -548,7 +568,7 @@ const Index = () => {
           </div>
 
           <div className="text-center mt-8">
-            <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg px-8 py-3 text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
+            <Button className="notion-button-primary px-8 py-3 text-lg font-semibold">
               Need Content Ideas? Use ScriptMitra!
             </Button>
           </div>
@@ -593,7 +613,7 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Section 5: Resources */}
+        {/* Section 5: Resources & Downloads */}
         <div className="max-w-6xl mx-auto px-4 py-12 pb-16">
           <div className="text-center mb-8 animate-fade-in-up">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
@@ -612,7 +632,7 @@ const Index = () => {
               <Button
                 key={index}
                 variant="outline"
-                className="h-auto p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/30 dark:border-gray-700 rounded-xl hover:bg-white/90 dark:hover:bg-gray-700/90 transition-all duration-300 hover:scale-105 animate-fade-in-up group"
+                className="notion-button h-auto p-6"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="text-center w-full">
