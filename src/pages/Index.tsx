@@ -1,12 +1,11 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Plus, Zap } from "lucide-react";
+import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Plus, Zap, Lightbulb, Video, Mic, TrendingUp, Star, FileText, ArrowUp, Twitter, Instagram, Linkedin, Camera, Volume2, Target, BarChart3, MessageSquare, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
@@ -21,6 +20,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showCustomTopic, setShowCustomTopic] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const { toast } = useToast();
 
   const topics = [
@@ -53,6 +53,19 @@ const Index = () => {
     "120 sec", 
     "180 sec"
   ];
+
+  // Scroll to top functionality
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -205,6 +218,136 @@ const Index = () => {
     });
   };
 
+  const videoTips = [
+    {
+      icon: <Lightbulb className="w-8 h-8 text-amber-500" />,
+      tip: "Use a clean, natural background with good lighting"
+    },
+    {
+      icon: <Camera className="w-8 h-8 text-blue-500" />,
+      tip: "Always frame your face at eye level — adds trust"
+    },
+    {
+      icon: <Clock className="w-8 h-8 text-purple-500" />,
+      tip: "Keep videos short (60-90s) unless you're storytelling"
+    },
+    {
+      icon: <Zap className="w-8 h-8 text-orange-500" />,
+      tip: "Start with a hook that solves a pain point"
+    },
+    {
+      icon: <Video className="w-8 h-8 text-green-500" />,
+      tip: "Record in portrait mode for Reels/Shorts"
+    },
+    {
+      icon: <Target className="w-8 h-8 text-red-500" />,
+      tip: "Focus on one key message per video"
+    }
+  ];
+
+  const voiceTips = [
+    {
+      icon: <Volume2 className="w-6 h-6 text-blue-500" />,
+      title: "Slow down when saying something important",
+      description: "Key points need emphasis through pacing"
+    },
+    {
+      icon: <TrendingUp className="w-6 h-6 text-green-500" />,
+      title: "Raise pitch slightly when you're enthusiastic",
+      description: "Energy translates through vocal variation"
+    },
+    {
+      icon: <Mic className="w-6 h-6 text-purple-500" />,
+      title: "Lower your voice for dramatic impact",
+      description: "Creates authority and draws attention"
+    },
+    {
+      icon: <Clock className="w-6 h-6 text-orange-500" />,
+      title: "Use pauses to build tension",
+      description: "Strategic silence is powerful"
+    },
+    {
+      icon: <Sparkles className="w-6 h-6 text-pink-500" />,
+      title: "Smile while talking — it changes your tone!",
+      description: "Warmth comes through in your voice"
+    }
+  ];
+
+  const growthSteps = [
+    {
+      step: "Step 1",
+      title: "Pick 1-2 content pillars",
+      description: "e.g., financial tips, client stories",
+      icon: <Target className="w-8 h-8 text-blue-500" />
+    },
+    {
+      step: "Step 2",
+      title: "Be consistent",
+      description: "Post 3x a week minimum",
+      icon: <Calendar className="w-8 h-8 text-green-500" />
+    },
+    {
+      step: "Step 3",
+      title: "Engage in comments, DMs",
+      description: "Build community",
+      icon: <MessageSquare className="w-8 h-8 text-purple-500" />
+    },
+    {
+      step: "Step 4",
+      title: "Use trending audios",
+      description: "Short captions work best",
+      icon: <TrendingUp className="w-8 h-8 text-orange-500" />
+    },
+    {
+      step: "Step 5",
+      title: "Track analytics",
+      description: "Double down on what works",
+      icon: <BarChart3 className="w-8 h-8 text-red-500" />
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Priya Sharma",
+      role: "Financial Advisor, Mumbai",
+      content: "Script Mitra has transformed my social media presence. My engagement increased by 300% in just 2 months!",
+      rating: 5,
+      avatar: "PS"
+    },
+    {
+      name: "Rajesh Kumar",
+      role: "Investment Consultant, Delhi",
+      content: "The AI-generated scripts are so natural and engaging. My clients love the content quality now.",
+      rating: 5,
+      avatar: "RK"
+    },
+    {
+      name: "Anita Desai",
+      role: "Insurance Expert, Bangalore",
+      content: "From struggling with content to creating viral videos. This tool is a game-changer for financial advisors.",
+      rating: 5,
+      avatar: "AD"
+    }
+  ];
+
+  const resources = [
+    {
+      title: "Content Planning Sheet",
+      description: "30-day content calendar template",
+      icon: <Calendar className="w-6 h-6" />
+    },
+    {
+      title: "Instagram Hashtag Cheatsheet",
+      description: "200+ finance-specific hashtags",
+      icon: <Instagram className="w-6 h-6" />
+    },
+    {
+      title: "30 Video Script Hooks PDF",
+      description: "Proven opening lines that convert",
+      icon: <FileText className="w-6 h-6" />
+    }
+  ];
+
   return (
     <div className={`min-h-screen premium-gradient-bg transition-all duration-700 ${isDarkMode ? 'dark' : ''}`}>
       {/* Premium Animated Background */}
@@ -214,7 +357,7 @@ const Index = () => {
       <div className="absolute inset-0 premium-glass-overlay"></div>
       
       {/* Dark Mode Toggle */}
-      <div className="absolute top-6 right-6 z-50">
+      <div className="fixed top-6 right-6 z-50">
         <Button
           onClick={toggleDarkMode}
           variant="outline"
@@ -224,6 +367,20 @@ const Index = () => {
           {isDarkMode ? <Sun className="h-5 w-5 text-amber-500" /> : <Moon className="h-5 w-5 text-slate-700" />}
         </Button>
       </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <Button
+            onClick={scrollToTop}
+            variant="outline"
+            size="icon"
+            className="premium-toggle-btn rounded-full border-2 backdrop-blur-md bg-white/80 dark:bg-black/30 hover:bg-white/95 dark:hover:bg-black/40 transition-all duration-500 border-white/30 dark:border-white/20 shadow-2xl hover:shadow-xl hover:scale-110"
+          >
+            <ArrowUp className="h-5 w-5 text-slate-700 dark:text-slate-300" />
+          </Button>
+        </div>
+      )}
 
       {/* Premium Header Section */}
       <div className="relative z-10 text-center pt-16 pb-12 px-4">
@@ -394,7 +551,7 @@ const Index = () => {
 
         {/* Premium Script Output Area */}
         {script && (
-          <Card className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_32px_64px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_32px_64px_-8px_rgba(0,0,0,0.4)] rounded-3xl premium-output-animation">
+          <Card className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_32px_64px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_32px_64px_-8px_rgba(0,0,0,0.4)] rounded-3xl premium-output-animation mb-20">
             <CardContent className="p-10">
               <h3 className="text-3xl font-black text-slate-800 dark:text-slate-200 mb-8 flex items-center gap-4">
                 <div className="premium-glow-icon">
@@ -433,16 +590,252 @@ const Index = () => {
             </CardContent>
           </Card>
         )}
+      </div>
 
-        {/* Premium Footer */}
-        <div className="text-center mt-16">
-          <div className="premium-footer-glow">
-            <p className="text-slate-600 dark:text-slate-400 text-xl font-light">
-              Crafted for <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">Financial Creators</span>
+      {/* Section 1: Video Making Tips */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 premium-hero-animation">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+              🎥 Smart Video-Making Tips
+            </h2>
+            <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
+              for Financial Advisors
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {videoTips.map((tip, index) => (
+              <Card key={index} className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_20px_40px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.4)] rounded-2xl premium-card-hover animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
+                <CardContent className="p-8 text-center">
+                  <div className="mb-6 premium-glow-icon flex justify-center">
+                    {tip.icon}
+                  </div>
+                  <p className="text-lg font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                    {tip.tip}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 2: Voice Modulation */}
+      <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-blue-50/50 to-purple-50/50 dark:from-blue-900/10 dark:to-purple-900/10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 premium-hero-animation">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+              🗣️ Talk Like a Pro
+            </h2>
+            <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
+              Voice Modulation Hacks
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              {voiceTips.map((tip, index) => (
+                <div key={index} className="flex items-start gap-6 p-6 rounded-2xl bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm premium-card-hover animate-slide-in" style={{animationDelay: `${index * 150}ms`}}>
+                  <div className="premium-glow-icon">
+                    {tip.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+                      {tip.title}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {tip.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex justify-center items-center">
+              <div className="w-80 h-80 rounded-full bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-800/50 dark:to-purple-800/50 flex items-center justify-center premium-glow-icon">
+                <Mic className="w-32 h-32 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3: Social Media Growth */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 premium-hero-animation">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+              🚀 Social Media Growth
+            </h2>
+            <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
+              Blueprint
+            </p>
+          </div>
+          
+          <div className="space-y-8">
+            {growthSteps.map((step, index) => (
+              <Card key={index} className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_20px_40px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.4)] rounded-2xl premium-card-hover animate-slide-up" style={{animationDelay: `${index * 100}ms`}}>
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-8">
+                    <div className="premium-glow-icon">
+                      {step.icon}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-4 mb-3">
+                        <span className="text-sm font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+                          {step.step}
+                        </span>
+                        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200">
+                          {step.title}
+                        </h3>
+                      </div>
+                      <p className="text-lg text-slate-600 dark:text-slate-400">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-6">
+              Need Content Ideas?
+            </p>
+            <Button className="premium-primary-btn h-14 px-8 text-lg font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 rounded-2xl transition-all duration-500 transform hover:scale-[1.02] hover:shadow-2xl shadow-xl backdrop-blur-sm">
+              <Sparkles className="w-5 h-5 mr-2" />
+              Use Script Mitra!
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4: Testimonials */}
+      <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-green-50/50 to-blue-50/50 dark:from-green-900/10 dark:to-blue-900/10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 premium-hero-animation">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+              💬 What Other Advisors
+            </h2>
+            <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
+              Are Saying
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="premium-glass-card backdrop-blur-xl bg-white/90 dark:bg-slate-900/70 border-0 shadow-[0_20px_40px_-8px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.4)] rounded-2xl premium-card-hover animate-scale-in" style={{animationDelay: `${index * 150}ms`}}>
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                      {testimonial.avatar}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800 dark:text-slate-200">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-amber-400 fill-current" />
+                    ))}
+                  </div>
+                  
+                  <p className="text-slate-700 dark:text-slate-300 italic leading-relaxed">
+                    "{testimonial.content}"
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 5: Resources */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 premium-hero-animation">
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 mb-6">
+              📥 Free Tools
+            </h2>
+            <p className="text-2xl text-slate-600 dark:text-slate-300 font-light max-w-3xl mx-auto">
+              for Financial Creators
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {resources.map((resource, index) => (
+              <Button key={index} variant="outline" className="premium-download-btn h-32 p-8 border-2 border-slate-300/60 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50/80 dark:hover:bg-slate-800/50 rounded-2xl transition-all duration-500 hover:scale-[1.02] bg-white/60 dark:bg-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
+                <div className="text-center">
+                  <div className="premium-glow-icon mb-4 flex justify-center">
+                    {resource.icon}
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">{resource.title}</h3>
+                  <p className="text-sm opacity-80">{resource.description}</p>
+                </div>
+              </Button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 py-16 px-6 bg-gradient-to-br from-slate-900 to-blue-900 dark:from-slate-950 dark:to-blue-950 text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div className="md:col-span-2">
+              <h3 className="text-3xl font-bold mb-4 premium-footer-glow">Script Mitra</h3>
+              <p className="text-lg text-slate-300 mb-6 leading-relaxed">
+                Empowering financial advisors with AI-generated premium video scripts for social media success.
+              </p>
+              <div className="flex gap-4">
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10 transition-all duration-300 hover:scale-110">
+                  <Twitter className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10 transition-all duration-300 hover:scale-110">
+                  <Instagram className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10 transition-all duration-300 hover:scale-110">
+                  <Linkedin className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-xl font-bold mb-6">Quick Links</h4>
+              <div className="space-y-3">
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Home</p>
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Generate Scripts</p>
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Growth Tips</p>
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Contact</p>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-xl font-bold mb-6">Resources</h4>
+              <div className="space-y-3">
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Video Tips</p>
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Voice Guide</p>
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Growth Blueprint</p>
+                <p className="text-slate-300 hover:text-white transition-colors cursor-pointer">Free Downloads</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-slate-700 pt-8 text-center">
+            <p className="text-slate-400 text-lg">
+              Made with 💖 using AI & Automations by Script Mitra Team
             </p>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
