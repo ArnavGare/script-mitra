@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Copy, Mail, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -86,8 +87,10 @@ const Index = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.text();
-      setScript(result);
+      const result = await response.json();
+      // Extract the output field and format line breaks
+      const formattedScript = result.output?.replace(/\\n/g, '<br>') || result.output || '';
+      setScript(formattedScript);
       
       toast({
         title: "Script Generated!",
@@ -106,7 +109,9 @@ const Index = () => {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(script);
+    // Remove HTML tags for clipboard copy
+    const textContent = script.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
+    navigator.clipboard.writeText(textContent);
     toast({
       title: "Copied!",
       description: "Script copied to clipboard successfully.",
@@ -114,14 +119,16 @@ const Index = () => {
   };
 
   const handleEmail = () => {
+    const textContent = script.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
     const subject = encodeURIComponent(`ScriptCraft AI - ${formData.topic} Script`);
-    const body = encodeURIComponent(script);
+    const body = encodeURIComponent(textContent);
     window.open(`mailto:?subject=${subject}&body=${body}`);
   };
 
   const handleDownload = () => {
+    const textContent = script.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
     const element = document.createElement("a");
-    const file = new Blob([script], { type: 'text/plain' });
+    const file = new Blob([textContent], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
     element.download = `scriptcraft-${formData.topic.toLowerCase().replace(/\s+/g, '-')}.txt`;
     document.body.appendChild(element);
@@ -141,6 +148,13 @@ const Index = () => {
       title: "Reset Complete",
       description: "Form cleared and ready for new script generation.",
     });
+  };
+
+  const formatScriptContent = (content: string) => {
+    return content
+      .replace(/Hook:/g, '<strong class="text-blue-600 dark:text-blue-400 text-lg">Hook:</strong>')
+      .replace(/Body:/g, '<strong class="text-green-600 dark:text-green-400 text-lg">Body:</strong>')
+      .replace(/CTA:/g, '<strong class="text-purple-600 dark:text-purple-400 text-lg">CTA:</strong>');
   };
 
   return (
@@ -322,21 +336,23 @@ const Index = () => {
                 Your Generated Script
               </h3>
               
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-6 border-2 border-blue-100 dark:border-blue-800">
-                <pre className="whitespace-pre-wrap text-gray-700 dark:text-gray-300 font-medium text-base leading-relaxed">
-                  {script}
-                </pre>
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8 mb-6 border border-blue-100 dark:border-blue-800/50 shadow-inner">
+                <ScrollArea className="max-h-96 w-full">
+                  <div 
+                    className="text-gray-700 dark:text-gray-300 font-medium text-base leading-relaxed font-['Inter',_'Lato',_'Roboto',_system-ui,_sans-serif] space-y-4"
+                    dangerouslySetInnerHTML={{ __html: formatScriptContent(script) }}
+                  />
+                </ScrollArea>
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   onClick={handleCopy}
-                  variant="outline"
-                  className="smooth-button flex-1 h-12 border-2 border-green-200 dark:border-green-700 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950 rounded-xl transition-all duration-300 hover:scale-105"
+                  className="smooth-button flex-1 h-12 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
                 >
                   <Copy className="w-5 h-5 mr-2" />
-                  Copy to Clipboard
+                  Copy Script
                 </Button>
                 
                 <Button 
