@@ -1,16 +1,17 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Copy, Mail, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun } from "lucide-react";
+import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [formData, setFormData] = useState({
     topic: "",
+    customTopic: "",
     style: "",
     language: "",
     length: ""
@@ -18,6 +19,7 @@ const Index = () => {
   const [script, setScript] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showCustomTopic, setShowCustomTopic] = useState(false);
   const { toast } = useToast();
 
   const topics = [
@@ -27,7 +29,8 @@ const Index = () => {
     "Term Insurance Facts",
     "ULIP vs SIP",
     "Loan ka Gyaan",
-    "Tax Saving Tips"
+    "Tax Saving Tips",
+    "Custom Topic"
   ];
 
   const styles = [
@@ -55,13 +58,34 @@ const Index = () => {
     document.documentElement.classList.toggle('dark');
   };
 
+  const handleTopicChange = (value: string) => {
+    setFormData({...formData, topic: value});
+    if (value === "Custom Topic") {
+      setShowCustomTopic(true);
+    } else {
+      setShowCustomTopic(false);
+      setFormData({...formData, topic: value, customTopic: ""});
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.topic || !formData.style || !formData.language || !formData.length) {
+    const finalTopic = formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
+    
+    if (!finalTopic || !formData.style || !formData.language || !formData.length) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields before generating your script.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (formData.topic === "Custom Topic" && !formData.customTopic.trim()) {
+      toast({
+        title: "Custom Topic Required",
+        description: "Please enter your custom topic.",
         variant: "destructive"
       });
       return;
@@ -76,7 +100,7 @@ const Index = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          topic: formData.topic,
+          topic: finalTopic,
           style: formData.style,
           language: formData.language,
           length: formData.length
@@ -118,13 +142,6 @@ const Index = () => {
     });
   };
 
-  const handleEmail = () => {
-    const textContent = script.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
-    const subject = encodeURIComponent(`ScriptCraft AI - ${formData.topic} Script`);
-    const body = encodeURIComponent(textContent);
-    window.open(`mailto:?subject=${subject}&body=${body}`);
-  };
-
   const handleDownload = () => {
     const textContent = script.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
     const element = document.createElement("a");
@@ -142,8 +159,9 @@ const Index = () => {
   };
 
   const handleReset = () => {
-    setFormData({ topic: "", style: "", language: "", length: "" });
+    setFormData({ topic: "", customTopic: "", style: "", language: "", length: "" });
     setScript("");
+    setShowCustomTopic(false);
     toast({
       title: "Reset Complete",
       description: "Form cleared and ready for new script generation.",
@@ -158,9 +176,9 @@ const Index = () => {
   };
 
   return (
-    <div className={`min-h-screen gradient-background transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`min-h-screen light-gradient-background dark:gradient-background transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
       {/* Moving Gradient Background */}
-      <div className="absolute inset-0 gradient-animation opacity-30"></div>
+      <div className="absolute inset-0 light-gradient-animation dark:gradient-animation opacity-40 dark:opacity-30"></div>
       
       {/* Dark Mode Toggle */}
       <div className="absolute top-4 right-4 z-50">
@@ -168,7 +186,7 @@ const Index = () => {
           onClick={toggleDarkMode}
           variant="outline"
           size="icon"
-          className="rounded-full border-2 backdrop-blur-sm bg-white/20 dark:bg-black/20 hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300"
+          className="rounded-full border-2 backdrop-blur-sm bg-white/40 dark:bg-black/20 hover:bg-white/60 dark:hover:bg-black/30 transition-all duration-300 border-blue-200/50 dark:border-blue-700/50"
         >
           {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
@@ -208,7 +226,7 @@ const Index = () => {
       {/* Main Content Container */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 pb-12">
         {/* Form Card */}
-        <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 border-0 shadow-2xl shadow-blue-100/50 dark:shadow-blue-900/50 rounded-2xl mb-8 animate-fade-in transition-all duration-500">
+        <Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/80 border-0 shadow-2xl shadow-blue-100/80 dark:shadow-blue-900/50 rounded-2xl mb-8 animate-fade-in transition-all duration-500">
           <CardContent className="p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -218,18 +236,31 @@ const Index = () => {
                     <Sparkles className="w-5 h-5 text-blue-500" />
                     Choose a Topic
                   </Label>
-                  <Select value={formData.topic} onValueChange={(value) => setFormData({...formData, topic: value})}>
-                    <SelectTrigger className="smooth-select-trigger h-12 border-2 border-blue-100 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/50 dark:bg-gray-800/50">
+                  <Select value={formData.topic} onValueChange={handleTopicChange}>
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-200/60 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/70 dark:bg-gray-800/50 hover:bg-white/90 dark:hover:bg-gray-800/70">
                       <SelectValue placeholder="Select your topic..." />
                     </SelectTrigger>
-                    <SelectContent className="smooth-select-content rounded-xl border-2 border-blue-100 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-200/60 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
                       {topics.map((topic) => (
-                        <SelectItem key={topic} value={topic} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200">
+                        <SelectItem key={topic} value={topic} className="rounded-lg hover:bg-blue-50/80 dark:hover:bg-blue-950 transition-colors duration-200 flex items-center gap-2">
+                          {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
                           {topic}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                  
+                  {/* Custom Topic Input */}
+                  {showCustomTopic && (
+                    <div className="mt-3 animate-fade-in">
+                      <Input
+                        placeholder="Enter your custom topic..."
+                        value={formData.customTopic}
+                        onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
+                        className="h-12 border-2 border-blue-200/60 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 bg-white/70 dark:bg-gray-800/50"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Style Selection */}
@@ -239,12 +270,12 @@ const Index = () => {
                     Choose Script Style
                   </Label>
                   <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
-                    <SelectTrigger className="smooth-select-trigger h-12 border-2 border-blue-100 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/50 dark:bg-gray-800/50">
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-200/60 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/70 dark:bg-gray-800/50 hover:bg-white/90 dark:hover:bg-gray-800/70">
                       <SelectValue placeholder="Select your style..." />
                     </SelectTrigger>
-                    <SelectContent className="smooth-select-content rounded-xl border-2 border-blue-100 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-200/60 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
                       {styles.map((style) => (
-                        <SelectItem key={style} value={style} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200">
+                        <SelectItem key={style} value={style} className="rounded-lg hover:bg-blue-50/80 dark:hover:bg-blue-950 transition-colors duration-200">
                           {style}
                         </SelectItem>
                       ))}
@@ -259,12 +290,12 @@ const Index = () => {
                     Select Language
                   </Label>
                   <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
-                    <SelectTrigger className="smooth-select-trigger h-12 border-2 border-blue-100 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/50 dark:bg-gray-800/50">
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-200/60 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/70 dark:bg-gray-800/50 hover:bg-white/90 dark:hover:bg-gray-800/70">
                       <SelectValue placeholder="Select language..." />
                     </SelectTrigger>
-                    <SelectContent className="smooth-select-content rounded-xl border-2 border-blue-100 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-200/60 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
                       {languages.map((language) => (
-                        <SelectItem key={language} value={language} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200">
+                        <SelectItem key={language} value={language} className="rounded-lg hover:bg-blue-50/80 dark:hover:bg-blue-950 transition-colors duration-200">
                           {language}
                         </SelectItem>
                       ))}
@@ -279,12 +310,12 @@ const Index = () => {
                     Choose Video Length
                   </Label>
                   <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
-                    <SelectTrigger className="smooth-select-trigger h-12 border-2 border-blue-100 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/50 dark:bg-gray-800/50">
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-200/60 dark:border-blue-800 focus:border-blue-400 rounded-xl transition-all duration-300 hover:shadow-md bg-white/70 dark:bg-gray-800/50 hover:bg-white/90 dark:hover:bg-gray-800/70">
                       <SelectValue placeholder="Select duration..." />
                     </SelectTrigger>
-                    <SelectContent className="smooth-select-content rounded-xl border-2 border-blue-100 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-200/60 dark:border-blue-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
                       {lengths.map((length) => (
-                        <SelectItem key={length} value={length} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200">
+                        <SelectItem key={length} value={length} className="rounded-lg hover:bg-blue-50/80 dark:hover:bg-blue-950 transition-colors duration-200">
                           {length}
                         </SelectItem>
                       ))}
@@ -298,7 +329,7 @@ const Index = () => {
                 <Button 
                   type="submit" 
                   disabled={isLoading}
-                  className="smooth-button flex-1 h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="elegant-button flex-1 h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl shadow-lg"
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-3">
@@ -317,7 +348,7 @@ const Index = () => {
                   type="button"
                   variant="outline"
                   onClick={handleReset}
-                  className="smooth-button h-14 px-8 text-lg font-semibold border-2 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950 rounded-xl transition-all duration-300"
+                  className="elegant-button h-14 px-8 text-lg font-semibold border-2 border-blue-300/60 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50/80 dark:hover:bg-blue-950 rounded-xl transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-transparent"
                 >
                   <RotateCcw className="w-5 h-5 mr-2" />
                   Reset
@@ -329,17 +360,17 @@ const Index = () => {
 
         {/* Script Output Area */}
         {script && (
-          <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 border-0 shadow-2xl shadow-blue-100/50 dark:shadow-blue-900/50 rounded-2xl animate-fade-in transition-all duration-500">
+          <Card className="backdrop-blur-sm bg-white/90 dark:bg-gray-900/80 border-0 shadow-2xl shadow-blue-100/80 dark:shadow-blue-900/50 rounded-2xl animate-fade-in transition-all duration-500">
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center gap-3">
                 <Sparkles className="w-6 h-6 text-blue-500" />
                 Your Generated Script
               </h3>
               
-              <div className="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8 mb-6 border border-blue-100 dark:border-blue-800/50 shadow-inner">
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8 mb-6 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
                 <ScrollArea className="max-h-96 w-full">
                   <div 
-                    className="text-gray-700 dark:text-gray-300 font-medium text-base leading-relaxed font-['Inter',_'Lato',_'Roboto',_system-ui,_sans-serif] space-y-4"
+                    className="text-gray-700 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro space-y-4"
                     dangerouslySetInnerHTML={{ __html: formatScriptContent(script) }}
                   />
                 </ScrollArea>
@@ -349,25 +380,16 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
                   onClick={handleCopy}
-                  className="smooth-button flex-1 h-12 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                  className="elegant-button flex-1 h-12 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg"
                 >
                   <Copy className="w-5 h-5 mr-2" />
                   Copy Script
                 </Button>
                 
                 <Button 
-                  onClick={handleEmail}
-                  variant="outline"
-                  className="smooth-button flex-1 h-12 border-2 border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950 rounded-xl transition-all duration-300 hover:scale-105"
-                >
-                  <Mail className="w-5 h-5 mr-2" />
-                  Email Me This
-                </Button>
-                
-                <Button 
                   onClick={handleDownload}
                   variant="outline"
-                  className="smooth-button flex-1 h-12 border-2 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950 rounded-xl transition-all duration-300 hover:scale-105"
+                  className="elegant-button flex-1 h-12 border-2 border-blue-300/60 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50/80 dark:hover:bg-blue-950 rounded-xl transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-transparent"
                 >
                   <Download className="w-5 h-5 mr-2" />
                   Download as .txt

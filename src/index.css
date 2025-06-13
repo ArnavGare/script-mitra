@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Apple-like fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @layer base {
@@ -93,7 +96,12 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    letter-spacing: -0.011em;
   }
 }
 
@@ -110,31 +118,41 @@
     animation: scaleIn 0.4s ease-out;
   }
 
-  /* Moving Gradient Background */
-  .gradient-background {
-    background: linear-gradient(-45deg, #e3f2fd, #bbdefb, #90caf9, #64b5f6, #42a5f5, #2196f3);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+  /* Apple-like font classes */
+  .font-sf-pro {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.022em;
   }
 
-  .dark .gradient-background {
+  /* Light Mode Gradient Backgrounds */
+  .light-gradient-background {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-size: 400% 400%;
+    animation: lightGradientShift 20s ease infinite;
+  }
+
+  .light-gradient-animation {
+    background: linear-gradient(135deg, 
+      rgba(102, 126, 234, 0.1), 
+      rgba(118, 75, 162, 0.1), 
+      rgba(102, 126, 234, 0.05), 
+      rgba(118, 75, 162, 0.15)
+    );
+    background-size: 400% 400%;
+    animation: lightGradientShift 15s ease infinite;
+  }
+
+  /* Dark Mode Gradient Backgrounds */
+  .gradient-background {
     background: linear-gradient(-45deg, #0d1117, #161b22, #21262d, #30363d, #1a1f2e, #0f1419);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
   }
 
   .gradient-animation {
-    background: linear-gradient(-45deg, 
-      rgba(59, 130, 246, 0.3), 
-      rgba(147, 197, 253, 0.3), 
-      rgba(219, 234, 254, 0.3), 
-      rgba(59, 130, 246, 0.3)
-    );
-    background-size: 400% 400%;
-    animation: gradientShift 12s ease infinite;
-  }
-
-  .dark .gradient-animation {
     background: linear-gradient(-45deg, 
       rgba(59, 130, 246, 0.2), 
       rgba(30, 64, 175, 0.2), 
@@ -145,32 +163,32 @@
     animation: gradientShift 12s ease infinite;
   }
 
-  /* Smooth Button Animations */
-  .smooth-button {
+  /* Elegant Button Animations */
+  .elegant-button {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center;
   }
 
-  .smooth-button:active {
-    transform: scale(0.95);
+  .elegant-button:active {
+    transform: scale(0.98);
   }
 
-  .smooth-button:hover {
-    transform: translateY(-2px) scale(1.02);
+  .elegant-button:hover {
+    transform: translateY(-1px) scale(1.02);
   }
 
-  /* Smooth Select Animations */
-  .smooth-select-trigger {
+  /* Elegant Select Animations */
+  .elegant-select {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .smooth-select-trigger:focus {
+  .elegant-select:focus {
     transform: translateY(-1px);
-    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.25);
   }
 
-  .smooth-select-content {
-    animation: selectSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  .elegant-select-content {
+    animation: elegantSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     transform-origin: var(--radix-select-content-transform-origin);
   }
 }
@@ -208,6 +226,18 @@
   }
 }
 
+@keyframes lightGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @keyframes gradientShift {
   0% {
     background-position: 0% 50%;
@@ -220,10 +250,10 @@
   }
 }
 
-@keyframes selectSlideIn {
+@keyframes elegantSlideIn {
   from {
     opacity: 0;
-    transform: scale(0.96) translateY(-2px);
+    transform: scale(0.98) translateY(-4px);
   }
   to {
     opacity: 1;
@@ -233,7 +263,7 @@
 
 /* Glassmorphism effect for cards */
 .backdrop-blur-sm {
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
 }
 
 /* Enhanced hover effects */
@@ -246,7 +276,28 @@
   transition: all 0.2s ease-out;
 }
 
+/* Light mode transition */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
 /* Dark mode transition */
 .dark * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Better text rendering */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.025em;
+}
+
+/* Improved input styling */
+input, textarea, select {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
