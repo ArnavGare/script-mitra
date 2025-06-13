@@ -127,19 +127,19 @@
     letter-spacing: -0.022em;
   }
 
-  /* Light Mode Gradient Backgrounds */
+  /* Light Mode Blue Gradient Backgrounds */
   .light-gradient-background {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     background-size: 400% 400%;
     animation: lightGradientShift 20s ease infinite;
   }
 
   .light-gradient-animation {
     background: linear-gradient(135deg, 
-      rgba(102, 126, 234, 0.1), 
-      rgba(118, 75, 162, 0.1), 
-      rgba(102, 126, 234, 0.05), 
-      rgba(118, 75, 162, 0.15)
+      rgba(59, 130, 246, 0.1), 
+      rgba(29, 78, 216, 0.1), 
+      rgba(59, 130, 246, 0.05), 
+      rgba(29, 78, 216, 0.15)
     );
     background-size: 400% 400%;
     animation: lightGradientShift 15s ease infinite;
@@ -177,19 +177,19 @@
     transform: translateY(-1px) scale(1.02);
   }
 
-  /* Elegant Select Animations */
+  /* Simple Select Animations - No flying effect */
   .elegant-select {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .elegant-select:focus {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
+  /* Remove the flying animation from select content */
   .elegant-select-content {
-    animation: elegantSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: var(--radix-select-content-transform-origin);
+    animation: none !important;
+    transform: none !important;
   }
 }
 
@@ -247,17 +247,6 @@
   }
   100% {
     background-position: 0% 50%;
-  }
-}
-
-@keyframes elegantSlideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.98) translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
   }
 }
 
