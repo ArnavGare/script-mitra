@@ -349,7 +349,7 @@ const Index = () => {
   ];
 
   return (
-    <div className={`min-h-screen transition-all duration-700 ${isDarkMode ? 'dark animated-dark-bg' : 'clean-blue-bg'}`}>
+    <div className={`min-h-screen transition-all duration-700 ${isDarkMode ? 'dark animated-dark-bg' : 'blue-motion-bg'}`}>
       
       {/* Dark Mode Toggle */}
       <div className="fixed top-6 right-6 z-50">
