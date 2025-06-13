@@ -109,6 +109,70 @@
   .animate-scale-in {
     animation: scaleIn 0.4s ease-out;
   }
+
+  /* Moving Gradient Background */
+  .gradient-background {
+    background: linear-gradient(-45deg, #e3f2fd, #bbdefb, #90caf9, #64b5f6, #42a5f5, #2196f3);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  .dark .gradient-background {
+    background: linear-gradient(-45deg, #0d1117, #161b22, #21262d, #30363d, #1a1f2e, #0f1419);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  .gradient-animation {
+    background: linear-gradient(-45deg, 
+      rgba(59, 130, 246, 0.3), 
+      rgba(147, 197, 253, 0.3), 
+      rgba(219, 234, 254, 0.3), 
+      rgba(59, 130, 246, 0.3)
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
+  }
+
+  .dark .gradient-animation {
+    background: linear-gradient(-45deg, 
+      rgba(59, 130, 246, 0.2), 
+      rgba(30, 64, 175, 0.2), 
+      rgba(15, 23, 42, 0.3), 
+      rgba(59, 130, 246, 0.2)
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
+  }
+
+  /* Smooth Button Animations */
+  .smooth-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+  }
+
+  .smooth-button:active {
+    transform: scale(0.95);
+  }
+
+  .smooth-button:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  /* Smooth Select Animations */
+  .smooth-select-trigger {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .smooth-select-trigger:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.25);
+  }
+
+  .smooth-select-content {
+    animation: selectSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: var(--radix-select-content-transform-origin);
+  }
 }
 
 @keyframes fadeIn {
@@ -144,9 +208,32 @@
   }
 }
 
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes selectSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 /* Glassmorphism effect for cards */
 .backdrop-blur-sm {
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
 }
 
 /* Enhanced hover effects */
@@ -157,4 +244,9 @@
 /* Smooth transitions for all interactive elements */
 * {
   transition: all 0.2s ease-out;
+}
+
+/* Dark mode transition */
+.dark * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
