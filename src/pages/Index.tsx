@@ -163,6 +163,44 @@ const Index = () => {
     });
   };
 
+  const formatScriptWithColors = (scriptText: string) => {
+    return scriptText.split('\n').map((line, index) => {
+      if (line.trim().startsWith('Hook:')) {
+        return (
+          <div key={index} className="mb-4">
+            <span className="text-orange-600 dark:text-orange-400 font-bold text-lg">
+              {line.replace('Hook:', 'Hook:')}
+            </span>
+          </div>
+        );
+      } else if (line.trim().startsWith('Body:')) {
+        return (
+          <div key={index} className="mb-4">
+            <span className="text-blue-600 dark:text-blue-400 font-bold text-lg">
+              {line.replace('Body:', 'Body:')}
+            </span>
+          </div>
+        );
+      } else if (line.trim().startsWith('CTA:')) {
+        return (
+          <div key={index} className="mb-4">
+            <span className="text-green-600 dark:text-green-400 font-bold text-lg">
+              {line.replace('CTA:', 'CTA:')}
+            </span>
+          </div>
+        );
+      } else if (line.trim()) {
+        return (
+          <div key={index} className="mb-2 leading-relaxed">
+            {line}
+          </div>
+        );
+      } else {
+        return <div key={index} className="mb-2"></div>;
+      }
+    });
+  };
+
   return (
     <div className={`min-h-screen light-gradient-background dark:gradient-background transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
       {/* Moving Gradient Background */}
@@ -357,8 +395,8 @@ const Index = () => {
               
               <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8 mb-6 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
                 <ScrollArea className="h-96 w-full pr-4">
-                  <div className="text-gray-800 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro space-y-4 whitespace-pre-wrap">
-                    {script}
+                  <div className="text-gray-800 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro">
+                    {formatScriptWithColors(script)}
                   </div>
                 </ScrollArea>
               </div>
