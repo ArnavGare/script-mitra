@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Premium Fonts */
+/* Import Apple-like fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @layer base {
   :root {
@@ -94,244 +95,210 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.011em;
   }
 }
 
 @layer utilities {
-  /* Enhanced Animated Blue Motion Background for Light Mode */
-  .animated-bg {
-    background: linear-gradient(135deg, 
-      #dbeafe 0%, 
-      #bfdbfe 15%, 
-      #93c5fd 30%, 
-      #60a5fa 45%, 
-      #3b82f6 60%, 
-      #2563eb 75%, 
-      #1d4ed8 90%, 
-      #1e40af 100%);
-    background-size: 400% 400%;
-    animation: blueWaves 15s ease infinite;
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
   }
-
-  .dark .animated-bg {
-    background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #475569, #1e293b, #0f172a);
-    background-size: 400% 400%;
-    animation: gradientShift 12s ease infinite;
-  }
-
-  /* Clean Glass Cards with Better Visibility */
-  .clean-glass-card {
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  }
-
-  .dark .clean-glass-card {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Enhanced Form Elements */
-  .clean-select, .clean-input {
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    transition: all 0.3s ease;
-    font-weight: 500;
-  }
-
-  .clean-select:hover, .clean-input:hover {
-    border-color: rgba(59, 130, 246, 0.5);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
-  }
-
-  .clean-select:focus, .clean-input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    transform: translateY(-1px);
-  }
-
-  .dark .clean-select, .dark .clean-input {
-    background: rgba(30, 41, 59, 0.9);
-    border-color: rgba(148, 163, 184, 0.4);
-    color: rgb(243, 244, 246);
-  }
-
-  .dark .clean-select:hover, .dark .clean-input:hover {
-    border-color: rgba(148, 163, 184, 0.6);
-  }
-
-  .dark .clean-select:focus, .dark .clean-input:focus {
-    border-color: #60a5fa;
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
-  }
-
-  /* Animations with better performance */
-  .fade-in {
-    animation: fadeIn 0.6s ease-out;
-  }
-
-  .slide-up {
+  
+  .animate-slide-up {
     animation: slideUp 0.6s ease-out;
   }
-
-  .slide-in {
-    animation: slideIn 0.4s ease-out;
+  
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
   }
 
-  /* Apple-like font classes with better readability */
+  /* Apple-like font classes */
   .font-sf-pro {
-    font-family: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.025em;
-    font-weight: 500;
+    letter-spacing: -0.022em;
   }
-}
 
-/* Enhanced Keyframes */
-@keyframes blueWaves {
-  0% { 
-    background-position: 0% 50%; 
+  /* Light Mode Blue Gradient Backgrounds with Animation */
+  .light-gradient-background {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #2563eb 100%);
     background-size: 400% 400%;
+    animation: lightGradientShift 8s ease infinite;
   }
-  20% { 
-    background-position: 80% 20%;
-    background-size: 450% 450%;
-  }
-  40% { 
-    background-position: 100% 80%;
-    background-size: 400% 400%;
-  }
-  60% { 
-    background-position: 20% 100%;
-    background-size: 350% 350%;
-  }
-  80% { 
-    background-position: 40% 30%;
-    background-size: 400% 400%;
-  }
-  100% { 
-    background-position: 0% 50%;
-    background-size: 400% 400%;
-  }
-}
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  25% { background-position: 100% 25%; }
-  50% { background-position: 100% 50%; }
-  75% { background-position: 0% 75%; }
-  100% { background-position: 0% 50%; }
+  .light-gradient-animation {
+    background: linear-gradient(135deg, 
+      rgba(59, 130, 246, 0.15), 
+      rgba(29, 78, 216, 0.12), 
+      rgba(37, 99, 235, 0.18), 
+      rgba(59, 130, 246, 0.08)
+    );
+    background-size: 400% 400%;
+    animation: lightGradientShift 12s ease infinite;
+  }
+
+  /* Dark Mode Gradient Backgrounds with Animation */
+  .gradient-background {
+    background: linear-gradient(-45deg, #0d1117, #161b22, #21262d, #30363d, #1a1f2e, #0f1419);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+  }
+
+  .gradient-animation {
+    background: linear-gradient(-45deg, 
+      rgba(59, 130, 246, 0.25), 
+      rgba(30, 64, 175, 0.18), 
+      rgba(15, 23, 42, 0.35), 
+      rgba(59, 130, 246, 0.15),
+      rgba(99, 102, 241, 0.20)
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  /* Elegant Button Animations */
+  .elegant-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+  }
+
+  .elegant-button:active {
+    transform: scale(0.98);
+  }
+
+  .elegant-button:hover {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  /* Simple Select Animations - No flying effect */
+  .elegant-select {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .elegant-select:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Remove the flying animation from select content */
+  .elegant-select-content {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 @keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px); 
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes slideUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(30px); 
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
-
-@keyframes slideIn {
-  from { 
-    opacity: 0; 
-    transform: translateX(-20px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateX(0); 
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Better text rendering and visibility */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lightGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Glassmorphism effect for cards */
+.backdrop-blur-sm {
+  backdrop-filter: blur(16px);
+}
+
+/* Enhanced hover effects */
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* Smooth transitions for all interactive elements */
 * {
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-out;
 }
 
+/* Light mode transition */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Dark mode transition */
+.dark * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Better text rendering */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.030em;
-  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
-p, span, div {
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-/* Enhanced input styling with better visibility */
+/* Improved input styling */
 input, textarea, select {
-  font-family: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 500;
-}
-
-/* Force better dropdown positioning */
-[data-radix-popper-content-wrapper] {
-  z-index: 1000 !important;
-  transform: none !important;
-  position: relative !important;
-}
-
-[data-radix-select-content] {
-  position: relative !important;
-  transform: none !important;
-  z-index: 1000 !important;
-}
-
-/* Ensure proper dropdown anchoring */
-[data-radix-select-trigger] {
-  position: relative !important;
-}
-
-/* Enhanced button styles */
-button {
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-/* Better contrast for dark mode */
-.dark {
-  color-scheme: dark;
-}
-
-.dark * {
-  border-color: rgba(148, 163, 184, 0.3);
-}
-
-.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-  color: rgb(248, 250, 252);
-  font-weight: 700;
-}
-
-.dark p, .dark span, .dark div {
-  color: rgb(226, 232, 240);
 }

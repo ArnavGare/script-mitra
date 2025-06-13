@@ -1,395 +1,438 @@
-import React, { useState, useEffect } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Plus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
-export default function Index() {
-  const [contentType, setContentType] = useState("");
-  const [platform, setPlatform] = useState("");
-  const [topic, setTopic] = useState("");
-  const [duration, setDuration] = useState("");
-  const [generatedScript, setGeneratedScript] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [copied, setCopied] = useState(false);
+const Index = () => {
+  const [formData, setFormData] = useState({
+    topic: "",
+    customTopic: "",
+    style: "",
+    language: "",
+    length: ""
+  });
+  const [script, setScript] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showCustomTopic, setShowCustomTopic] = useState(false);
+  const { toast } = useToast();
 
-  useEffect(() => {
-    if (copied) {
-      const timer = setTimeout(() => {
-        setCopied(false);
-      }, 2000);
+  const topics = [
+    "Mutual Fund Basics",
+    "SIP Ka Magic", 
+    "Retirement Planning",
+    "Term Insurance Facts",
+    "ULIP vs SIP",
+    "Loan ka Gyaan",
+    "Tax Saving Tips",
+    "Custom Topic"
+  ];
 
-      return () => clearTimeout(timer);
+  const styles = [
+    "Educational",
+    "Story/Narrative",
+    "Conversational", 
+    "Funny/Reel Style",
+    "Dramatic/Emotional"
+  ];
+
+  const languages = [
+    "English",
+    "Hindi",
+    "Hinglish"
+  ];
+
+  const lengths = [
+    "60 sec",
+    "120 sec", 
+    "180 sec"
+  ];
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  const handleTopicChange = (value: string) => {
+    setFormData({...formData, topic: value});
+    if (value === "Custom Topic") {
+      setShowCustomTopic(true);
+    } else {
+      setShowCustomTopic(false);
+      setFormData({...formData, topic: value, customTopic: ""});
     }
-  }, [copied]);
+  };
 
-  const handleGenerate = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!contentType || !platform || !topic || !duration) {
-      alert("Please fill in all fields.");
+    
+    const finalTopic = formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
+    
+    if (!finalTopic || !formData.style || !formData.language || !formData.length) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all fields before generating your script.",
+        variant: "destructive"
+      });
       return;
     }
 
-    setIsGenerating(true);
-    setGeneratedScript("");
+    if (formData.topic === "Custom Topic" && !formData.customTopic.trim()) {
+      toast({
+        title: "Custom Topic Required",
+        description: "Please enter your custom topic.",
+        variant: "destructive"
+      });
+      return;
+    }
 
+    setIsLoading(true);
+    
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
+      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ contentType, platform, topic, duration }),
+        body: JSON.stringify({
+          topic: finalTopic,
+          style: formData.style,
+          language: formData.language,
+          length: formData.length
+        })
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      setGeneratedScript(data.script);
+      const result = await response.json();
+      setScript(result.output || '');
+      
+      toast({
+        title: "Script Generated!",
+        description: "Your personalized video script is ready to use.",
+      });
     } catch (error) {
-      console.error("Error generating script:", error);
-      setGeneratedScript("Failed to generate script. Please try again.");
+      console.error('Error generating script:', error);
+      toast({
+        title: "Generation Failed",
+        description: "Unable to generate script. Please check your connection and try again.",
+        variant: "destructive"
+      });
     } finally {
-      setIsGenerating(false);
+      setIsLoading(false);
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(generatedScript);
-    setCopied(true);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(script);
+    toast({
+      title: "Copied!",
+      description: "Script copied to clipboard successfully.",
+    });
+  };
+
+  const handleDownload = () => {
+    const element = document.createElement("a");
+    const file = new Blob([script], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = `scriptcraft-${formData.topic.toLowerCase().replace(/\s+/g, '-')}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    
+    toast({
+      title: "Downloaded!",
+      description: "Script downloaded as text file.",
+    });
+  };
+
+  const handleReset = () => {
+    setFormData({ topic: "", customTopic: "", style: "", language: "", length: "" });
+    setScript("");
+    setShowCustomTopic(false);
+    toast({
+      title: "Reset Complete",
+      description: "Form cleared and ready for new script generation.",
+    });
+  };
+
+  const formatScriptWithColors = (scriptText: string) => {
+    return scriptText.split('\n').map((line, index) => {
+      if (line.trim().startsWith('Hook:')) {
+        return (
+          <div key={index} className="mb-4">
+            <span className="text-orange-600 dark:text-orange-400 font-bold text-lg">
+              {line.replace('Hook:', 'Hook:')}
+            </span>
+          </div>
+        );
+      } else if (line.trim().startsWith('Body:')) {
+        return (
+          <div key={index} className="mb-4">
+            <span className="text-blue-600 dark:text-blue-400 font-bold text-lg">
+              {line.replace('Body:', 'Body:')}
+            </span>
+          </div>
+        );
+      } else if (line.trim().startsWith('CTA:')) {
+        return (
+          <div key={index} className="mb-4">
+            <span className="text-green-600 dark:text-green-400 font-bold text-lg">
+              {line.replace('CTA:', 'CTA:')}
+            </span>
+          </div>
+        );
+      } else if (line.trim()) {
+        return (
+          <div key={index} className="mb-2 leading-relaxed">
+            {line}
+          </div>
+        );
+      } else {
+        return <div key={index} className="mb-2"></div>;
+      }
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-300 animated-bg">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-blue-100/80 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-3 py-1.5 rounded-full text-sm font-semibold mb-4 animate-fade-in backdrop-blur-sm">
-              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-              AI-Powered Script Generation
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in font-sf-pro tracking-tight">
-              Script<span className="text-blue-600 dark:text-blue-400">Mitra</span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 mb-8 max-w-2xl mx-auto animate-slide-up font-medium leading-relaxed">
-              Generate premium video scripts for financial advisors in seconds. Perfect for Instagram Reels, YouTube Shorts, and social media content.
-            </p>
+    <div className={`min-h-screen light-gradient-background dark:gradient-background transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
+      {/* Moving Gradient Background */}
+      <div className="absolute inset-0 light-gradient-animation dark:gradient-animation opacity-40 dark:opacity-30"></div>
+      
+      {/* Dark Mode Toggle */}
+      <div className="absolute top-4 right-4 z-50">
+        <Button
+          onClick={toggleDarkMode}
+          variant="outline"
+          size="icon"
+          className="rounded-full border-2 backdrop-blur-sm bg-white/70 dark:bg-black/20 hover:bg-white/90 dark:hover:bg-black/30 transition-all duration-300 border-blue-200/50 dark:border-blue-700/50"
+        >
+          {isDarkMode ? <Sun className="h-5 w-5 text-gray-900" /> : <Moon className="h-5 w-5 text-gray-900" />}
+        </Button>
+      </div>
+
+      {/* Header Section */}
+      <div className="relative z-10 text-center pt-12 pb-8 px-4">
+        <div className="animate-fade-in">
+          <h1 className="text-5xl md:text-6xl font-bold text-white dark:text-white mb-4">
+            <span className="bg-gradient-to-r from-white to-blue-100 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
+              ScriptCraft AI
+            </span>
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 dark:text-gray-300 relative inline-block">
+            Effortless Video Scripts for Finance Creators
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-white/60 to-blue-200 dark:from-blue-400 dark:to-blue-600 rounded-full animate-pulse"></div>
+          </p>
+        </div>
+        
+        {/* Feature highlights */}
+        <div className="flex justify-center items-center gap-8 mt-8 text-sm text-white/80 dark:text-gray-400">
+          <div className="flex items-center gap-2">
+            <Brain className="w-4 h-4 text-white dark:text-blue-500" />
+            <span>AI-Powered</span>
           </div>
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-white dark:text-blue-500" />
+            <span>60-180 Seconds</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-white dark:text-blue-500" />
+            <span>Finance Focused</span>
+          </div>
+        </div>
+      </div>
 
-          {/* AI Script Generator */}
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl shadow-xl border border-blue-200/30 dark:border-gray-600/30 p-6 animate-slide-up">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-                🎬 AI Video Script Generator
-              </h2>
-              
-              <form onSubmit={handleGenerate} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                      Content Type
-                    </label>
-                    <Select value={contentType} onValueChange={setContentType}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select content type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="educational">📚 Educational Tips</SelectItem>
-                        <SelectItem value="promotional">📢 Service Promotion</SelectItem>
-                        <SelectItem value="storytelling">📖 Client Success Story</SelectItem>
-                        <SelectItem value="trending">🔥 Market Trends</SelectItem>
-                        <SelectItem value="qa">❓ Q&A Session</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                      Platform
-                    </label>
-                    <Select value={platform} onValueChange={setPlatform}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select platform" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="instagram">📱 Instagram Reels</SelectItem>
-                        <SelectItem value="youtube">🎥 YouTube Shorts</SelectItem>
-                        <SelectItem value="linkedin">💼 LinkedIn Video</SelectItem>
-                        <SelectItem value="tiktok">🎵 TikTok</SelectItem>
-                        <SelectItem value="facebook">👥 Facebook</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                    What topic do you want to create content about?
-                  </label>
-                  <textarea
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    placeholder="e.g., 'How to save money on taxes this year' or 'Why young professionals need life insurance'"
-                    className="w-full h-20 px-3 py-2 border-2 border-blue-200/40 dark:border-gray-600/40 rounded-lg bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 outline-none resize-none font-medium transition-all duration-200"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                    Duration
-                  </label>
-                  <Select value={duration} onValueChange={setDuration}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select duration" />
+      {/* Main Content Container */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pb-12">
+        {/* Form Card */}
+        <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-2xl shadow-blue-900/20 dark:shadow-blue-900/50 rounded-2xl mb-8 animate-fade-in transition-all duration-500">
+          <CardContent className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Topic Selection */}
+                <div className="space-y-2">
+                  <Label className="text-lg font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+                    Choose a Topic
+                  </Label>
+                  <Select value={formData.topic} onValueChange={handleTopicChange}>
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                      <SelectValue placeholder="Select your topic..." />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="30">⚡ 30 seconds</SelectItem>
-                      <SelectItem value="60">🎯 60 seconds</SelectItem>
-                      <SelectItem value="90">📝 90 seconds</SelectItem>
-                      <SelectItem value="120">📖 2 minutes</SelectItem>
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                      {topics.map((topic) => (
+                        <SelectItem key={topic} value={topic} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 flex items-center gap-2 text-gray-800 dark:text-gray-200">
+                          {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
+                          {topic}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  
+                  {/* Custom Topic Input */}
+                  {showCustomTopic && (
+                    <div className="mt-3 animate-fade-in">
+                      <Input
+                        placeholder="Enter your custom topic..."
+                        value={formData.customTopic}
+                        onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
+                        className="h-12 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Style Selection */}
+                <div className="space-y-2">
+                  <Label className="text-lg font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                    <Brain className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+                    Choose Script Style
+                  </Label>
+                  <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                      <SelectValue placeholder="Select your style..." />
+                    </SelectTrigger>
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                      {styles.map((style) => (
+                        <SelectItem key={style} value={style} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                          {style}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={isGenerating}
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                {/* Language Selection */}
+                <div className="space-y-2">
+                  <Label className="text-lg font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                    <Users className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+                    Select Language
+                  </Label>
+                  <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                      <SelectValue placeholder="Select language..." />
+                    </SelectTrigger>
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                      {languages.map((language) => (
+                        <SelectItem key={language} value={language} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                          {language}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Length Selection */}
+                <div className="space-y-2">
+                  <Label className="text-lg font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+                    Choose Video Length
+                  </Label>
+                  <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
+                    <SelectTrigger className="elegant-select h-12 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                      <SelectValue placeholder="Select duration..." />
+                    </SelectTrigger>
+                    <SelectContent className="elegant-select-content rounded-xl border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                      {lengths.map((length) => (
+                        <SelectItem key={length} value={length} className="rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                          {length}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Submit and Reset Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                <Button 
+                  type="submit" 
+                  disabled={isLoading}
+                  className="elegant-button flex-1 h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl shadow-lg"
                 >
-                  {isGenerating ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  {isLoading ? (
+                    <div className="flex items-center gap-3">
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                       Generating Script...
-                    </span>
+                    </div>
                   ) : (
-                    "✨ Generate Premium Script"
+                    <div className="flex items-center gap-3">
+                      <Sparkles className="w-5 h-5" />
+                      Generate Script
+                    </div>
                   )}
-                </button>
-              </form>
-
-              {/* Generated Script Display */}
-              {generatedScript && (
-                <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200/50 dark:border-blue-700/30 animate-fade-in">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-bold text-gray-900 dark:text-white">Generated Script:</h3>
-                    <button
-                      onClick={copyToClipboard}
-                      className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors font-medium"
-                    >
-                      📋 {copied ? 'Copied!' : 'Copy'}
-                    </button>
-                  </div>
-                  <div className="prose prose-sm max-w-none">
-                    <pre className="whitespace-pre-wrap text-gray-800 dark:text-gray-200 leading-relaxed font-medium bg-white/50 dark:bg-gray-800/50 p-3 rounded-lg">
-                      {generatedScript}
-                    </pre>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Video Making Tips Section */}
-          <section className="mb-16 animate-fade-in">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                🎥 Smart Video-Making Tips for Financial Advisors
-              </h2>
-              <p className="text-gray-700 dark:text-gray-200 max-w-2xl mx-auto font-medium">
-                Professional techniques to make your financial content stand out
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {[
-                { icon: "💡", tip: "Use a clean, natural background with good lighting" },
-                { icon: "👁️", tip: "Always frame your face at eye level — adds trust" },
-                { icon: "⏱️", tip: "Keep videos short (60-90s) unless you're storytelling" },
-                { icon: "🎯", tip: "Start with a hook that solves a pain point" },
-                { icon: "📱", tip: "Record in portrait mode for Reels/Shorts" },
-                { icon: "🎬", tip: "End with a clear call-to-action" }
-              ].map((item, index) => (
-                <div key={index} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-5 rounded-xl shadow-lg border border-blue-200/30 dark:border-gray-600/30 hover:shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="text-3xl mb-3">{item.icon}</div>
-                  <p className="text-gray-800 dark:text-gray-200 font-medium leading-relaxed">{item.tip}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Voice Modulation Section */}
-          <section className="mb-16 animate-fade-in">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                  🗣️ Talk Like a Pro — Voice Modulation Hacks
-                </h2>
-                <p className="text-gray-700 dark:text-gray-200 max-w-2xl mx-auto font-medium">
-                  Master your voice to connect better with your audience
-                </p>
+                </Button>
+                
+                <Button 
+                  type="button"
+                  variant="outline"
+                  onClick={handleReset}
+                  className="elegant-button h-14 px-8 text-lg font-semibold border-2 border-blue-400/60 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50/80 dark:hover:bg-blue-950 rounded-xl transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-transparent"
+                >
+                  <RotateCcw className="w-5 h-5 mr-2" />
+                  Reset
+                </Button>
               </div>
+            </form>
+          </CardContent>
+        </Card>
+
+        {/* Script Output Area */}
+        {script && (
+          <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-2xl shadow-blue-900/20 dark:shadow-blue-900/50 rounded-2xl animate-fade-in transition-all duration-500">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center gap-3">
+                <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-500" />
+                Your Generated Script
+              </h3>
               
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="space-y-4">
-                  {[
-                    "Slow down when saying something important",
-                    "Raise pitch slightly when you're enthusiastic", 
-                    "Lower your voice for dramatic impact",
-                    "Use pauses to build tension",
-                    "Smile while talking — it changes your tone!"
-                  ].map((tip, index) => (
-                    <div key={index} className="flex items-start gap-3 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <div className="w-6 h-6 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mt-0.5">
-                        {index + 1}
-                      </div>
-                      <p className="text-gray-800 dark:text-gray-200 font-medium leading-relaxed">{tip}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-xl p-8 text-center">
-                  <div className="text-6xl mb-4">🎤</div>
-                  <p className="text-gray-800 dark:text-gray-200 font-medium">Your voice is your most powerful tool for building trust and authority in finance.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Social Media Growth Section */}
-          <section className="mb-16 animate-fade-in">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                🚀 Social Media Growth Blueprint
-              </h2>
-              <p className="text-gray-700 dark:text-gray-200 max-w-2xl mx-auto font-medium">
-                Proven strategies to grow your financial advisory practice online
-              </p>
-            </div>
-            
-            <div className="max-w-4xl mx-auto">
-              <div className="space-y-4">
-                {[
-                  { step: 1, title: "Pick 1-2 content pillars", desc: "e.g., financial tips, client stories" },
-                  { step: 2, title: "Be consistent", desc: "post 3x a week minimum" },
-                  { step: 3, title: "Engage in comments, DMs", desc: "build community" },
-                  { step: 4, title: "Use trending audios", desc: "and short captions" },
-                  { step: 5, title: "Track analytics", desc: "double down on what works" }
-                ].map((item, index) => (
-                  <div key={index} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-5 rounded-xl shadow-lg border border-blue-200/30 dark:border-gray-600/30 hover:shadow-xl transition-all duration-300 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className="flex items-start gap-4">
-                      <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                        {item.step}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-900 dark:text-white mb-1">{item.title}</h3>
-                        <p className="text-gray-700 dark:text-gray-300 font-medium">{item.desc}</p>
-                      </div>
-                    </div>
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8 mb-6 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
+                <ScrollArea className="h-96 w-full pr-4">
+                  <div className="text-gray-800 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro">
+                    {formatScriptWithColors(script)}
                   </div>
-                ))}
+                </ScrollArea>
               </div>
-              
-              <div className="text-center mt-8">
-                <p className="text-gray-800 dark:text-gray-200 font-semibold">
-                  Need Content Ideas? Use ScriptMitra! 🎯
-                </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  onClick={handleCopy}
+                  className="elegant-button flex-1 h-12 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg"
+                >
+                  <Copy className="w-5 h-5 mr-2" />
+                  Copy Script
+                </Button>
+                
+                <Button 
+                  onClick={handleDownload}
+                  variant="outline"
+                  className="elegant-button flex-1 h-12 border-2 border-blue-400/60 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-50/80 dark:hover:bg-blue-950 rounded-xl transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-transparent"
+                >
+                  <Download className="w-5 h-5 mr-2" />
+                  Download as .txt
+                </Button>
               </div>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
+        )}
 
-          {/* Testimonials Section */}
-          <section className="mb-16 animate-fade-in">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                💬 What Other Advisors Are Saying
-              </h2>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {[
-                { name: "Priya Sharma", role: "Financial Planner", feedback: "ScriptMitra helped me create 50+ engaging reels in just one month!", rating: 5 },
-                { name: "Rohit Agarwal", role: "Investment Advisor", feedback: "My client engagement increased by 300% using these AI-generated scripts.", rating: 5 },
-                { name: "Meera Patel", role: "Insurance Consultant", feedback: "Professional scripts that actually convert prospects into clients!", rating: 5 }
-              ].map((testimonial, index) => (
-                <div key={index} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-6 rounded-xl shadow-lg border border-blue-200/30 dark:border-gray-600/30 hover:shadow-xl transition-all duration-300 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="flex mb-3">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <span key={i} className="text-yellow-400 text-lg">⭐</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-800 dark:text-gray-200 mb-4 font-medium italic">"{testimonial.feedback}"</p>
-                  <div className="border-t border-gray-200 dark:border-gray-600 pt-3">
-                    <p className="font-bold text-gray-900 dark:text-white">{testimonial.name}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">{testimonial.role}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Resources Section */}
-          <section className="mb-16 animate-fade-in">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                📥 Free Tools for Financial Creators
-              </h2>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {[
-                { title: "Content Planning Sheet", icon: "📋" },
-                { title: "Instagram Hashtag Cheatsheet", icon: "#️⃣" },
-                { title: "30 Video Script Hooks PDF", icon: "🎣" }
-              ].map((resource, index) => (
-                <button key={index} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-6 rounded-xl shadow-lg border border-blue-200/30 dark:border-gray-600/30 hover:shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up group" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="text-4xl mb-3 group-hover:animate-bounce">{resource.icon}</div>
-                  <h3 className="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{resource.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 font-medium">Download Free</p>
-                </button>
-              ))}
-            </div>
-          </section>
+        {/* Footer */}
+        <div className="text-center mt-12">
+          <p className="text-white/80 dark:text-gray-400 text-lg">
+            Made for <span className="font-semibold text-white dark:text-blue-400">Financial Creators</span>
+          </p>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-t border-blue-200/30 dark:border-gray-600/30">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">ScriptMitra</h3>
-            <p className="text-gray-700 dark:text-gray-300 mb-4 font-medium">Your AI-powered partner for premium video content creation</p>
-            
-            <div className="flex justify-center gap-6 mb-6">
-              {["Home", "Generate Scripts", "Growth Tips", "Contact"].map((link) => (
-                <a key={link} href="#" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
-                  {link}
-                </a>
-              ))}
-            </div>
-            
-            <div className="flex justify-center gap-4 mb-4">
-              {["📱", "🐦", "💼", "📧"].map((icon, index) => (
-                <a key={index} href="#" className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-800/50 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110">
-                  <span className="text-lg">{icon}</span>
-                </a>
-              ))}
-            </div>
-            
-            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-              Made with 💖 using AI & Automations
-            </p>
-          </div>
-        </div>
-      </footer>
-
-      {/* Scroll to Top Button */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 right-6 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 z-50"
-      >
-        ↑
-      </button>
     </div>
   );
-}
+};
+
+export default Index;
