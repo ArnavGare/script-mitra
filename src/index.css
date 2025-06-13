@@ -1,11 +1,10 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Import Apple-like fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @layer base {
   :root {
@@ -105,16 +104,42 @@
 }
 
 @layer utilities {
+  /* Animation Classes */
   .animate-fade-in {
-    animation: fadeIn 0.8s ease-out;
+    animation: fadeIn 0.6s ease-out;
   }
   
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out;
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out;
   }
   
-  .animate-scale-in {
-    animation: scaleIn 0.4s ease-out;
+  .animate-fade-in-left {
+    animation: fadeInLeft 0.8s ease-out;
+  }
+  
+  .animate-fade-in-right {
+    animation: fadeInRight 0.8s ease-out;
+  }
+  
+  .animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out;
+  }
+  
+  .animate-bounce-slow {
+    animation: bounceslow 2s infinite;
+  }
+  
+  .animate-sound-wave {
+    animation: soundWave 1.5s ease-in-out infinite;
+  }
+  
+  .animate-gradient-x {
+    animation: gradientX 15s ease infinite;
+    background-size: 200% 200%;
   }
 
   /* Apple-like font classes */
@@ -125,74 +150,9 @@
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: -0.022em;
   }
-
-  /* Light Mode Blue Gradient Backgrounds with Animation */
-  .light-gradient-background {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #2563eb 100%);
-    background-size: 400% 400%;
-    animation: lightGradientShift 8s ease infinite;
-  }
-
-  .light-gradient-animation {
-    background: linear-gradient(135deg, 
-      rgba(59, 130, 246, 0.15), 
-      rgba(29, 78, 216, 0.12), 
-      rgba(37, 99, 235, 0.18), 
-      rgba(59, 130, 246, 0.08)
-    );
-    background-size: 400% 400%;
-    animation: lightGradientShift 12s ease infinite;
-  }
-
-  /* Dark Mode Gradient Backgrounds with Animation */
-  .gradient-background {
-    background: linear-gradient(-45deg, #0d1117, #161b22, #21262d, #30363d, #1a1f2e, #0f1419);
-    background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
-  }
-
-  .gradient-animation {
-    background: linear-gradient(-45deg, 
-      rgba(59, 130, 246, 0.25), 
-      rgba(30, 64, 175, 0.18), 
-      rgba(15, 23, 42, 0.35), 
-      rgba(59, 130, 246, 0.15),
-      rgba(99, 102, 241, 0.20)
-    );
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-  }
-
-  /* Elegant Button Animations */
-  .elegant-button {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: center;
-  }
-
-  .elegant-button:active {
-    transform: scale(0.98);
-  }
-
-  .elegant-button:hover {
-    transform: translateY(-1px) scale(1.02);
-  }
-
-  /* Simple Select Animations - No flying effect */
-  .elegant-select {
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .elegant-select:focus {
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-
-  /* Remove the flying animation from select content */
-  .elegant-select-content {
-    animation: none !important;
-    transform: none !important;
-  }
 }
 
+/* Keyframe Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -204,7 +164,7 @@
   }
 }
 
-@keyframes slideUp {
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
@@ -215,50 +175,77 @@
   }
 }
 
-@keyframes scaleIn {
+@keyframes fadeInLeft {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: translateX(-30px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateX(0);
   }
 }
 
-@keyframes lightGradientShift {
-  0% {
-    background-position: 0% 50%;
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
   }
-  25% {
-    background-position: 100% 50%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  75% {
-    background-position: 0% 100%;
-  }
-  100% {
-    background-position: 0% 50%;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
   }
-  25% {
-    background-position: 100% 50%;
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceS {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes soundWave {
+  0%, 100% {
+    transform: scaleY(1);
   }
   50% {
-    background-position: 100% 100%;
+    transform: scaleY(1.5);
   }
-  75% {
-    background-position: 0% 100%;
-  }
-  100% {
+}
+
+@keyframes gradientX {
+  0%, 100% {
     background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
@@ -267,24 +254,9 @@
   backdrop-filter: blur(16px);
 }
 
-/* Enhanced hover effects */
-.hover\:scale-105:hover {
-  transform: scale(1.05);
-}
-
 /* Smooth transitions for all interactive elements */
 * {
   transition: all 0.2s ease-out;
-}
-
-/* Light mode transition */
-* {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
-}
-
-/* Dark mode transition */
-.dark * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 
 /* Better text rendering */
