@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -113,8 +112,16 @@ const Index = () => {
       }
 
       const result = await response.json();
-      // Extract the output field and format line breaks
-      const formattedScript = result.output?.replace(/\\n/g, '<br>') || result.output || '';
+      // Parse and format the script with proper sections
+      let formattedScript = result.output || '';
+      
+      // Format the script with proper section breaks and styling
+      formattedScript = formattedScript
+        .replace(/Hook:/g, '<br><br><strong class="text-blue-600 dark:text-blue-400 text-lg font-semibold">Hook:</strong><br>')
+        .replace(/Body:/g, '<br><br><strong class="text-green-600 dark:text-green-400 text-lg font-semibold">Body:</strong><br>')
+        .replace(/CTA:/g, '<br><br><strong class="text-purple-600 dark:text-purple-400 text-lg font-semibold">CTA:</strong><br>')
+        .replace(/^\s*<br><br>/, ''); // Remove leading line breaks
+      
       setScript(formattedScript);
       
       toast({
@@ -369,10 +376,10 @@ const Index = () => {
               </h3>
               
               <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-8 mb-6 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
-                <ScrollArea className="max-h-96 w-full">
+                <ScrollArea className="max-h-96 w-full pr-4">
                   <div 
-                    className="text-gray-800 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro space-y-4"
-                    dangerouslySetInnerHTML={{ __html: formatScriptContent(script) }}
+                    className="text-gray-800 dark:text-gray-300 font-medium text-base leading-relaxed font-sf-pro space-y-2"
+                    dangerouslySetInnerHTML={{ __html: script }}
                   />
                 </ScrollArea>
               </div>
