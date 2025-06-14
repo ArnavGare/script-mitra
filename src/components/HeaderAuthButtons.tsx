@@ -1,56 +1,65 @@
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { LogIn, PenLine, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
+// Helper for scroll on the same page
+const scrollToSection = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
 
 export default function HeaderAuthButtons() {
-  const navigate = useNavigate();
-
   return (
     <div className="flex gap-2 items-center">
-      <Button
-        variant="outline"
-        className="text-white border-cyan-400 border font-semibold font-inter rounded-full px-4 py-1.5 shadow-md bg-transparent hover:bg-cyan-900/20 transition-all duration-300 flex items-center gap-1.5"
-        onClick={() => navigate("/auth/login")}
+      <button
+        className="
+          bg-white text-[#11163b] font-semibold font-inter rounded-full px-4 py-1.5 shadow-md border border-white
+          flex items-center gap-1 transition-all duration-300
+          hover:scale-105 hover:shadow-lg hover:bg-[#e6e7f2] active:scale-100
+        "
         style={{ height: 38, fontWeight: 600 }}
+        onClick={() => scrollToSection("auth-login")}
+        type="button"
       >
-        <LogIn size={17} className="mr-1 text-cyan-300" /> Login
-      </Button>
-      <Button
-        variant="default"
+        <LogIn size={17} className="mr-1 text-[#246bfb]" />
+        Login
+      </button>
+      <button
         className="
-          text-white bg-gradient-to-r from-[#246bfb] to-[#925fff] font-semibold font-inter rounded-full px-4 py-1.5 shadow-lg hover:brightness-110 hover:scale-[1.03] transition-all duration-300 flex items-center gap-1.5
+          bg-white text-[#11163b] font-semibold font-inter rounded-full px-4 py-1.5 shadow-md border border-white
+          flex items-center gap-1 transition-all duration-300
+          hover:scale-105 hover:shadow-lg hover:bg-[#e6e7f2] active:scale-100
         "
-        onClick={() => navigate("/auth/signup")}
-        style={{
-          background: "linear-gradient(90deg,#246bfb 0%, #925fff 100%)",
-          height: 38,
-          fontWeight: 600,
-        }}
+        style={{ height: 38, fontWeight: 600 }}
+        onClick={() => scrollToSection("auth-signup")}
+        type="button"
       >
-        <PenLine size={17} className="mr-1 text-white" /> Sign Up
-      </Button>
-      <Button
-        variant="ghost"
+        <PenLine size={17} className="mr-1 text-[#925fff]" />
+        Sign Up
+      </button>
+      <button
         className="
-          px-3 py-1.5 bg-gradient-to-r from-cyan-400 via-blue-500 to-[#A06FFF]
-          text-white font-bold rounded-full text-sm shadow-md neon-pill-btn
-          relative transition-all duration-300 ml-1
+          bg-white text-[#11163b] font-bold font-inter px-4 py-1.5
+          rounded-[50px] shadow-md border border-white relative
+          flex items-center gap-1.5 transition-all duration-300
+          hover:bg-gradient-to-r hover:from-cyan-400 hover:to-[#A06FFF]
+          hover:text-white hover:shadow-[0_0_22px_3px_rgba(90,198,250,0.28)]
+          hover:scale-105 active:scale-100
         "
         style={{
-          boxShadow: "0 2px 14px #00CFFF80, 0 2px 10px #a06fff50",
-          borderRadius: 80,
           fontWeight: 700,
           height: 38,
         }}
-        onClick={() => navigate("/#generate-scripts")}
+        onClick={() => scrollToSection("generate-scripts")}
+        type="button"
       >
         <span className="flex items-center gap-1.5">
-          <Sparkles className="w-5 h-5 -ml-1 shimmer-ltr" />
+          <Sparkles className="w-5 h-5 -ml-1 text-[#00CFFF]" />
           <span>Get Your Free Script</span>
         </span>
-      </Button>
+      </button>
     </div>
   );
 }
