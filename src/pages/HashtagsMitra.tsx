@@ -64,6 +64,17 @@ export default function HashtagsMitra() {
 
   return (
     <>
+      {/* Grid Background */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 w-full h-full -z-10 overflow-hidden"
+        style={{
+          background:
+            "radial-gradient(circle, #6ee7ff22 1.4px, transparent 1.6px), linear-gradient(to right, #fff0 1px, #0001 1px), linear-gradient(to bottom, #fff0 1px, #0001 1px)",
+          backgroundSize: "42px 42px",
+          opacity: 0.55,
+        }}
+      />
       <MotionGridBg />
       <Header />
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 transition-colors duration-500 overflow-x-hidden">
