@@ -371,3 +371,46 @@ body {
 
 /* Other neon-glow utility classes could go here */
 /* (neon, gradient, and glow classes are set in component-level styles for scoping) */
+
+/* --- Custom theme tweaks for SaaS header --- */
+body {
+  font-family: 'Poppins', 'Space Grotesk', Inter, sans-serif;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('https://cdn.jsdelivr.net/gh/codebdy/Satoshi-Font/Satoshi_Complete.woff') format('woff');
+}
+/* Custom buttons, text, and pills for header */
+.neon-pill-btn {
+  background: linear-gradient(92deg,#00cfff 18%,#a06fff 92%);
+  color: #fff !important;
+  box-shadow: 0 2px 16px #33fdf855, 0 2px 10px #a06fff48;
+}
+.neon-pill-btn:hover {
+  filter: brightness(1.18) drop-shadow(0 0 11px #c2c6ffcc);
+  transform: scale(1.06);
+}
+.font-inter {
+  font-family: 'Inter', 'Satoshi', 'Poppins', 'Space Grotesk', system-ui, sans-serif !important;
+}
+/* Fade and glow on scale */
+.header-btn {
+  transition: all 0.28s cubic-bezier(.55,.12,.62,.74);
+  box-shadow: 0 2px 6px 0 #192ca122, 0 1.5px 8px 0 #38bdf844;
+}
+.header-btn:hover {
+  box-shadow: 0 2px 18px 1.5px #38bdf855, 0 1.5px 8px 0 #a06fff45;
+  transform: scale(1.04);
+  z-index: 3;
+}
+@media (max-width: 767px) {
+  header {
+    min-height: 60px !important;
+    box-shadow: 0 2px 18px #17183533,0 2px 12px #38007333 !important;
+    border-bottom: 1px solid #0D0D2B66;
+  }
+}
+/* Hide scrollbar for glass mobile menu */
+::-webkit-scrollbar-thumb:horizontal {
+  background: rgba(30,71,158,0.08);
+}
