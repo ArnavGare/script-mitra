@@ -1,5 +1,5 @@
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, type InvalidateQueryFilters } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -37,8 +37,9 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Remove the generic argument here (fixes build error)
-      queryClient.invalidateQueries({ queryKey });
+      // Explicitly type the filters for invalidateQueries
+      const filters: InvalidateQueryFilters = { queryKey };
+      queryClient.invalidateQueries(filters);
     }
   });
 
@@ -52,3 +53,4 @@ export function useUserCreditsNew(userId: string | null) {
 
   return { ...query, deductCredit };
 }
+
