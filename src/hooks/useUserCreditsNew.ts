@@ -33,11 +33,8 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Use the predicate instead of queryKey to avoid TS type issues
-      queryClient.invalidateQueries({
-        predicate: (q) =>
-          Array.isArray(q.queryKey) && q.queryKey[0] === "users-credits",
-      });
+      // Invalidate all queries with the "users-credits" key - partial key match
+      queryClient.invalidateQueries({ queryKey: ["users-credits"] });
     }
   });
 
