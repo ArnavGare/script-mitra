@@ -9,7 +9,7 @@ import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Pl
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
-import { useUserCredits } from "@/hooks/useUserCredits";
+import { useUserCreditsNew } from "@/hooks/useUserCreditsNew";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -27,7 +27,7 @@ const Index = () => {
   const [showCustomTopic, setShowCustomTopic] = useState(false);
   const { toast } = useToast();
   const { user, isLoading: userLoading } = useSupabaseUser();
-  const { data: userCredits, refetch: refetchCredits, isLoading: creditsLoading } = useUserCredits(user?.id ?? null);
+  const { data: userCreditsData, refetch: refetchCredits, isLoading: creditsLoading } = useUserCreditsNew(user?.id ?? null);
   const navigate = useNavigate();
 
   const topics = [
@@ -91,10 +91,10 @@ const Index = () => {
       return;
     }
 
-    // Credit check before generation
-    if (!creditsLoading && (userCredits === null || userCredits <= 0)) {
+    // Credit check before generation using new table/logic
+    if (!creditsLoading && (!userCreditsData || userCreditsData.credits_remaining <= 0)) {
       toast({
-        title: "You’ve used all your free credits.",
+        title: "You’ve used all your credits.",
         description: "Please upgrade your plan on the Pricing page.",
         variant: "destructive"
       });
@@ -124,14 +124,18 @@ const Index = () => {
 
     setIsLoading(true);
     
-    // Deduct 1 credit from user_credits (before generation)
+    // Deduct 1 credit (before generation) -- using update on users_credits
     const deductCredit = async () => {
-      // Use update to decrement credits atomically IF > 0
+      // Use update to decrement credits_remaining atomically IF > 0
       const { error } = await supabase
-        .from("user_credits")
-        .update({ credits: (userCredits ?? 0) - 1, updated_at: new Date().toISOString() })
+        .from("users_credits")
+        .update({ 
+          credits_remaining: (userCreditsData?.credits_remaining ?? 0) - 1,
+          last_refill_date: userCreditsData?.last_refill_date // unchanged, handled by refill
+        })
         .eq("user_id", user.id)
-        .gte("credits", 1); // Only allow if credits >=1
+        .gte("credits_remaining", 1);
+
       if (error) throw error;
     };
 
@@ -170,7 +174,7 @@ const Index = () => {
         String(error).includes("No rows updated")
       ) {
         toast({
-          title: "You’ve used all your free credits.",
+          title: "You’ve used all your credits.",
           description: "Please upgrade your plan on the Pricing page.",
           variant: "destructive"
         });
@@ -731,6 +735,22 @@ const Index = () => {
             </p>
           </div>
         </div>
+      </div>
+      {/* Enhancement: Show user's remaining credits and plan */}
+      <div className="fixed top-4 left-4 z-[200] flex flex-col gap-1 items-start">
+        {!!userCreditsData && (
+          <div className="bg-white/90 dark:bg-gray-800/80 border border-blue-400 dark:border-blue-900 px-3 py-1 rounded-xl flex gap-2 items-center text-xs font-medium shadow">
+            <span className="text-blue-700 dark:text-blue-200 font-semibold">
+              Credits Left:&nbsp;
+              <span className="font-bold">
+                {userCreditsData.credits_remaining}
+              </span>
+            </span>
+            <span className="border-l ml-2 pl-2 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-300 font-normal">
+              {userCreditsData.plan_type}
+            </span>
+          </div>
+        )}
       </div>
     </>
   );

@@ -27,6 +27,30 @@ export type Database = {
         }
         Relationships: []
       }
+      users_credits: {
+        Row: {
+          credits_remaining: number
+          email: string
+          last_refill_date: string
+          plan_type: string
+          user_id: string
+        }
+        Insert: {
+          credits_remaining?: number
+          email: string
+          last_refill_date?: string
+          plan_type?: string
+          user_id: string
+        }
+        Update: {
+          credits_remaining?: number
+          email?: string
+          last_refill_date?: string
+          plan_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
