@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const navLinks = [
-  { name: "Home", anchor: "home" },
+  { name: "Home", to: "/" },
   { name: "Generate Scripts", anchor: "generate-scripts" },
   { name: "Hashtags Mitra", to: "/hashtags-mitra" },
   { name: "Store", anchor: "store" },
@@ -54,3 +54,4 @@ export default function NavLinks({ onNavigate, compact }: Props) {
     </ul>
   );
 }
+
