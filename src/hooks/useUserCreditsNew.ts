@@ -1,3 +1,4 @@
+
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
@@ -5,18 +6,20 @@ import type { Database } from "@/integrations/supabase/types";
 // Fix the type for user credits
 type UsersCreditsRow = Database["public"]["Tables"]["users_credits"]["Row"];
 
+// Explicitly define queryKey type
+type UserCreditsQueryKey = readonly [string, string | null];
+
 // Fetches row for currently logged-in user
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  // Keep the queryKey strongly typed as before
-  const queryKey = ["users-credits", userId] as const;
+  // queryKey should be typed explicitly everywhere
+  const queryKey: UserCreditsQueryKey = ["users-credits", userId];
 
   const fetchCredits = async (): Promise<UsersCreditsRow | null> => {
     if (!userId) return null;
     const { data, error } = await supabase
       .from("users_credits")
-      // Include `user_id` to satisfy the full type
       .select("user_id, email, credits_remaining, plan_type, last_refill_date")
       .eq("user_id", userId)
       .maybeSingle();
@@ -29,11 +32,12 @@ export function useUserCreditsNew(userId: string | null) {
   const deductCredit = useMutation({
     mutationFn: async () => {
       if (!userId) throw new Error("No user");
+      // This assumes an RPC called 'deduct_credit_for_user' exists
       const { error } = await supabase.rpc("deduct_credit_for_user", { _user_id: userId });
       if (error) throw error;
     },
     onSuccess: () => {
-      // Use the exact queryKey reference with correct typing
+      // queryKey is guaranteed to be the correct type here
       queryClient.invalidateQueries({ queryKey });
     }
   });
