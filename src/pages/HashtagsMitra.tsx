@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
+import Header from "@/components/Header";
 import { Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -81,90 +82,93 @@ export default function HashtagsMitra() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-9 px-2 relative overflow-hidden
-      bg-gradient-to-br from-[#19214d] via-[#310b5e] to-[#192d61] animate-gradient-x">
-      {/* Decorative animated waves or glow */}
-      <div className="absolute top-0 left-0 w-full h-[340px] pointer-events-none select-none z-0" style={{background: "radial-gradient(ellipse at 50% 0%, #7de7fd22 50%, transparent 120%)"}}>
-        <div className="absolute left-1/3 top-10 w-2/3 h-28 rounded-full blur-2xl bg-gradient-to-r from-cyan-400/20 via-purple-500/30 to-cyan-400/10"></div>
-        <div className="absolute top-36 left-0 w-full h-32 bg-gradient-to-l from-purple-900/20 via-transparent to-cyan-600/10 blur-3xl"></div>
-      </div>
-      <section className="max-w-2xl w-full mx-auto relative z-10">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3 text-white tracking-tight text-center font-playfair headline-glow">
-          🔥 Hashtags Mitra – Your Viral Boost Partner
-        </h1>
-        <p className="mt-0 mb-6 text-cyan-100 font-medium text-lg text-center px-2 drop-shadow">
-          Paste your script and get trending, niche-relevant hashtags instantly.
-        </p>
-        <form onSubmit={handleGenerate} className="w-full flex flex-col gap-5">
-          <Textarea
-            className="bg-white/10 dark:bg-black/30 border-cyan-600 placeholder:text-blue-200/75 rounded-2xl shadow-lg text-lg text-white min-h-[128px] max-h-72 resize-vertical font-medium px-5 py-4 focus:ring-2 focus:ring-cyan-500"
-            placeholder={rotatingPlaceholders[placeholderIdx]}
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            rows={6}
-            autoFocus
-            disabled={isLoading}
-          />
-          <Button
-            size="lg"
-            type="submit"
-            disabled={isLoading}
-            className="neon-pill-btn notion-button-primary w-full rounded-full text-xl font-semibold py-3 tracking-wide"
-          >
-            {isLoading ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="animate-spin" />
-                Generating Hashtags...
-              </span>
-            ) : (
-              <>
-                <Sparkles className="text-yellow-300" />
-                Generate Hashtags
-              </>
-            )}
-          </Button>
-        </form>
-
-        {/* Hashtag Output */}
-        {hashtags.length > 0 && (
-          <div className="w-full mt-8 flex flex-col items-center gap-2 fade-in">
-            <div className="flex flex-wrap justify-center gap-2 mb-2">
-              {hashtags.map((tag, i) => (
-                <Badge key={tag+i} variant="secondary" className="rounded-full px-4 py-2 font-mono text-lg bg-gradient-to-r from-[#3ddadf] via-[#9877ec] to-[#9f8af3] text-white shadow hover:scale-105 transition duration-300 cursor-pointer select-text">
-                  #{tag}
-                </Badge>
-              ))}
-            </div>
-            <Button
-              size="sm"
-              className="notion-button-secondary rounded-full px-5 mt-2"
-              onClick={() => copyHashtags(hashtags)}
-            >
-              Copy All
-            </Button>
-          </div>
-        )}
-
-        {/* Tips Toggle Section */}
-        <div className="mt-8 text-center">
-          <button
-            type="button"
-            className="text-cyan-400 underline underline-offset-4 hover:text-purple-300 font-bold transition"
-            onClick={() => setShowTips(v => !v)}
-          >
-            {showTips ? "Hide" : "💡 Tips"} for Better Hashtags
-          </button>
-          {showTips && (
-            <ul className="mt-4 list-disc list-inside text-cyan-200 text-base animate-fade-in-up max-w-lg mx-auto text-left">
-              {tips.map((t, i) => (
-                <li key={i}>{t}</li>
-              ))}
-            </ul>
-          )}
+    <>
+      <Header />
+      <div className="min-h-screen flex flex-col items-center justify-center py-9 px-2 relative overflow-hidden
+        bg-gradient-to-br from-[#19214d] via-[#310b5e] to-[#192d61] animate-gradient-x">
+        {/* Decorative animated waves or glow */}
+        <div className="absolute top-0 left-0 w-full h-[340px] pointer-events-none select-none z-0" style={{background: "radial-gradient(ellipse at 50% 0%, #7de7fd22 50%, transparent 120%)"}}>
+          <div className="absolute left-1/3 top-10 w-2/3 h-28 rounded-full blur-2xl bg-gradient-to-r from-cyan-400/20 via-purple-500/30 to-cyan-400/10"></div>
+          <div className="absolute top-36 left-0 w-full h-32 bg-gradient-to-l from-purple-900/20 via-transparent to-cyan-600/10 blur-3xl"></div>
         </div>
-      </section>
-      {/* Animated BG glows */}
-      <div className="absolute bottom-0 left-0 w-full h-44 pointer-events-none -z-10" style={{background: "radial-gradient(ellipse at 50% 90%, #7de7fd22 70%, transparent 110%)"}} />
-    </div>
+        <section className="max-w-2xl w-full mx-auto relative z-10">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3 text-white tracking-tight text-center font-playfair headline-glow">
+            🔥 Hashtags Mitra – Your Viral Boost Partner
+          </h1>
+          <p className="mt-0 mb-6 text-cyan-100 font-medium text-lg text-center px-2 drop-shadow">
+            Paste your script and get trending, niche-relevant hashtags instantly.
+          </p>
+          <form onSubmit={handleGenerate} className="w-full flex flex-col gap-5">
+            <Textarea
+              className="bg-white/10 dark:bg-black/30 border-cyan-600 placeholder:text-blue-200/75 rounded-2xl shadow-lg text-lg text-white min-h-[128px] max-h-72 resize-vertical font-medium px-5 py-4 focus:ring-2 focus:ring-cyan-500"
+              placeholder={rotatingPlaceholders[placeholderIdx]}
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              rows={6}
+              autoFocus
+              disabled={isLoading}
+            />
+            <Button
+              size="lg"
+              type="submit"
+              disabled={isLoading}
+              className="neon-pill-btn notion-button-primary w-full rounded-full text-xl font-semibold py-3 tracking-wide"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="animate-spin" />
+                  Generating Hashtags...
+                </span>
+              ) : (
+                <>
+                  <Sparkles className="text-yellow-300" />
+                  Generate Hashtags
+                </>
+              )}
+            </Button>
+          </form>
+
+          {/* Hashtag Output */}
+          {hashtags.length > 0 && (
+            <div className="w-full mt-8 flex flex-col items-center gap-2 fade-in">
+              <div className="flex flex-wrap justify-center gap-2 mb-2">
+                {hashtags.map((tag, i) => (
+                  <Badge key={tag+i} variant="secondary" className="rounded-full px-4 py-2 font-mono text-lg bg-gradient-to-r from-[#3ddadf] via-[#9877ec] to-[#9f8af3] text-white shadow hover:scale-105 transition duration-300 cursor-pointer select-text">
+                    #{tag}
+                  </Badge>
+                ))}
+              </div>
+              <Button
+                size="sm"
+                className="notion-button-secondary rounded-full px-5 mt-2"
+                onClick={() => copyHashtags(hashtags)}
+              >
+                Copy All
+              </Button>
+            </div>
+          )}
+
+          {/* Tips Toggle Section */}
+          <div className="mt-8 text-center">
+            <button
+              type="button"
+              className="text-cyan-400 underline underline-offset-4 hover:text-purple-300 font-bold transition"
+              onClick={() => setShowTips(v => !v)}
+            >
+              {showTips ? "Hide" : "💡 Tips"} for Better Hashtags
+            </button>
+            {showTips && (
+              <ul className="mt-4 list-disc list-inside text-cyan-200 text-base animate-fade-in-up max-w-lg mx-auto text-left">
+                {tips.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+        {/* Animated BG glows */}
+        <div className="absolute bottom-0 left-0 w-full h-44 pointer-events-none -z-10" style={{background: "radial-gradient(ellipse at 50% 90%, #7de7fd22 70%, transparent 110%)"}} />
+      </div>
+    </>
   );
 }
