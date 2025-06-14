@@ -11,6 +11,7 @@ import Header from "@/components/Header";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useUserCredits } from "@/hooks/useUserCredits";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [formData, setFormData] = useState({
