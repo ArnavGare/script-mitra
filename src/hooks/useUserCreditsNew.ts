@@ -37,9 +37,9 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Explicitly type the filters for invalidateQueries
-      const filters: InvalidateQueryFilters = { queryKey };
-      queryClient.invalidateQueries(filters);
+      // Pass the queryKey object directly to invalidateQueries
+      // This avoids the problematic explicit type annotation on an intermediate 'filters' variable
+      queryClient.invalidateQueries({ queryKey: queryKey });
     }
   });
 
@@ -48,7 +48,7 @@ export function useUserCreditsNew(userId: string | null) {
     queryKey,
     queryFn: fetchCredits,
     enabled: !!userId,
-    refetchInterval: 30000,
+    refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   return { ...query, deductCredit };
