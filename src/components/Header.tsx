@@ -24,14 +24,25 @@ function AnnouncementBar() {
   );
 }
 
+// Section IDs must match the ones in Index.tsx!
 const navLinks = [
-  { name: "Home", href: "#" },
-  { name: "Generate Scripts", href: "#generate-scripts" },
-  { name: "Video Tips", href: "#video-tips" },
-  { name: "Grow on Social Media", href: "#grow-social" },
-  { name: "Store", href: "#store" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", anchor: "home" },
+  { name: "Generate Scripts", anchor: "generate-scripts" },
+  { name: "Video Tips", anchor: "video-tips" },
+  { name: "Grow on Social Media", anchor: "grow-social" },
+  { name: "Store", anchor: "store" },
+  { name: "Contact", anchor: "contact" },
 ];
+
+function handleSmoothScroll(anchor: string) {
+  // Add small timeout so page renders first if needed
+  setTimeout(() => {
+    const section = document.getElementById(anchor);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, 0);
+}
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -64,7 +75,7 @@ export default function Header() {
       >
         <nav className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-2">
+          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => handleSmoothScroll("home")}>
             <span
               className="font-extrabold text-[1.5rem] md:text-2xl
                          text-white neon-text
@@ -75,7 +86,7 @@ export default function Header() {
                   "0 0 8px #5eeeff, 0 0 18px #312e81, 0 0 24px #60a5fa",
               }}
             >
-              scriptcraft.ai
+              Script Mitra
             </span>
           </div>
 
@@ -83,8 +94,9 @@ export default function Header() {
           <ul className="hidden md:flex gap-2 lg:gap-4 xl:gap-6 items-center ml-4 flex-1 justify-center">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <a
-                  href={link.href}
+                <button
+                  type="button"
+                  onClick={() => handleSmoothScroll(link.anchor)}
                   className="relative px-3 py-2 text-sm font-medium
                              text-[#b1b5dd] hover:text-[#5eeeff]
                              transition duration-200
@@ -98,14 +110,15 @@ export default function Header() {
                   style={{ letterSpacing: "0.03em" }}
                 >
                   {link.name}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
 
           {/* Call-to-action Button */}
-          <a
-            href="#generate-scripts"
+          <button
+            type="button"
+            onClick={() => handleSmoothScroll("generate-scripts")}
             className="hidden md:inline-block ml-6 relative group"
             tabIndex={0}
           >
@@ -120,7 +133,7 @@ export default function Header() {
             </span>
             {/* Glow background effect behind */}
             <span className="absolute inset-0 bg-gradient-to-r from-[#9333ea] to-[#38bdf8] rounded-full blur-md opacity-25 group-hover:opacity-35 transition-all" />
-          </a>
+          </button>
 
           {/* Hamburger for Mobile */}
           <button
@@ -154,9 +167,9 @@ export default function Header() {
               </span>
             </button>
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.name}
-                href={link.href}
+                type="button"
                 className="text-lg font-semibold text-white tracking-wide neon-mob-link
                   px-1 py-2 w-full rounded-lg
                   transition-transform duration-200
@@ -164,23 +177,29 @@ export default function Header() {
                   hover:bg-slate-50/10
                 "
                 style={{ fontFamily: "Poppins, sans-serif" }}
-                onClick={() => setMobileOpen(false)}
+                onClick={() => {
+                  setMobileOpen(false);
+                  handleSmoothScroll(link.anchor);
+                }}
               >
                 {link.name}
-              </a>
+              </button>
             ))}
-            <a
-              href="#generate-scripts"
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                handleSmoothScroll("generate-scripts");
+              }}
               className="w-full mt-6 inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-white neon-gradient-bg transition-all text-base shadow-xl
                   hover:scale-105 focus-visible:ring-2 ring-cyan-300"
               style={{
                 fontFamily: '"Space Grotesk", Poppins, sans-serif',
               }}
-              onClick={() => setMobileOpen(false)}
             >
               <Sparkles className="w-6 h-6 mr-2 text-sky-300 glow" />
               Get Your Free Script
-            </a>
+            </button>
           </div>
           {/* Click-away bg */}
           <div

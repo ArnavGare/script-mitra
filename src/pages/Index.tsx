@@ -258,39 +258,40 @@ const Index = () => {
 
         {/* Main Content */}
         <div className="relative z-10">
-          {/* Hero Section */}
-          <div className="text-center pt-8 pb-6 px-4">
-            <div className="animate-fade-in">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-                <span className="bg-gradient-to-r from-white to-blue-100 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
-                  ScriptMitra
-                </span>
-              </h1>
-              <p className="text-lg md:text-xl text-white/90 dark:text-gray-300 relative inline-block">
-                Your AI Partner for Video Scripts
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white/60 to-blue-200 dark:from-blue-400 dark:to-blue-600 rounded-full animate-pulse"></div>
-              </p>
+          {/* HERO HOME SECTION */}
+          <section id="home" className="scroll-mt-20">
+            <div className="text-center pt-8 pb-6 px-4">
+              <div className="animate-fade-in">
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+                  <span className="bg-gradient-to-r from-white to-blue-100 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
+                    Script Mitra
+                  </span>
+                </h1>
+                <p className="text-lg md:text-xl text-white/90 dark:text-gray-300 relative inline-block">
+                  Your AI Partner for Video Scripts
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white/60 to-blue-200 dark:from-blue-400 dark:to-blue-600 rounded-full animate-pulse"></div>
+                </p>
+              </div>
+              {/* Feature highlights */}
+              <div className="flex justify-center items-center gap-6 mt-6 text-sm text-white/80 dark:text-gray-400">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-4 h-4 text-white dark:text-blue-500" />
+                  <span>AI-Powered</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-white dark:text-blue-500" />
+                  <span>60-180 Seconds</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-white dark:text-blue-500" />
+                  <span>Finance Focused</span>
+                </div>
+              </div>
             </div>
-            
-            {/* Feature highlights */}
-            <div className="flex justify-center items-center gap-6 mt-6 text-sm text-white/80 dark:text-gray-400">
-              <div className="flex items-center gap-2">
-                <Brain className="w-4 h-4 text-white dark:text-blue-500" />
-                <span>AI-Powered</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-white dark:text-blue-500" />
-                <span>60-180 Seconds</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-white dark:text-blue-500" />
-                <span>Finance Focused</span>
-              </div>
-            </div>
-          </div>
+          </section>
 
           {/* Script Generator Form */}
-          <div className="max-w-3xl mx-auto px-4 pb-8">
+          <section id="generate-scripts" className="max-w-3xl mx-auto px-4 pb-8 scroll-mt-24">
             <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 animate-fade-in transition-all duration-500">
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -462,10 +463,10 @@ const Index = () => {
                 </CardContent>
               </Card>
             )}
-          </div>
+          </section>
 
           {/* Section 1: Video Making Tips */}
-          <div className="max-w-6xl mx-auto px-4 py-12">
+          <section id="video-tips" className="max-w-6xl mx-auto px-4 py-12 scroll-mt-24">
             <div className="text-center mb-8 animate-fade-in-up">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center gap-3">
                 <Video className="w-8 h-8 text-blue-300" />
@@ -495,10 +496,10 @@ const Index = () => {
                 </Card>
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Section 2: Voice Modulation */}
-          <div className="max-w-6xl mx-auto px-4 py-12">
+          <section id="voice-modulation" className="max-w-6xl mx-auto px-4 py-12 scroll-mt-24">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div className="animate-fade-in-left">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 flex items-center gap-3">
@@ -536,10 +537,10 @@ const Index = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
           {/* Section 3: Social Media Growth */}
-          <div className="max-w-6xl mx-auto px-4 py-12">
+          <section id="grow-social" className="max-w-6xl mx-auto px-4 py-12 scroll-mt-24">
             <div className="text-center mb-8 animate-fade-in-up">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
                 <TrendingUp className="w-8 h-8 text-green-300" />
@@ -582,10 +583,10 @@ const Index = () => {
                 Need Content Ideas? Use ScriptMitra!
               </Button>
             </div>
-          </div>
+          </section>
 
           {/* Section 4: Testimonials */}
-          <div className="max-w-6xl mx-auto px-4 py-12">
+          <section id="testimonials" className="max-w-6xl mx-auto px-4 py-12 scroll-mt-24">
             <div className="text-center mb-8 animate-fade-in-up">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
                 <MessageCircle className="w-8 h-8 text-yellow-300" />
@@ -621,10 +622,10 @@ const Index = () => {
                 </Card>
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Section 5: Store */}
-          <div className="max-w-6xl mx-auto px-4 py-12 pb-16">
+          <section id="store" className="max-w-6xl mx-auto px-4 py-12 pb-16 scroll-mt-24">
             <div className="text-center mb-8 animate-fade-in-up">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
                 <Gift className="w-8 h-8 text-pink-300" />
@@ -658,7 +659,13 @@ const Index = () => {
                 </Button>
               ))}
             </div>
-          </div>
+          </section>
+
+          {/* Section 6: Contact */}
+          <section id="contact" className="max-w-6xl mx-auto px-4 py-12 scroll-mt-24">
+            {/* You may want to put a contact form or contact information here if you add it later */}
+            {/* Or place a placeholder anchor for scroll */}
+          </section>
 
           {/* Footer */}
           <div className="text-center py-8 border-t border-white/20 dark:border-gray-700">
