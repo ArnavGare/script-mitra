@@ -25,19 +25,19 @@ export default function ScriptForm({ input, setInput, handleGenerate, isLoading,
       <Textarea
         id="script-input"
         className={`
-          w-full font-sans text-lg min-h-[128px] max-h-72 px-6 py-4
-          rounded-xl shadow-[0_2px_24px_0_#76dfeb11]
-          backdrop-blur-xl
-          bg-white/20 dark:bg-[#17192b33]
-          border border-cyan-300/20 dark:border-violet-300/30
+          w-full font-sans text-[1.18rem] min-h-[124px] max-h-72 px-5 py-4
+          rounded-xl border-[1.7px]
+          border-cyan-100/30 dark:border-violet-400/20
           placeholder:text-slate-400/70 dark:placeholder:text-slate-400/60
-          focus:ring-2 focus:ring-cyan-300/50 focus:ring-offset-2 focus:ring-offset-slate-100 dark:focus:ring-offset-slate-900
-          focus:border-cyan-200 dark:focus:border-cyan-300
-          transition-all duration-300 ease-in-out
-          outline-none
-          transition-shadow
-          hover:shadow-[0_0_16px_1.5px_#4ee0ff99,0_6px_36px_0_#b7b6ff20]
-        `}
+          bg-white/15 dark:bg-[#17192b22]
+          shadow-[0_2px_29px_0_#7afff622]
+          backdrop-blur-[7px] glass-input transition-all duration-300
+          hover:shadow-[0_0_16px_2px_#3efbff60,0_4px_28px_0_#b6aaff18]
+          focus:shadow-[0_0_24px_2.5px_#73fcff89,0_0px_32px_0_#e7c7ff26]
+          focus:border-cyan-200/80 focus:ring-2 focus:ring-cyan-200/60
+          hover:border-cyan-300/65 focus-visible:outline-none
+          disabled:bg-white/15 disabled:border-cyan-100/20
+          `}
         placeholder={placeholder}
         value={input}
         onChange={e => setInput(e.target.value)}
@@ -47,9 +47,9 @@ export default function ScriptForm({ input, setInput, handleGenerate, isLoading,
         spellCheck
         style={{
           background:
-            "linear-gradient(97deg,rgba(255,255,255,0.20) 0%,rgba(61,218,223,0.06) 100%)",
+            "linear-gradient(96deg,rgba(255,255,255,0.12) 0%,rgba(61,218,223,0.09) 70%)",
           boxShadow:
-            "0 2px 22px 0 #3fd2ef33, 0 1.5px 5px #b6d6ff12"
+            "0 2px 22px 0 #61efff21, 0 1.5px 4.5px #b7aaff1a"
         }}
       />
       <Button
@@ -57,16 +57,15 @@ export default function ScriptForm({ input, setInput, handleGenerate, isLoading,
         type="submit"
         disabled={isLoading}
         className="
-          group w-full rounded-full py-3 text-xl font-semibold font-display 
-          bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500
-          shadow-smooth text-white
-          hover:scale-[1.03] hover:shadow-[0_1.5px_24px_0_rgba(61,218,223,0.18)]
+          group w-full rounded-full py-3 text-xl font-bold font-display
+          bg-gradient-to-r from-[#2ee0fe] via-[#7e9afc] to-[#be82fe]
+          shadow-[0_2.5px_40px_0_#38fff955,0_3px_18px_0_#a06fff33]
+          text-white border-[1.5px] border-cyan-100/40
+          hover:scale-[1.03] hover:shadow-[0_4.5px_38px_0_rgba(70,249,255,0.19),0_7px_46px_0_#b7aaff3d]
+          hover:border-cyan-400/60
           transition-all duration-200
           ring-1 ring-blue-200/20 dark:ring-blue-900/40
         "
-        style={{
-          boxShadow: '0 2.5px 24px 0 #63f9ff55, 0 2.5px 16px 0 #a06fff33',
-        }}
       >
         {isLoading ? (
           <span className="flex items-center gap-2">
@@ -83,4 +82,3 @@ export default function ScriptForm({ input, setInput, handleGenerate, isLoading,
     </form>
   );
 }
-

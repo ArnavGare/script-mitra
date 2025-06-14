@@ -69,31 +69,27 @@ export default function HashtagsMitra() {
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 transition-colors duration-500 overflow-x-hidden">
         <div
           className={`
-            w-full max-w-[900px] mx-auto rounded-2xl glass-premium-box bg-gradient-to-br from-[#181728c0] via-[#202044d9] to-[#232848e8] 
-            border-2 border-cyan-300/30 dark:border-violet-400/25 
-            backdrop-blur-3xl shadow-smooth
-            p-1 animate-fade-in
+            w-full max-w-[800px] mx-auto animate-fade-in
             relative group transition-all duration-300
-            hover:shadow-[0_0_30px_2px_#61efff44,0_6px_54px_0_#8b5cf633,0_1.5px_8px_0_rgba(87,96,210,0.13)]
-            hover:border-cyan-300/70
           `}
-          style={{
-            boxShadow:
-              "0 12px 48px 0 rgba(69,161,255,0.14), 0 1.5px 4px rgba(87, 96, 210, 0.08), 0 0.5px 2.5px #4ee0ffc3",
-            background: "linear-gradient(123deg, rgba(67,52,117,0.72) 10%, rgba(41,54,99,0.84) 55%, rgba(60,91,148,0.74) 100%)"
-          }}
         >
           <section
             className={`
-              w-full bg-white/10 dark:bg-black/25 px-5 sm:px-10 pt-10 pb-8 rounded-[15px] shadow-smooth
-              relative z-10 backdrop-blur-2xl border border-white/15 dark:border-white/10
-              transition-all duration-200
-              group-hover:bg-white/20 group-hover:dark:bg-[#22173248]
+              w-full px-5 sm:px-10 pt-10 pb-8 rounded-2xl
+              relative z-10 backdrop-blur-3xl
+              border border-cyan-200/28 dark:border-violet-300/18
+              bg-[linear-gradient(124deg,rgba(44,62,122,0.44)_12%,rgba(41,54,99,0.66)_63%,rgba(60,91,148,0.54)_100%)]
+              shadow-[0_8px_64px_1.5px_rgba(63,242,255,0.08),0_1.5px_8px_0_rgba(113,86,255,0.07)]
+              transition-all duration-300
+              group-hover:shadow-[0_0_22px_2px_#47fdff80,0_6px_64px_0_#b07fff66,0_2px_8px_0_rgba(87,96,210,0.18)]
+              group-hover:border-cyan-300/95
+              before:absolute before:inset-0 before:-z-10 before:rounded-2xl before:border-2 before:border-transparent before:transition-all before:duration-300
+              group-hover:before:border-cyan-400/70
             `}
             style={{
-              background: "linear-gradient(96deg,rgba(255,255,255,0.09) 0%,rgba(39,62,122,0.11) 100%)",
               boxShadow:
-                "0 2px 36px 0 #82f7ff19,0 1.5px 4px #6083fd0b",
+                "0 12px 60px 0 rgba(69,180,255,0.15), 0 1.5px 4px rgba(87,96,210,0.05), 0 0 4px #66fcff40",
+              background: "linear-gradient(120deg,rgba(54,77,147,0.48) 10%,rgba(41,54,99,0.72) 63%,rgba(60,91,148,0.54) 100%)",
             }}
           >
             <Hero />
@@ -121,10 +117,10 @@ export default function HashtagsMitra() {
             background: rgba(24,19,38,0.76);
           }
           .glass-input {
-            background: rgba(249, 250, 255, 0.6);
+            background: rgba(249, 250, 255, 0.58) !important;
           }
           .dark .glass-input {
-            background: rgba(25,16,39,0.38);
+            background: rgba(28,23,44,0.28) !important;
           }
         `}
       </style>
