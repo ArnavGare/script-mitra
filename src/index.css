@@ -180,6 +180,20 @@
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: -0.022em;
   }
+
+  /* Card hover premium glow */
+  .glow-hover-card {
+    transition: box-shadow 0.25s cubic-bezier(.44,.75,.49,1.23), 
+                filter 0.2s cubic-bezier(.44,.75,.49,1.23);
+  }
+  .glow-hover-card:hover, .glow-hover-card:focus-visible {
+    box-shadow: 0 8px 32px 0 rgba(140,43,255,0.13), /* Purple Glow */
+                0 1.5px 16px 0 #38bdf883,           /* Sky/Cyan soft glow */
+                0 2px 16px 2px rgba(42,30,95,0.13),
+                0 0.5px 2px 0 #5eeeff55;
+    filter: drop-shadow(0 0 8px #a78bfa55) drop-shadow(0 0 18px #7dd3fc33);
+    z-index: 2;
+  }
 }
 
 /* Keyframe Animations */

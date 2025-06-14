@@ -292,7 +292,7 @@ const Index = () => {
 
           {/* Script Generator Form */}
           <section id="generate-scripts" className="max-w-3xl mx-auto px-4 pb-8 scroll-mt-24">
-            <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 animate-fade-in transition-all duration-500">
+            <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 animate-fade-in transition-all duration-500 glow-hover-card">
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -426,7 +426,7 @@ const Index = () => {
 
             {/* Script Output Area */}
             {script && (
-              <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl animate-fade-in transition-all duration-500">
+              <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl animate-fade-in transition-all duration-500 glow-hover-card">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
@@ -484,7 +484,7 @@ const Index = () => {
                 { icon: Video, tip: "Record in portrait mode for Reels/Shorts" },
                 { icon: Sparkles, tip: "Use trending hashtags and engaging thumbnails" }
               ].map((item, index) => (
-                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up group" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up group glow-hover-card" style={{ animationDelay: `${index * 0.1}s` }}>
                   <CardContent className="p-6 text-center">
                     <div className="mb-4 flex justify-center">
                       <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-full group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors duration-300">
@@ -515,7 +515,7 @@ const Index = () => {
                     { title: "Use pauses to build tension", icon: Clock },
                     { title: "Smile while talking — it changes your tone!", icon: Sparkles }
                   ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-4 p-4 bg-white/10 dark:bg-gray-800/30 rounded-lg backdrop-blur-sm animate-slide-in-right" style={{ animationDelay: `${index * 0.15}s` }}>
+                    <div key={index} className="flex items-center gap-4 p-4 bg-white/10 dark:bg-gray-800/30 rounded-lg backdrop-blur-sm animate-slide-in-right glow-hover-card" style={{ animationDelay: `${index * 0.15}s` }}>
                       <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-full">
                         <item.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                       </div>
@@ -526,7 +526,7 @@ const Index = () => {
               </div>
               
               <div className="animate-fade-in-right">
-                <div className="relative p-8 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl backdrop-blur-sm">
+                <div className="relative p-8 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl backdrop-blur-sm glow-hover-card">
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-2xl animate-pulse"></div>
                   <Mic className="w-32 h-32 text-white/30 mx-auto animate-bounce-slow" />
                   <div className="mt-4 flex justify-center space-x-2">
@@ -557,7 +557,7 @@ const Index = () => {
                 { step: 4, title: "Use trending audios", desc: "and short captions", icon: Volume2 },
                 { step: 5, title: "Track analytics", desc: "double down on what works", icon: BarChart3 }
               ].map((item, index) => (
-                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-[1.02] transition-all duration-300 animate-slide-in-left group" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-[1.02] transition-all duration-300 animate-slide-in-left group glow-hover-card" style={{ animationDelay: `${index * 0.1}s` }}>
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
                       <div className="flex-shrink-0">
@@ -601,7 +601,7 @@ const Index = () => {
                 { name: "Priya Patel", role: "Investment Consultant", feedback: "The AI-generated scripts are spot-on for my Hindi audience. Saves me hours every week!", rating: 5 },
                 { name: "Arjun Singh", role: "Mutual Fund Distributor", feedback: "Best tool for financial content creators. The voice modulation tips are gold!", rating: 5 }
               ].map((testimonial, index) => (
-                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up glow-hover-card" style={{ animationDelay: `${index * 0.1}s` }}>
                   <CardContent className="p-6 text-center">
                     <div className="mb-4">
                       <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-bold text-xl">
@@ -644,7 +644,7 @@ const Index = () => {
                   key={index}
                   variant="outline"
                   onClick={() => handleStoreItemClick(resource.title)}
-                  className="notion-button h-auto p-6 hover:transform hover:scale-105 transition-all duration-300"
+                  className="notion-button h-auto p-6 hover:transform hover:scale-105 transition-all duration-300 glow-hover-card"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="text-center w-full">
