@@ -414,3 +414,62 @@ body {
 ::-webkit-scrollbar-thumb:horizontal {
   background: rgba(30,71,158,0.08);
 }
+
+/* Add playfair font for luxury feel */
+.font-playfair {
+  font-family: 'Playfair Display', 'Inter', 'Satoshi', 'Poppins', 'Space Grotesk', system-ui, serif !important;
+}
+
+/* Premium gradient-glow headline */
+.headline-glow {
+  background: linear-gradient(92deg,#fff 25%,#60a5fa 55%,#a06fff 82%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 3px 32px #4f46e540,
+    0 0px 12px #7dd3fc88,
+    0 1.5px 4px #8b5cf655,
+    0 2px 18px #7f9cf555;
+  filter: brightness(1.18) drop-shadow(0 1px 14px #93c5fd81);
+  letter-spacing: 0.016em;
+  animation: headline-in 0.69s cubic-bezier(.33,.65,.51,.98);
+}
+
+/* Optional texture, very subtle glass/lines for depth */
+.headline-texture {
+  position: relative;
+  z-index: 1;
+}
+.headline-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.02) 2px,
+    transparent 5px,
+    transparent 8px
+  );
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+}
+
+/* Soft pop animation */
+@keyframes headline-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(22px) skewY(1deg);
+    filter: blur(4px) brightness(0.6);
+  }
+  78% {
+    filter: blur(0.5px) brightness(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0) skewY(0deg);
+    filter: blur(0) brightness(1.13);
+  }
+}

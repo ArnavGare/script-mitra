@@ -279,10 +279,11 @@ const Index = () => {
           <section id="home" className="scroll-mt-20">
             <div className="text-center pt-8 pb-6 px-4">
               <div className="animate-fade-in">
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-                  <span className="bg-gradient-to-r from-white to-blue-100 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
-                    Script Mitra
-                  </span>
+                <h1
+                  className="text-4xl md:text-6xl font-playfair font-bold headline-glow headline-texture mb-3 relative"
+                  style={{ lineHeight: "1.17" }}
+                >
+                  Script Mitra
                 </h1>
                 <p className="text-lg md:text-xl text-white/90 dark:text-gray-300 relative inline-block">
                   Your AI Partner for Video Scripts
