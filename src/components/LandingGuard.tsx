@@ -1,7 +1,6 @@
-
 import React from "react";
 
-const ACCESS_KEY = "Aiisfuture";
+const ACCESS_KEY = "aiisfuture";
 const LOCALSTORAGE_KEY = "access_key_entered";
 
 export default function LandingGuard({ children }: { children: React.ReactNode }) {
