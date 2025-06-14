@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
-import { Loader2, Sparkles, ClipboardList, Sun, Moon } from "lucide-react";
+import { Loader2, Sparkles, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,7 +42,6 @@ export default function HashtagsMitra() {
   const [placeholderIdx, setPlaceholderIdx] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout>();
   const { copy, copiedIdx, copyAll } = useCopyToClipboard();
-  const [theme, setTheme] = useState<'light'|'dark'>(() => (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 
   // Animate placeholder
   useEffect(() => {
@@ -51,12 +50,6 @@ export default function HashtagsMitra() {
     }, 2800);
     return () => intervalRef.current && clearInterval(intervalRef.current);
   }, []);
-
-  // Sync theme to root
-  useEffect(() => {
-    if (theme === 'dark') document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  }, [theme]);
 
   // Generate hashtags by POSTing to the webhook and parsing .output
   async function handleGenerate(e?: React.FormEvent) {
@@ -112,7 +105,7 @@ export default function HashtagsMitra() {
       {/* Remove the theme toggle button completely */}
       <Header />
 
-      <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 bg-gradient-to-br from-[#f5f8fc] via-[#ece7fa] to-[#e9fafd] dark:from-black dark:via-[#171524] dark:to-[#110b16] transition-colors duration-500 overflow-x-hidden">
+      <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 transition-colors duration-500 overflow-x-hidden">
         <section className="w-full max-w-[900px] mx-auto glass-panel px-5 sm:px-9 pt-10 pb-8 rounded-2xl shadow-smooth relative z-10 border border-white/10 dark:border-white/10 backdrop-blur-lg bg-white/50 dark:bg-black/50 bg-clip-padding">
           {/* Hero */}
           <div className="text-center mb-7 select-none">
