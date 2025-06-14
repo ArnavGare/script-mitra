@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import { Loader2, Sparkles } from "lucide-react";
@@ -6,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import MotionGridBg from "@/components/MotionGridBg";
 
 const rotatingPlaceholders = [
   "e.g. How to get rich in 2025…",
@@ -84,6 +84,7 @@ export default function HashtagsMitra() {
   return (
     <>
       <Header />
+      <MotionGridBg />
       <div
         className="min-h-screen flex flex-col items-center justify-center py-10 px-2 relative overflow-hidden bg-black">
         {/* Animated Motion Grid BG Overlays, matching the main page */}
