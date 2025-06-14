@@ -106,17 +106,12 @@ export default function HashtagsMitra() {
 
   return (
     <>
+      {/* Animated moving grid background -- always rendered behind all content */}
       <MotionGridBg />
+
+      {/* Remove the theme toggle button completely */}
       <Header />
-      <div className="fixed right-6 top-8 z-30">
-        <button
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          aria-label="Toggle theme"
-          className="bg-gray-300/60 dark:bg-gray-900/60 backdrop-blur px-3 py-2 rounded-full border border-gray-100/70 dark:border-gray-700 shadow-smooth hover:scale-110 transition-all"
-        >
-          {theme === "dark" ? <Sun size={22} className="text-yellow-300" /> : <Moon size={20} className="text-blue-600" />}
-        </button>
-      </div>
+
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 bg-gradient-to-br from-[#f5f8fc] via-[#ece7fa] to-[#e9fafd] dark:from-black dark:via-[#171524] dark:to-[#110b16] transition-colors duration-500 overflow-x-hidden">
         <section className="w-full max-w-[900px] mx-auto glass-panel px-5 sm:px-9 pt-10 pb-8 rounded-2xl shadow-smooth relative z-10 border border-white/10 dark:border-white/10 backdrop-blur-lg bg-white/50 dark:bg-black/50 bg-clip-padding">
           {/* Hero */}
