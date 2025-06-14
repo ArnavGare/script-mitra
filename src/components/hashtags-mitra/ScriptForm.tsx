@@ -24,7 +24,7 @@ export default function ScriptForm({ input, setInput, handleGenerate, isLoading,
       <Textarea
         id="script-input"
         className="w-full font-sans text-lg min-h-[128px] max-h-72 px-6 py-4 rounded-xl shadow-inner backdrop-blur-sm 
-                   bg-white/60 dark:bg-black/40 
+                   bg-transparent
                    border border-slate-300/40 dark:border-slate-800/60
                    placeholder-gray-500/80 dark:placeholder-gray-400/70
                    focus:ring-2 focus:ring-cyan-400/50 focus:ring-offset-2 focus:ring-offset-slate-100 dark:focus:ring-offset-slate-900 
