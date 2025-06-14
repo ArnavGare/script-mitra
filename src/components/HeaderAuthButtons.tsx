@@ -1,6 +1,7 @@
 
 import React from "react";
 import { LogIn, PenLine, Sparkles } from "lucide-react";
+import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 
 // Helper for scroll on the same page
 const scrollToSection = (id: string) => {
@@ -11,6 +12,11 @@ const scrollToSection = (id: string) => {
 };
 
 export default function HeaderAuthButtons() {
+  const { user, isLoading } = useSupabaseUser();
+
+  // Hide login/signup buttons if the user is logged in
+  if (!isLoading && user) return null;
+
   return (
     <div className="flex gap-2 items-center">
       <button
