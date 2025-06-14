@@ -33,11 +33,9 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Use a more explicit approach to avoid TypeScript inference issues
+      // Invalidate all queries with the "users-credits" key
       queryClient.invalidateQueries({
-        predicate: (query) => {
-          return query.queryKey[0] === "users-credits" && query.queryKey[1] === userId;
-        }
+        queryKey: ["users-credits"]
       });
     }
   });
