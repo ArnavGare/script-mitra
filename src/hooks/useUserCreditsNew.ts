@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  // Explicitly type as readonly tuple, and assign with `as const`
+  // Define queryKey as a readonly tuple
   const queryKey = ["users-credits", userId] as const;
 
   const fetchCredits = async () => {
@@ -29,13 +29,13 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Use the exact queryKey reference
-      queryClient.invalidateQueries({ queryKey });
+      // Invalidate using the same queryKey reference
+      queryClient.invalidateQueries({ queryKey: queryKey });
     }
   });
 
   const query = useQuery({
-    queryKey,
+    queryKey: queryKey,
     queryFn: fetchCredits,
     enabled: !!userId,
     refetchInterval: 30000,
@@ -43,4 +43,3 @@ export function useUserCreditsNew(userId: string | null) {
 
   return { ...query, deductCredit };
 }
-
