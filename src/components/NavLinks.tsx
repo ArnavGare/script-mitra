@@ -27,7 +27,7 @@ export default function NavLinks({ onNavigate, compact }: Props) {
             style={{ letterSpacing: "0.05em" }}
             onClick={() => onNavigate?.(link.anchor)}
           >
-            <span className="relative z-10 group-hover:text-cyan-300 group-hover:drop-shadow-[0_1px_8px_#7de7fd] transition-colors duration-300">
+            <span className="relative z-10 text-white group-hover:text-cyan-300 group-hover:drop-shadow-[0_1px_8px_#7de7fd] transition-colors duration-300">
               {link.name}
             </span>
             <span
@@ -41,3 +41,4 @@ export default function NavLinks({ onNavigate, compact }: Props) {
     </ul>
   );
 }
+
