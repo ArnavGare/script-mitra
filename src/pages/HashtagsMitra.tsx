@@ -9,6 +9,7 @@ import Hero from "@/components/hashtags-mitra/Hero";
 import ScriptForm from "@/components/hashtags-mitra/ScriptForm";
 import HashtagList from "@/components/hashtags-mitra/HashtagList";
 import TipsSection from "@/components/hashtags-mitra/TipsSection";
+import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
@@ -64,6 +65,10 @@ export default function HashtagsMitra() {
 
   return (
     <>
+      {/* Notion-style dark mode gradient + edge glow - dark mode only */}
+      <div className="dark:block hidden">
+        <NotionDarkBg />
+      </div>
       {/* More visible Grid Background */}
       <div
         aria-hidden
