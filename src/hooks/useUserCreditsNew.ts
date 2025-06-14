@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
@@ -37,8 +36,8 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // queryKey is guaranteed to be the correct type here
-      queryClient.invalidateQueries({ queryKey });
+      // Explicitly specify generic so queryKey type matches expected signature
+      queryClient.invalidateQueries<UserCreditsQueryKey>({ queryKey });
     }
   });
 
