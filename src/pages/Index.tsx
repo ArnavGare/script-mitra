@@ -45,13 +45,15 @@ const Index = () => {
     "Story/Narrative",
     "Conversational", 
     "Funny/Reel Style",
-    "Dramatic/Emotional"
+    "Dramatic/Emotional",
+    "Latest Financial News"
   ];
 
   const languages = [
     "English",
     "Hindi",
-    "Hinglish"
+    "Hinglish",
+    "Marathi"
   ];
 
   const lengths = [
