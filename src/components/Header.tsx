@@ -5,7 +5,27 @@ import NavLinks from "./NavLinks";
 import HeaderAuthButtons from "./HeaderAuthButtons";
 import HeaderMobileMenu from "./HeaderMobileMenu";
 
+// Smooth scroll to section helper
+const scrollToSection = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
 export default function Header() {
+  // Maps nav anchors to section IDs in the page
+  const navAnchorToId: Record<string, string> = {
+    home: "home",
+    "generate-scripts": "generate-scripts",
+    store: "store",
+  };
+
+  const handleNavClick = (anchor: string) => {
+    const id = navAnchorToId[anchor];
+    if (id) scrollToSection(id);
+  };
+
   return (
     <header
       className="
@@ -26,17 +46,17 @@ export default function Header() {
           <Logo />
         </div>
         <nav className="hidden md:flex items-center flex-1 justify-center">
-          <NavLinks />
+          <NavLinks onNavigate={handleNavClick} />
         </nav>
         <div className="hidden md:flex items-center gap-3">
           <HeaderAuthButtons />
         </div>
         <div className="md:hidden flex items-center">
-          <HeaderMobileMenu />
+          {/* pass handleNavClick so mobile menu can use same smooth scroll */}
+          <HeaderMobileMenu onNavClick={handleNavClick} />
         </div>
       </div>
 
-      {/* Header Animations and Global Styles */}
       <style>{`
         .neon-pill-btn {
           box-shadow: 0 2px 16px #33fdf855, 0 2px 10px #a06fff48;
@@ -46,15 +66,6 @@ export default function Header() {
           filter: brightness(1.18) drop-shadow(0 0 11px #c2c6ffcc);
           transform: scale(1.06);
         }
-        .shimmer-ltr {
-          animation: shimmer 2.2s linear infinite;
-        }
-        @keyframes shimmer {
-          0% { filter: brightness(1.08); }
-          40% { filter: brightness(1.28); }
-          100% { filter: brightness(1.08); }
-        }
-        /* Nav underline effect */
         nav button > span:last-child {
           transition: width .36s cubic-bezier(.45,.12,.62,.74);
           left: 0;

@@ -5,8 +5,20 @@ import NavLinks from "./NavLinks";
 import HeaderAuthButtons from "./HeaderAuthButtons";
 import Logo from "./Logo";
 
-export default function HeaderMobileMenu() {
+type Props = {
+  onNavClick?: (anchor: string) => void;
+};
+
+export default function HeaderMobileMenu({ onNavClick }: Props) {
   const [open, setOpen] = useState(false);
+
+  // Wrap the nav click to also close the menu
+  const handleNavigate = (anchor: string) => {
+    if (onNavClick) {
+      onNavClick(anchor);
+    }
+    setOpen(false);
+  };
 
   return (
     <>
@@ -35,7 +47,7 @@ export default function HeaderMobileMenu() {
           </div>
           <nav className="flex flex-col items-center justify-center flex-1 gap-8 text-lg">
             <NavLinks
-              onNavigate={() => setOpen(false)}
+              onNavigate={handleNavigate}
               compact
             />
           </nav>
