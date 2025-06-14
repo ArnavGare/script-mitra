@@ -1,7 +1,6 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Menu, Sparkles } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
 
 // Animated glowing announcement bar
 function AnnouncementBar() {
@@ -26,31 +25,29 @@ function AnnouncementBar() {
 }
 
 const navLinks = [
-  { name: "Home", to: "/" },
-  { name: "Generate Scripts", to: "/generate-scripts" },
-  { name: "Video Tips", to: "/video-tips" },
-  { name: "Grow on Social Media", to: "/grow-on-social" },
-  { name: "Store", to: "/store" },
-  { name: "Contact", to: "/contact" },
+  { name: "Home", href: "#" },
+  { name: "Generate Scripts", href: "#generate-scripts" },
+  { name: "Video Tips", href: "#video-tips" },
+  { name: "Grow on Social Media", href: "#grow-social" },
+  { name: "Store", href: "#store" },
+  { name: "Contact", href: "#contact" },
 ];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shrink, setShrink] = useState(false);
-  const location = useLocation();
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const handleScroll = () => setShrink(window.scrollY > 14);
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShrink(window.scrollY > 14);
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
+      {/* Glow animated announcement */}
       <AnnouncementBar />
       {/* Sticky NAVBAR */}
       <header
@@ -60,50 +57,55 @@ export default function Header() {
           ${shrink ? "backdrop-blur-md bg-[#181f2e]/90 shadow-md py-2" : "bg-transparent py-3"}
         `}
         style={{
-          borderBottom: shrink ? "1.5px solid #312e81" : "1.5px solid transparent"
+          borderBottom: shrink
+            ? "1.5px solid #312e81"
+            : "1.5px solid transparent",
         }}
       >
         <nav className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0 flex items-center gap-2">
+          <div className="flex-shrink-0 flex items-center gap-2">
             <span
-              className="font-extrabold text-[1.5rem] md:text-2xl text-white neon-text tracking-wide animate-fade-in uppercase select-none"
+              className="font-extrabold text-[1.5rem] md:text-2xl
+                         text-white neon-text
+                         tracking-wide animate-fade-in uppercase select-none"
               style={{
                 fontFamily: '"Space Grotesk", Poppins, sans-serif',
-                textShadow: "0 0 8px #5eeeff, 0 0 18px #312e81, 0 0 24px #60a5fa"
+                textShadow:
+                  "0 0 8px #5eeeff, 0 0 18px #312e81, 0 0 24px #60a5fa",
               }}
             >
-              Script Mitra
+              scriptcraft.ai
             </span>
-          </Link>
+          </div>
 
           {/* Desktop Nav */}
           <ul className="hidden md:flex gap-2 lg:gap-4 xl:gap-6 items-center ml-4 flex-1 justify-center">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link
-                  to={link.to}
-                  className={`relative px-3 py-2 text-sm font-medium
-                    text-[#b1b5dd] hover:text-[#5eeeff]
-                    transition duration-200
-                    after:absolute after:left-0 after:bottom-1 after:w-0 after:h-[2.5px]
-                    after:bg-gradient-to-r after:from-[#9333ea] after:to-[#38bdf8]
-                    after:rounded-md after:transition-all after:duration-300
-                    hover:after:w-full
-                    hover:bg-white/5 hover:backdrop-blur-md rounded-lg group
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400
-                    ${location.pathname === link.to ? "text-[#5eeeff] neon-text" : ""}`}
+                <a
+                  href={link.href}
+                  className="relative px-3 py-2 text-sm font-medium
+                             text-[#b1b5dd] hover:text-[#5eeeff]
+                             transition duration-200
+                             after:absolute after:left-0 after:bottom-1 after:w-0 after:h-[2.5px]
+                             after:bg-gradient-to-r after:from-[#9333ea] after:to-[#38bdf8]
+                             after:rounded-md after:transition-all after:duration-300
+                             hover:after:w-full
+                             hover:bg-white/5 hover:backdrop-blur-md rounded-lg group
+                             focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400
+                             "
                   style={{ letterSpacing: "0.03em" }}
                 >
                   {link.name}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
 
           {/* Call-to-action Button */}
-          <Link
-            to="/generate-scripts"
+          <a
+            href="#generate-scripts"
             className="hidden md:inline-block ml-6 relative group"
             tabIndex={0}
           >
@@ -118,7 +120,7 @@ export default function Header() {
             </span>
             {/* Glow background effect behind */}
             <span className="absolute inset-0 bg-gradient-to-r from-[#9333ea] to-[#38bdf8] rounded-full blur-md opacity-25 group-hover:opacity-35 transition-all" />
-          </Link>
+          </a>
 
           {/* Hamburger for Mobile */}
           <button
@@ -131,13 +133,15 @@ export default function Header() {
         </nav>
         {/* Mobile Slide Drawer */}
         <div
-          className={`fixed md:hidden top-0 left-0 w-full h-full bg-[#161c30]/90 z-40 transition-all duration-300 
-            ${mobileOpen ? "translate-x-0 visible" : "-translate-x-full invisible"}
-          `}
+          className={`fixed md:hidden top-0 left-0 w-full h-full bg-[#161c30]/90 z-40 transition-all duration-300
+          ${mobileOpen ? "translate-x-0 visible" : "-translate-x-full invisible"}
+        `}
         >
           <div className="flex flex-col items-start px-6 pt-20 pb-10 gap-8 w-4/5 max-w-xs min-h-full
             bg-gradient-to-br from-[#312e81]/90 via-[#1e293b]/95 to-[#9333ea]/80
-            shadow-2xl animate-slide-in-left"
+            shadow-2xl
+            animate-slide-in-left
+            "
           >
             <button
               className="mb-1 ml-auto p-2 rounded-full hover:bg-[#9333ea]/10"
@@ -150,24 +154,23 @@ export default function Header() {
               </span>
             </button>
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.name}
-                to={link.to}
-                className={`text-lg font-semibold text-white tracking-wide neon-mob-link
+                href={link.href}
+                className="text-lg font-semibold text-white tracking-wide neon-mob-link
                   px-1 py-2 w-full rounded-lg
                   transition-transform duration-200
                   hover:scale-105 hover:text-cyan-400
                   hover:bg-slate-50/10
-                  ${location.pathname === link.to ? "text-cyan-300 neon-text" : ""}
-                `}
+                "
                 style={{ fontFamily: "Poppins, sans-serif" }}
                 onClick={() => setMobileOpen(false)}
               >
                 {link.name}
-              </Link>
+              </a>
             ))}
-            <Link
-              to="/generate-scripts"
+            <a
+              href="#generate-scripts"
               className="w-full mt-6 inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-white neon-gradient-bg transition-all text-base shadow-xl
                   hover:scale-105 focus-visible:ring-2 ring-cyan-300"
               style={{
@@ -177,7 +180,7 @@ export default function Header() {
             >
               <Sparkles className="w-6 h-6 mr-2 text-sky-300 glow" />
               Get Your Free Script
-            </Link>
+            </a>
           </div>
           {/* Click-away bg */}
           <div
