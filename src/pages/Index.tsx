@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Plus, Video, Mic, TrendingUp, Star, FileText, Camera, Volume2, Eye, Play, MessageCircle, BarChart3, Award, Gift } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Header from "@/components/Header";
 
 const Index = () => {
   const [formData, setFormData] = useState({
@@ -209,462 +210,465 @@ const Index = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
-      {/* Sophisticated Moving Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-black overflow-hidden">
-        {/* Base gradient layers */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x"></div>
-        
-        {/* Floating geometric shapes */}
-        <div className="absolute inset-0">
-          {/* Large floating orbs */}
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl animate-float-delayed"></div>
-          <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-cyan-400/10 rounded-full blur-xl animate-float"></div>
+    <>
+      <Header />
+      <div className={`min-h-screen transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
+        {/* Sophisticated Moving Background */}
+        <div className="fixed inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-black overflow-hidden">
+          {/* Base gradient layers */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x"></div>
           
-          {/* Drifting particles */}
-          <div className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift" style={{ animationDelay: '0s', animationDuration: '25s' }}></div>
-          <div className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift" style={{ animationDelay: '5s', animationDuration: '30s' }}></div>
-          <div className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift" style={{ animationDelay: '10s', animationDuration: '20s' }}></div>
-          <div className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift" style={{ animationDelay: '15s', animationDuration: '35s' }}></div>
-          
-          {/* Orbiting elements */}
-          <div className="absolute top-1/5 left-1/5">
-            <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{ animationDelay: '0s' }}></div>
-          </div>
-          <div className="absolute bottom-1/5 right-1/5">
-            <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{ animationDelay: '12s', animationDuration: '20s' }}></div>
-          </div>
-          
-          {/* Subtle grid pattern */}
-          <div className="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse"></div>
-        </div>
-      </div>
-      
-      {/* Dark Mode Toggle */}
-      <div className="fixed top-4 right-4 z-50">
-        <Button
-          onClick={toggleDarkMode}
-          variant="outline"
-          size="icon"
-          className="notion-button rounded-full w-10 h-10"
-        >
-          {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </Button>
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10">
-        {/* Hero Section */}
-        <div className="text-center pt-8 pb-6 px-4">
-          <div className="animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-              <span className="bg-gradient-to-r from-white to-blue-100 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
-                ScriptMitra
-              </span>
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 dark:text-gray-300 relative inline-block">
-              Your AI Partner for Video Scripts
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white/60 to-blue-200 dark:from-blue-400 dark:to-blue-600 rounded-full animate-pulse"></div>
-            </p>
-          </div>
-          
-          {/* Feature highlights */}
-          <div className="flex justify-center items-center gap-6 mt-6 text-sm text-white/80 dark:text-gray-400">
-            <div className="flex items-center gap-2">
-              <Brain className="w-4 h-4 text-white dark:text-blue-500" />
-              <span>AI-Powered</span>
+          {/* Floating geometric shapes */}
+          <div className="absolute inset-0">
+            {/* Large floating orbs */}
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl animate-float-delayed"></div>
+            <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-cyan-400/10 rounded-full blur-xl animate-float"></div>
+            
+            {/* Drifting particles */}
+            <div className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift" style={{ animationDelay: '0s', animationDuration: '25s' }}></div>
+            <div className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift" style={{ animationDelay: '5s', animationDuration: '30s' }}></div>
+            <div className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift" style={{ animationDelay: '10s', animationDuration: '20s' }}></div>
+            <div className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift" style={{ animationDelay: '15s', animationDuration: '35s' }}></div>
+            
+            {/* Orbiting elements */}
+            <div className="absolute top-1/5 left-1/5">
+              <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{ animationDelay: '0s' }}></div>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-white dark:text-blue-500" />
-              <span>60-180 Seconds</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-white dark:text-blue-500" />
-              <span>Finance Focused</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Script Generator Form */}
-        <div className="max-w-3xl mx-auto px-4 pb-8">
-          <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 animate-fade-in transition-all duration-500">
-            <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Topic Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Choose a Topic
-                    </Label>
-                    <Select value={formData.topic} onValueChange={handleTopicChange}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select your topic..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {topics.map((topic) => (
-                          <SelectItem key={topic} value={topic} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 flex items-center gap-2 text-gray-800 dark:text-gray-200">
-                            {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
-                            {topic}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    
-                    {/* Custom Topic Input */}
-                    {showCustomTopic && (
-                      <div className="mt-2 animate-fade-in">
-                        <Input
-                          placeholder="Enter your custom topic..."
-                          value={formData.customTopic}
-                          onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
-                          className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200"
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Style Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Brain className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Script Style
-                    </Label>
-                    <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select your style..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {styles.map((style) => (
-                          <SelectItem key={style} value={style} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
-                            {style}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Language Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Users className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Language
-                    </Label>
-                    <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select language..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {languages.map((language) => (
-                          <SelectItem key={language} value={language} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
-                            {language}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Length Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Duration
-                    </Label>
-                    <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select duration..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {lengths.map((length) => (
-                          <SelectItem key={length} value={length} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
-                            {length}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Submit and Reset Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <Button 
-                    type="submit" 
-                    disabled={isLoading}
-                    className="notion-button-primary flex-1 h-11 text-base font-semibold"
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                        Generating Script...
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        Generate Script
-                      </div>
-                    )}
-                  </Button>
-                  
-                  <Button 
-                    type="button"
-                    variant="outline"
-                    onClick={handleReset}
-                    className="notion-button-secondary h-11 px-6 text-base font-semibold"
-                  >
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Reset
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Script Output Area */}
-          {script && (
-            <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl animate-fade-in transition-all duration-500">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
-                  Your Generated Script
-                </h3>
-                
-                <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-xl p-6 mb-4 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
-                  <ScrollArea className="h-80 w-full pr-4">
-                    <div className="text-gray-800 dark:text-gray-300 font-medium text-sm leading-relaxed">
-                      {formatScriptWithColors(script)}
-                    </div>
-                  </ScrollArea>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button 
-                    onClick={handleCopy}
-                    className="notion-button-primary flex-1 h-10 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
-                  >
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Script
-                  </Button>
-                  
-                  <Button 
-                    onClick={handleDownload}
-                    variant="outline"
-                    className="notion-button-secondary flex-1 h-10"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download as .txt
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-
-        {/* Section 1: Video Making Tips */}
-        <div className="max-w-6xl mx-auto px-4 py-12">
-          <div className="text-center mb-8 animate-fade-in-up">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center gap-3">
-              <Video className="w-8 h-8 text-blue-300" />
-              Smart Video-Making Tips for Financial Advisors
-            </h2>
-            <p className="text-lg text-white/80 dark:text-gray-300">Master the art of creating engaging financial content</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: Camera, tip: "Use a clean, natural background with good lighting" },
-              { icon: Eye, tip: "Always frame your face at eye level — adds trust" },
-              { icon: Clock, tip: "Keep videos short (60-90s) unless you're storytelling" },
-              { icon: Play, tip: "Start with a hook that solves a pain point" },
-              { icon: Video, tip: "Record in portrait mode for Reels/Shorts" },
-              { icon: Sparkles, tip: "Use trending hashtags and engaging thumbnails" }
-            ].map((item, index) => (
-              <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up group" style={{ animationDelay: `${index * 0.1}s` }}>
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4 flex justify-center">
-                    <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-full group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors duration-300">
-                      <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                  </div>
-                  <p className="text-gray-800 dark:text-gray-200 font-medium">{item.tip}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Section 2: Voice Modulation */}
-        <div className="max-w-6xl mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="animate-fade-in-left">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 flex items-center gap-3">
-                <Mic className="w-8 h-8 text-purple-300" />
-                Talk Like a Pro — Voice Modulation Hacks
-              </h2>
-              
-              <div className="space-y-4">
-                {[
-                  { title: "Slow down when saying something important", icon: Volume2 },
-                  { title: "Raise pitch slightly when you're enthusiastic", icon: TrendingUp },
-                  { title: "Lower your voice for dramatic impact", icon: Volume2 },
-                  { title: "Use pauses to build tension", icon: Clock },
-                  { title: "Smile while talking — it changes your tone!", icon: Sparkles }
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-4 p-4 bg-white/10 dark:bg-gray-800/30 rounded-lg backdrop-blur-sm animate-slide-in-right" style={{ animationDelay: `${index * 0.15}s` }}>
-                    <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-full">
-                      <item.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <p className="text-white dark:text-gray-200 font-medium">{item.title}</p>
-                  </div>
-                ))}
-              </div>
+            <div className="absolute bottom-1/5 right-1/5">
+              <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{ animationDelay: '12s', animationDuration: '20s' }}></div>
             </div>
             
-            <div className="animate-fade-in-right">
-              <div className="relative p-8 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-2xl animate-pulse"></div>
-                <Mic className="w-32 h-32 text-white/30 mx-auto animate-bounce-slow" />
-                <div className="mt-4 flex justify-center space-x-2">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="w-1 bg-white/50 rounded-full animate-sound-wave" style={{ height: `${20 + Math.random() * 40}px`, animationDelay: `${i * 0.1}s` }}></div>
+            {/* Subtle grid pattern */}
+            <div className="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse"></div>
+          </div>
+        </div>
+        
+        {/* Dark Mode Toggle */}
+        <div className="fixed top-4 right-4 z-50">
+          <Button
+            onClick={toggleDarkMode}
+            variant="outline"
+            size="icon"
+            className="notion-button rounded-full w-10 h-10"
+          >
+            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10">
+          {/* Hero Section */}
+          <div className="text-center pt-8 pb-6 px-4">
+            <div className="animate-fade-in">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+                <span className="bg-gradient-to-r from-white to-blue-100 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
+                  ScriptMitra
+                </span>
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 dark:text-gray-300 relative inline-block">
+                Your AI Partner for Video Scripts
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-white/60 to-blue-200 dark:from-blue-400 dark:to-blue-600 rounded-full animate-pulse"></div>
+              </p>
+            </div>
+            
+            {/* Feature highlights */}
+            <div className="flex justify-center items-center gap-6 mt-6 text-sm text-white/80 dark:text-gray-400">
+              <div className="flex items-center gap-2">
+                <Brain className="w-4 h-4 text-white dark:text-blue-500" />
+                <span>AI-Powered</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-white dark:text-blue-500" />
+                <span>60-180 Seconds</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4 text-white dark:text-blue-500" />
+                <span>Finance Focused</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Script Generator Form */}
+          <div className="max-w-3xl mx-auto px-4 pb-8">
+            <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 animate-fade-in transition-all duration-500">
+              <CardContent className="p-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Topic Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Choose a Topic
+                      </Label>
+                      <Select value={formData.topic} onValueChange={handleTopicChange}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select your topic..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {topics.map((topic) => (
+                            <SelectItem key={topic} value={topic} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 flex items-center gap-2 text-gray-800 dark:text-gray-200">
+                              {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
+                              {topic}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      
+                      {/* Custom Topic Input */}
+                      {showCustomTopic && (
+                        <div className="mt-2 animate-fade-in">
+                          <Input
+                            placeholder="Enter your custom topic..."
+                            value={formData.customTopic}
+                            onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
+                            className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200"
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Style Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Brain className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Script Style
+                      </Label>
+                      <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select your style..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {styles.map((style) => (
+                            <SelectItem key={style} value={style} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                              {style}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Language Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Users className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Language
+                      </Label>
+                      <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select language..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {languages.map((language) => (
+                            <SelectItem key={language} value={language} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                              {language}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Length Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Duration
+                      </Label>
+                      <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select duration..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {lengths.map((length) => (
+                            <SelectItem key={length} value={length} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                              {length}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {/* Submit and Reset Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                    <Button 
+                      type="submit" 
+                      disabled={isLoading}
+                      className="notion-button-primary flex-1 h-11 text-base font-semibold"
+                    >
+                      {isLoading ? (
+                        <div className="flex items-center gap-2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                          Generating Script...
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4" />
+                          Generate Script
+                        </div>
+                      )}
+                    </Button>
+                    
+                    <Button 
+                      type="button"
+                      variant="outline"
+                      onClick={handleReset}
+                      className="notion-button-secondary h-11 px-6 text-base font-semibold"
+                    >
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                      Reset
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+
+            {/* Script Output Area */}
+            {script && (
+              <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl animate-fade-in transition-all duration-500">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+                    Your Generated Script
+                  </h3>
+                  
+                  <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-xl p-6 mb-4 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
+                    <ScrollArea className="h-80 w-full pr-4">
+                      <div className="text-gray-800 dark:text-gray-300 font-medium text-sm leading-relaxed">
+                        {formatScriptWithColors(script)}
+                      </div>
+                    </ScrollArea>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      onClick={handleCopy}
+                      className="notion-button-primary flex-1 h-10 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+                    >
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Script
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleDownload}
+                      variant="outline"
+                      className="notion-button-secondary flex-1 h-10"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download as .txt
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Section 1: Video Making Tips */}
+          <div className="max-w-6xl mx-auto px-4 py-12">
+            <div className="text-center mb-8 animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center gap-3">
+                <Video className="w-8 h-8 text-blue-300" />
+                Smart Video-Making Tips for Financial Advisors
+              </h2>
+              <p className="text-lg text-white/80 dark:text-gray-300">Master the art of creating engaging financial content</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { icon: Camera, tip: "Use a clean, natural background with good lighting" },
+                { icon: Eye, tip: "Always frame your face at eye level — adds trust" },
+                { icon: Clock, tip: "Keep videos short (60-90s) unless you're storytelling" },
+                { icon: Play, tip: "Start with a hook that solves a pain point" },
+                { icon: Video, tip: "Record in portrait mode for Reels/Shorts" },
+                { icon: Sparkles, tip: "Use trending hashtags and engaging thumbnails" }
+              ].map((item, index) => (
+                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up group" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <CardContent className="p-6 text-center">
+                    <div className="mb-4 flex justify-center">
+                      <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-full group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors duration-300">
+                        <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      </div>
+                    </div>
+                    <p className="text-gray-800 dark:text-gray-200 font-medium">{item.tip}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 2: Voice Modulation */}
+          <div className="max-w-6xl mx-auto px-4 py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="animate-fade-in-left">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                  <Mic className="w-8 h-8 text-purple-300" />
+                  Talk Like a Pro — Voice Modulation Hacks
+                </h2>
+                
+                <div className="space-y-4">
+                  {[
+                    { title: "Slow down when saying something important", icon: Volume2 },
+                    { title: "Raise pitch slightly when you're enthusiastic", icon: TrendingUp },
+                    { title: "Lower your voice for dramatic impact", icon: Volume2 },
+                    { title: "Use pauses to build tension", icon: Clock },
+                    { title: "Smile while talking — it changes your tone!", icon: Sparkles }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center gap-4 p-4 bg-white/10 dark:bg-gray-800/30 rounded-lg backdrop-blur-sm animate-slide-in-right" style={{ animationDelay: `${index * 0.15}s` }}>
+                      <div className="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-full">
+                        <item.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <p className="text-white dark:text-gray-200 font-medium">{item.title}</p>
+                    </div>
                   ))}
                 </div>
               </div>
+              
+              <div className="animate-fade-in-right">
+                <div className="relative p-8 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl backdrop-blur-sm">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-2xl animate-pulse"></div>
+                  <Mic className="w-32 h-32 text-white/30 mx-auto animate-bounce-slow" />
+                  <div className="mt-4 flex justify-center space-x-2">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="w-1 bg-white/50 rounded-full animate-sound-wave" style={{ height: `${20 + Math.random() * 40}px`, animationDelay: `${i * 0.1}s` }}></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Section 3: Social Media Growth */}
-        <div className="max-w-6xl mx-auto px-4 py-12">
-          <div className="text-center mb-8 animate-fade-in-up">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
-              <TrendingUp className="w-8 h-8 text-green-300" />
-              Social Media Growth Blueprint
-            </h2>
-            <p className="text-lg text-white/80 dark:text-gray-300">Your step-by-step guide to social media success</p>
-          </div>
+          {/* Section 3: Social Media Growth */}
+          <div className="max-w-6xl mx-auto px-4 py-12">
+            <div className="text-center mb-8 animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
+                <TrendingUp className="w-8 h-8 text-green-300" />
+                Social Media Growth Blueprint
+              </h2>
+              <p className="text-lg text-white/80 dark:text-gray-300">Your step-by-step guide to social media success</p>
+            </div>
 
-          <div className="space-y-6">
-            {[
-              { step: 1, title: "Pick 1-2 content pillars", desc: "e.g., financial tips, client stories", icon: Brain },
-              { step: 2, title: "Be consistent", desc: "post 3x a week minimum", icon: Clock },
-              { step: 3, title: "Engage in comments, DMs", desc: "build community", icon: MessageCircle },
-              { step: 4, title: "Use trending audios", desc: "and short captions", icon: Volume2 },
-              { step: 5, title: "Track analytics", desc: "double down on what works", icon: BarChart3 }
-            ].map((item, index) => (
-              <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-[1.02] transition-all duration-300 animate-slide-in-left group" style={{ animationDelay: `${index * 0.1}s` }}>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-800/70 transition-colors duration-300">
-                        <span className="text-green-600 dark:text-green-400 font-bold text-lg">{item.step}</span>
+            <div className="space-y-6">
+              {[
+                { step: 1, title: "Pick 1-2 content pillars", desc: "e.g., financial tips, client stories", icon: Brain },
+                { step: 2, title: "Be consistent", desc: "post 3x a week minimum", icon: Clock },
+                { step: 3, title: "Engage in comments, DMs", desc: "build community", icon: MessageCircle },
+                { step: 4, title: "Use trending audios", desc: "and short captions", icon: Volume2 },
+                { step: 5, title: "Track analytics", desc: "double down on what works", icon: BarChart3 }
+              ].map((item, index) => (
+                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-[1.02] transition-all duration-300 animate-slide-in-left group" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-800/70 transition-colors duration-300">
+                          <span className="text-green-600 dark:text-green-400 font-bold text-lg">{item.step}</span>
+                        </div>
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-1">{item.title}</h3>
+                        <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <item.icon className="w-6 h-6 text-green-600 dark:text-green-400" />
                       </div>
                     </div>
-                    <div className="flex-grow">
-                      <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-1">{item.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <item.icon className="w-6 h-6 text-green-600 dark:text-green-400" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-          <div className="text-center mt-8">
-            <Button className="notion-button-primary px-8 py-3 text-lg font-semibold">
-              Need Content Ideas? Use ScriptMitra!
-            </Button>
-          </div>
-        </div>
-
-        {/* Section 4: Testimonials */}
-        <div className="max-w-6xl mx-auto px-4 py-12">
-          <div className="text-center mb-8 animate-fade-in-up">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
-              <MessageCircle className="w-8 h-8 text-yellow-300" />
-              What Other Advisors Are Saying
-            </h2>
-            <p className="text-lg text-white/80 dark:text-gray-300">Real feedback from financial professionals</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { name: "Rahul Sharma", role: "Financial Advisor", feedback: "ScriptMitra helped me create 50+ engaging videos. My client engagement increased by 300%!", rating: 5 },
-              { name: "Priya Patel", role: "Investment Consultant", feedback: "The AI-generated scripts are spot-on for my Hindi audience. Saves me hours every week!", rating: 5 },
-              { name: "Arjun Singh", role: "Mutual Fund Distributor", feedback: "Best tool for financial content creators. The voice modulation tips are gold!", rating: 5 }
-            ].map((testimonial, index) => (
-              <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <CardContent className="p-6 text-center">
-                  <div className="mb-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-bold text-xl">
-                      {testimonial.name.charAt(0)}
-                    </div>
-                    <div className="flex justify-center mb-2">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-800 dark:text-gray-200 mb-4 italic">"{testimonial.feedback}"</p>
-                  <div className="text-sm">
-                    <p className="font-semibold text-gray-800 dark:text-gray-200">{testimonial.name}</p>
-                    <p className="text-gray-600 dark:text-gray-400">{testimonial.role}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Section 5: Store */}
-        <div className="max-w-6xl mx-auto px-4 py-12 pb-16">
-          <div className="text-center mb-8 animate-fade-in-up">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
-              <Gift className="w-8 h-8 text-pink-300" />
-              Store
-            </h2>
-            <p className="text-lg text-white/80 dark:text-gray-300">Download these resources to boost your content game</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { title: "Content Planning Sheet", desc: "30-day content calendar template", icon: FileText },
-              { title: "Instagram Hashtag Cheatsheet", desc: "200+ finance hashtags for better reach", icon: Award },
-              { title: "30 Video Script Hooks PDF", desc: "Ready-to-use hooks for your videos", icon: Download }
-            ].map((resource, index) => (
-              <Button
-                key={index}
-                variant="outline"
-                onClick={() => handleStoreItemClick(resource.title)}
-                className="notion-button h-auto p-6 hover:transform hover:scale-105 transition-all duration-300"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="text-center w-full">
-                  <div className="mb-3 flex justify-center">
-                    <div className="p-3 bg-pink-100 dark:bg-pink-900/50 rounded-full group-hover:bg-pink-200 dark:group-hover:bg-pink-800/70 transition-colors duration-300">
-                      <resource.icon className="w-6 h-6 text-pink-600 dark:text-pink-400" />
-                    </div>
-                  </div>
-                  <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-2">{resource.title}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{resource.desc}</p>
-                </div>
+            <div className="text-center mt-8">
+              <Button className="notion-button-primary px-8 py-3 text-lg font-semibold">
+                Need Content Ideas? Use ScriptMitra!
               </Button>
-            ))}
+            </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="text-center py-8 border-t border-white/20 dark:border-gray-700">
-          <p className="text-white/80 dark:text-gray-400 text-lg">
-            Made for <span className="font-semibold text-white dark:text-blue-400">Financial Creators</span>
-          </p>
+          {/* Section 4: Testimonials */}
+          <div className="max-w-6xl mx-auto px-4 py-12">
+            <div className="text-center mb-8 animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
+                <MessageCircle className="w-8 h-8 text-yellow-300" />
+                What Other Advisors Are Saying
+              </h2>
+              <p className="text-lg text-white/80 dark:text-gray-300">Real feedback from financial professionals</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { name: "Rahul Sharma", role: "Financial Advisor", feedback: "ScriptMitra helped me create 50+ engaging videos. My client engagement increased by 300%!", rating: 5 },
+                { name: "Priya Patel", role: "Investment Consultant", feedback: "The AI-generated scripts are spot-on for my Hindi audience. Saves me hours every week!", rating: 5 },
+                { name: "Arjun Singh", role: "Mutual Fund Distributor", feedback: "Best tool for financial content creators. The voice modulation tips are gold!", rating: 5 }
+              ].map((testimonial, index) => (
+                <Card key={index} className="backdrop-blur-sm bg-white/90 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700 rounded-xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <CardContent className="p-6 text-center">
+                    <div className="mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white font-bold text-xl">
+                        {testimonial.name.charAt(0)}
+                      </div>
+                      <div className="flex justify-center mb-2">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-gray-800 dark:text-gray-200 mb-4 italic">"{testimonial.feedback}"</p>
+                    <div className="text-sm">
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">{testimonial.name}</p>
+                      <p className="text-gray-600 dark:text-gray-400">{testimonial.role}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 5: Store */}
+          <div className="max-w-6xl mx-auto px-4 py-12 pb-16">
+            <div className="text-center mb-8 animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
+                <Gift className="w-8 h-8 text-pink-300" />
+                Store
+              </h2>
+              <p className="text-lg text-white/80 dark:text-gray-300">Download these resources to boost your content game</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { title: "Content Planning Sheet", desc: "30-day content calendar template", icon: FileText },
+                { title: "Instagram Hashtag Cheatsheet", desc: "200+ finance hashtags for better reach", icon: Award },
+                { title: "30 Video Script Hooks PDF", desc: "Ready-to-use hooks for your videos", icon: Download }
+              ].map((resource, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  onClick={() => handleStoreItemClick(resource.title)}
+                  className="notion-button h-auto p-6 hover:transform hover:scale-105 transition-all duration-300"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="text-center w-full">
+                    <div className="mb-3 flex justify-center">
+                      <div className="p-3 bg-pink-100 dark:bg-pink-900/50 rounded-full group-hover:bg-pink-200 dark:group-hover:bg-pink-800/70 transition-colors duration-300">
+                        <resource.icon className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                      </div>
+                    </div>
+                    <h3 className="font-bold text-gray-800 dark:text-gray-200 mb-2">{resource.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{resource.desc}</p>
+                  </div>
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center py-8 border-t border-white/20 dark:border-gray-700">
+            <p className="text-white/80 dark:text-gray-400 text-lg">
+              Made for <span className="font-semibold text-white dark:text-blue-400">Financial Creators</span>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
