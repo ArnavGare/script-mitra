@@ -64,15 +64,17 @@ export default function HashtagsMitra() {
 
   return (
     <>
-      {/* Grid Background */}
+      {/* More visible Grid Background */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 w-full h-full -z-10 overflow-hidden"
         style={{
           background:
-            "radial-gradient(circle, #6ee7ff22 1.4px, transparent 1.6px), linear-gradient(to right, #fff0 1px, #0001 1px), linear-gradient(to bottom, #fff0 1px, #0001 1px)",
-          backgroundSize: "42px 42px",
-          opacity: 0.55,
+            "radial-gradient(circle, #38e0ff66 1.6px, transparent 1.8px), " +
+            "linear-gradient(to right, #fff0 1px, #44f0ffaa 1.1px), " +
+            "linear-gradient(to bottom, #fff0 1px, #44f0ffaa 1.1px)",
+          backgroundSize: "38px 38px",
+          opacity: 0.85,
         }}
       />
       <MotionGridBg />
