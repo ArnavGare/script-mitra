@@ -2,17 +2,21 @@
 import React from "react";
 import { LogIn, PenLine, Sparkles } from "lucide-react";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
+import { useNavigate } from "react-router-dom";
 
 // Helper for scroll on the same page
 const scrollToSection = (id: string) => {
   const el = document.getElementById(id);
   if (el) {
     el.scrollIntoView({ behavior: "smooth", block: "start" });
+    return true;
   }
+  return false;
 };
 
 export default function HeaderAuthButtons() {
   const { user, isLoading } = useSupabaseUser();
+  const navigate = useNavigate();
 
   // Hide login/signup buttons if the user is logged in
   if (!isLoading && user) return null;
@@ -26,7 +30,12 @@ export default function HeaderAuthButtons() {
           hover:scale-105 hover:shadow-lg hover:bg-[#e6e7f2] active:scale-100
         "
         style={{ height: 38, fontWeight: 600 }}
-        onClick={() => scrollToSection("auth-login")}
+        onClick={() => {
+          // Try scroll, otherwise navigate to "/auth/login"
+          if (!scrollToSection("auth-login")) {
+            navigate("/auth/login");
+          }
+        }}
         type="button"
       >
         <LogIn size={17} className="mr-1 text-[#246bfb]" />
@@ -39,7 +48,12 @@ export default function HeaderAuthButtons() {
           hover:scale-105 hover:shadow-lg hover:bg-[#e6e7f2] active:scale-100
         "
         style={{ height: 38, fontWeight: 600 }}
-        onClick={() => scrollToSection("auth-signup")}
+        onClick={() => {
+          // Try scroll, otherwise navigate to "/auth/signup"
+          if (!scrollToSection("auth-signup")) {
+            navigate("/auth/signup");
+          }
+        }}
         type="button"
       >
         <PenLine size={17} className="mr-1 text-[#925fff]" />
