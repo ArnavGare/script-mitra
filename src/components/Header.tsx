@@ -1,8 +1,9 @@
+
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import HeaderMobileMenu from "./HeaderMobileMenu";
-// Removed: import UserCreditsBadge from "./UserCreditsBadge";
+import { useAccessKey } from "@/context/AccessKeyContext";
 
 // Smooth scroll to section helper
 const scrollToSection = (id: string) => {
@@ -24,6 +25,8 @@ export default function Header() {
     const id = navAnchorToId[anchor];
     if (id) scrollToSection(id);
   };
+
+  const { hasAccess, logout } = useAccessKey();
 
   return (
     <header
@@ -50,6 +53,20 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-3">
           {/* Removed: <UserCreditsBadge /> */}
           {/* Removed: <HeaderAuthButtons /> */}
+          {hasAccess && (
+            <button
+              onClick={logout}
+              className="notion-button-secondary px-4 py-2 rounded font-medium ml-4 transition-colors duration-150"
+              style={{
+                outline: "none",
+                border: "none",
+                background: "rgba(62,45,160,0.12)",
+                color: "#ffe",
+              }}
+            >
+              Logout
+            </button>
+          )}
         </div>
         <div className="md:hidden flex items-center">
           {/* Removed: <UserCreditsBadge /> */}
