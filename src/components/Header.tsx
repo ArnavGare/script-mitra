@@ -59,8 +59,8 @@ export default function Header() {
 
   // Set up listener for auth state change - BEST PRACTICE
   useEffect(() => {
-    // Attach listener before fetching current session
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    // Corrected destructure for Supabase v2
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
     });
