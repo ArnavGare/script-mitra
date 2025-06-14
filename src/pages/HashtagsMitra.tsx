@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import { Loader2, Sparkles } from "lucide-react";
@@ -86,19 +87,8 @@ export default function HashtagsMitra() {
       <Header />
       <MotionGridBg />
       <div
-        className="min-h-screen flex flex-col items-center justify-center py-10 px-2 relative overflow-hidden bg-black">
-        {/* Animated Motion Grid BG Overlays, matching the main page */}
-        {/* Animation layer uses a grid pattern with subtle shimmer */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 w-full h-full -z-10"
-        >
-          {/* Main animated grid: soft lines + animated dots */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.02)_1px,_transparent_1px)] [background-size:36px_36px] animate-[gradientX_16s_linear_infinite] opacity-70"></div>
-          {/* Animated subtle grid shimmer */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70" />
-          <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[90vw] h-48 rounded-full blur-3xl bg-gradient-to-r from-[#383afc0a] via-[#8f68f914] to-[#16f8ef09] animate-pulse opacity-80 pointer-events-none" />
-        </div>
+        className="min-h-screen flex flex-col items-center justify-center py-10 px-2 relative overflow-hidden"
+      >
         <section className="max-w-2xl w-full mx-auto relative z-10">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3 text-white tracking-tight text-center font-playfair headline-glow">
             🔥 Hashtags Mitra – Your Viral Boost Partner
@@ -178,3 +168,4 @@ export default function HashtagsMitra() {
     </>
   );
 }
+
