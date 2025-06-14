@@ -511,7 +511,7 @@ const Index = () => {
                     <Button 
                       onClick={handleDownload}
                       variant="outline"
-                      className="notion-button-secondary flex-1 h-10"
+                      className="notion-button-secondary flex-1 h-10 bg-white border border-blue-300 text-blue-700 hover:bg-blue-50 dark:bg-gray-900 dark:border-blue-800 dark:text-blue-100 dark:hover:bg-blue-800/70"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Download as .txt
