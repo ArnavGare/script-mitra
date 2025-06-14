@@ -6,7 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  const queryKey = ["users-credits", userId] as [string, string | null];
+  // Use a 'readonly' tuple (best for Tanstack's key inference)
+  const queryKey = ["users-credits", userId] as const;
 
   const fetchCredits = async () => {
     if (!userId) return null;
@@ -28,10 +29,12 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
+      // Pass queryKey in the expected structure
       queryClient.invalidateQueries({ queryKey });
     }
   });
 
+  // React Query expects exactly the same 'queryKey'
   const query = useQuery({
     queryKey,
     queryFn: fetchCredits,
