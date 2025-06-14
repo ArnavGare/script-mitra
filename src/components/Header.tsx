@@ -1,32 +1,14 @@
+
 import React, { useState, useEffect } from "react";
-import { Menu, Sparkles } from "lucide-react";
+import { Menu, Sparkles, LogIn, PenLine, Moon, Sun } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 
-// Animated glowing announcement bar
-function AnnouncementBar() {
-  return (
-    <div className="w-full bg-gradient-to-r from-[#4b006e] via-[#00132e] to-[#4b006e] py-2 px-4 flex items-center overflow-hidden border-t-0 border-b-2 border-b-[#2563eb]">
-      <div className="w-full relative">
-        <span
-          className="absolute animate-marquee whitespace-nowrap text-xs md:text-sm font-semibold text-[#93c5fd] glow"
-          style={{
-            minWidth: "100%",
-            willChange: "transform",
-            letterSpacing: "0.02em",
-          }}
-        >
-          🚀 Limited Time: Get Your Free Social Media Growth PDF Now! &nbsp;&nbsp;&nbsp;
-          🚀 Limited Time: Get Your Free Social Media Growth PDF Now!
-          &nbsp;&nbsp;&nbsp;
-        </span>
-      </div>
-    </div>
-  );
-}
+// Utility (CSS-in-JS, but for brevity delegating to index.css for large effects)
+const BRAND_NAME = "SCRIPT MITRA";
 
-// Section IDs must match the ones in Index.tsx!
+// Nav config
 const navLinks = [
   { name: "Home", anchor: "home" },
   { name: "Generate Scripts", anchor: "generate-scripts" },
@@ -37,7 +19,6 @@ const navLinks = [
 ];
 
 function handleSmoothScroll(anchor: string) {
-  // Add small timeout so page renders first if needed
   setTimeout(() => {
     const section = document.getElementById(anchor);
     if (section) {
@@ -46,20 +27,40 @@ function handleSmoothScroll(anchor: string) {
   }, 0);
 }
 
+// Glass shadow for sticky header
+function useHeaderScroll(setShrink: (v: boolean) => void) {
+  useEffect(() => {
+    const handleScroll = () => {
+      setShrink(window.scrollY > 12);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [setShrink]);
+}
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shrink, setShrink] = useState(false);
 
-  // Authentication state
+  // Dark mode support
+  const [darkMode, setDarkMode] = useState(
+    document.documentElement.classList.contains("dark")
+  );
+  const toggleDark = () => {
+    document.documentElement.classList.toggle("dark");
+    setDarkMode((m) => !m);
+  };
+
+  useHeaderScroll(setShrink);
+
+  // Auth state
   const [session, setSession] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
   const [userName, setUserName] = useState<string>("");
 
   const navigate = useNavigate();
 
-  // Set up listener for auth state change - BEST PRACTICE
   useEffect(() => {
-    // Corrected destructure for Supabase v2
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -73,24 +74,16 @@ export default function Header() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Determine display name
   useEffect(() => {
     if (!user) {
       setUserName("");
       return;
     }
-    // Name may be in user.user_metadata, else fallback to email
     const meta = user.user_metadata || {};
-    if (meta.name) {
-      setUserName(meta.name);
-    } else if (meta.full_name) {
-      setUserName(meta.full_name);
-    } else if (user.email) {
-      // fallback to part before '@'
-      setUserName(user.email.split("@")[0]);
-    } else {
-      setUserName("User");
-    }
+    if (meta.name) setUserName(meta.name);
+    else if (meta.full_name) setUserName(meta.full_name);
+    else if (user.email) setUserName(user.email.split("@")[0]);
+    else setUserName("User");
   }, [user]);
 
   const handleLogout = async () => {
@@ -101,157 +94,176 @@ export default function Header() {
     navigate("/", { replace: true });
   };
 
+  // For staggered mobile nav animation
+  const staggerVariants = [
+    "delay-[0ms]","delay-[60ms]","delay-[120ms]","delay-[180ms]","delay-[240ms]","delay-[300ms]"
+  ];
+
   return (
     <>
-      {/* Glow animated announcement */}
-      <AnnouncementBar />
-      {/* Sticky NAVBAR */}
+      {/* Animated Glow Announcement */}
+      <div className="w-full bg-gradient-to-r from-[#4b006e] via-[#00132e] to-[#4b006e] py-2 px-4 flex items-center overflow-hidden border-t-0 border-b-2 border-b-[#5eeeffdd] shadow-[0_2px_16px_#67e8f933] select-none">
+        <span
+          className="animate-marquee whitespace-nowrap text-xs md:text-sm font-semibold text-[#93c5fd]/90 font-inter"
+        >
+          🚀 Limited Time: Download Your Free Social Media Growth PDF Now! &nbsp;&nbsp;&nbsp;
+          🚀 Limited Time: Download Your Free Social Media Growth PDF Now!
+        </span>
+      </div>
+      {/* Header */}
       <header
         className={`
-          sticky top-0 z-40 w-full
+          sticky top-0 z-[100] w-full shadow-premium
           transition-all duration-300
-          ${shrink ? "backdrop-blur-md bg-[#181f2e]/90 shadow-md py-2" : "bg-transparent py-3"}
+          ${shrink
+            ? "backdrop-blur-xl bg-white/70 dark:bg-[#0d1020]/70"
+            : "backdrop-blur-xl bg-white/60 dark:bg-[#0d1020]/65"
+          }
+          border-b border-[#00000022]
         `}
         style={{
-          borderBottom: shrink
-            ? "1.5px solid #312e81"
-            : "1.5px solid transparent",
+          boxShadow: shrink
+            ? "0 4px 24px 0 rgba(62,50,169,0.08), 0px 4px 16px rgba(0,0,0,0.15)"
+            : "0 4px 16px 0 rgba(0,0,0,0.10)",
+          backdropFilter: "blur(10px)",
         }}
       >
-        <nav className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => handleSmoothScroll("home")}>
-            <span
-              className="font-extrabold text-[1.5rem] md:text-2xl
-                         text-white neon-text
-                         tracking-wide animate-fade-in uppercase select-none"
-              style={{
-                fontFamily: '"Space Grotesk", Poppins, sans-serif',
-                textShadow:
-                  "0 0 8px #5eeeff, 0 0 18px #312e81, 0 0 24px #60a5fa",
-              }}
-            >
-              Script Mitra
+        {/* NAV */}
+        <nav className="max-w-7xl mx-auto px-4 flex items-center justify-between h-[66px]">
+          {/* Brand */}
+          <div
+            className="cursor-pointer flex items-center gap-2"
+            onClick={() => handleSmoothScroll("home")}
+          >
+            <span className="font-extrabold text-[1.7rem] md:text-[2.1rem] uppercase select-none brand-gradient tracking-wide font-inter block"
+              style={{ letterSpacing: "0.08em" }}>
+              {BRAND_NAME}
             </span>
           </div>
 
-          {/* Desktop Nav */}
-          <ul className="hidden md:flex gap-2 lg:gap-4 xl:gap-6 items-center ml-4 flex-1 justify-center">
-            {navLinks.map((link) => (
+          {/* Desktop NAV LINKS */}
+          <ul className="hidden md:flex gap-2.5 items-center ml-4 flex-1 justify-center">
+            {navLinks.map((link, i) => (
               <li key={link.name}>
                 <button
                   type="button"
                   onClick={() => handleSmoothScroll(link.anchor)}
-                  className="relative px-3 py-2 text-sm font-medium
-                             text-[#b1b5dd] hover:text-[#5eeeff]
-                             transition duration-200
-                             after:absolute after:left-0 after:bottom-1 after:w-0 after:h-[2.5px]
-                             after:bg-gradient-to-r after:from-[#9333ea] after:to-[#38bdf8]
-                             after:rounded-md after:transition-all after:duration-300
-                             hover:after:w-full
-                             hover:bg-white/5 hover:backdrop-blur-md rounded-lg group
-                             focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400
-                             "
-                  style={{ letterSpacing: "0.03em" }}
+                  className={`
+                    nav-link-premium px-3 py-1.5 text-[1.07rem] font-semibold
+                     font-inter rounded-lg relative
+                  ${staggerVariants[i]}
+                   transition-all duration-300`}
+                  style={{ letterSpacing: "0.045em" }}
                 >
                   {link.name}
+                  <span className="nav-underline" />
                 </button>
               </li>
             ))}
           </ul>
-
-          {/* Auth Buttons/Info - Desktop */}
+          {/* Desktop AUTH */}
           <div className="hidden md:flex gap-2 items-center ml-6">
             {!user ? (
               <>
                 <Button
-                  variant="outline"
+                  variant="ghost"
+                  className="btn-pill-white flex items-center text-base font-inter font-semibold px-4 py-2 mr-1 group border-0"
                   onClick={() => navigate("/auth/login")}
+                  style={{ borderRadius: "999px" }}
                 >
+                  <LogIn className="mr-2 text-[#1e293b] group-hover:rotate-[12deg] group-hover:scale-110 transition-transform duration-300" size={20} />
                   Login
                 </Button>
                 <Button
                   variant="default"
+                  className="btn-pill-signup flex items-center text-base font-inter font-semibold px-4 py-2 group ml-1"
                   onClick={() => navigate("/auth/signup")}
+                  style={{ borderRadius: "999px" }}
                 >
+                  <PenLine className="mr-2 group-hover:-rotate-12 group-hover:scale-108 transition-transform duration-300" size={20} />
                   Sign Up
                 </Button>
               </>
             ) : (
               <>
-                <span className="text-white font-medium mr-2">{`Welcome, ${userName}`}</span>
+                <span className="text-gray-900 dark:text-white font-inter font-semibold mr-2 tracking-wide">{`Welcome, ${userName}`}</span>
                 <Button
-                  variant="outline"
+                  variant="ghost"
+                  className="btn-pill-white px-4 py-2 text-base ml-1"
                   onClick={handleLogout}
+                  style={{ borderRadius: "999px" }}
                 >
                   Logout
                 </Button>
               </>
             )}
           </div>
-
-          {/* Call-to-action Button */}
+          {/* Desktop CTA */}
           <button
             type="button"
             onClick={() => handleSmoothScroll("generate-scripts")}
-            className="hidden md:inline-block ml-6 relative group"
+            className="hidden md:inline-block ml-3 cta-premium group relative overflow-visible hover:scale-105"
             tabIndex={0}
           >
-            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-white neon-gradient-bg shadow-cyan-500/20
-              transition-all duration-300 text-base
-              hover:scale-105 hover:shadow-lg
-              ring-2 ring-purple-600/20 hover:ring-blue-400 focus-visible:ring-blue-400
-              animate-fade-in-up"
-            >
-              <Sparkles className="w-5 h-5 -ml-1 text-sky-300 glow" />
+            <span className="inline-flex items-center gap-2 px-6 py-2.5 font-bold text-[1.09rem] font-inter rounded-full z-10">
+              <Sparkles className="w-6 h-6 -ml-1 text-[#4bcafe] shimmer-ltr group-hover:animate-fly" />
               Get Your Free Script
+              <span className="ml-1 text-lg animate-fly">📝</span>
             </span>
-            {/* Glow background effect behind */}
-            <span className="absolute inset-0 bg-gradient-to-r from-[#9333ea] to-[#38bdf8] rounded-full blur-md opacity-25 group-hover:opacity-35 transition-all" />
+            <span className="absolute inset-0 -z-1 neon-glow-gradient opacity-70 group-hover:opacity-100" />
           </button>
-
+          {/* Dark/Light Toggle */}
+          <button
+            className="ml-4 md:ml-6 p-2 rounded-full bg-white/80 dark:bg-black/70 border-2 border-[#e0e7ee50] shadow transition-all ring-0 ring-cyan-100/0 hover:ring-4 hover:ring-cyan-200/40 icon-dark-toggle hover:rotate-[20deg]"
+            onClick={toggleDark}
+            aria-label="Toggle Dark Mode"
+            style={{
+              transition: "transform 0.3s cubic-bezier(.7,.1,.7,.9), box-shadow 0.3s",
+            }}
+          >
+            {darkMode ? <Moon size={20} className="text-black dark:text-gray-100" /> : <Sun size={20} className="text-blue-700" />}
+          </button>
           {/* Hamburger for Mobile */}
           <button
-            className="md:hidden p-2 rounded-lg z-50 relative neon-bg focus:outline-none"
-            onClick={() => setMobileOpen((v) => !v)}
+            className="md:hidden p-2 rounded-full neon-bg z-50 relative group focus:outline-none transition-all"
             aria-label="Open Menu"
+            onClick={() => setMobileOpen(true)}
           >
-            <Menu className="w-7 h-7 text-[#83fab5] drop-shadow-[0_2px_12px_#512ea8]" />
+            <Menu className="w-7 h-7 text-[#38bdf8] drop-shadow-[0_2px_12px_#4f46e5bb] group-hover:scale-110 transition-all duration-300" />
           </button>
         </nav>
-        {/* Mobile Slide Drawer */}
+        {/* Mobile Glass Drawer */}
         <div
-          className={`fixed md:hidden top-0 left-0 w-full h-full bg-[#161c30]/90 z-40 transition-all duration-300
-          ${mobileOpen ? "translate-x-0 visible" : "-translate-x-full invisible"}
-        `}
+          className={`fixed md:hidden inset-0 z-[200] bg-[#e2e8f02a] dark:bg-[#131434dd] backdrop-blur-2xl transition-transform duration-500 ease-in-out
+           ${mobileOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"}
+         `}
         >
-          <div className="flex flex-col items-start px-6 pt-20 pb-10 gap-8 w-4/5 max-w-xs min-h-full
-            bg-gradient-to-br from-[#312e81]/90 via-[#1e293b]/95 to-[#9333ea]/80
-            shadow-2xl
-            animate-slide-in-left
-            "
+          <div className="flex flex-col items-start px-8 pt-20 pb-10 gap-8 w-full min-h-full
+            glass-card bg-white/60 dark:bg-[#171b2c]/70 shadow-xl rounded-none"
+            style={{ backdropFilter: "blur(32px)" }}
           >
             <button
-              className="mb-1 ml-auto p-2 rounded-full hover:bg-[#9333ea]/10"
+              className="absolute right-4 top-5 p-3 rounded-full bg-white/60 dark:bg-[#181c29]/85 hover:bg-blue-100/60 group"
               onClick={() => setMobileOpen(false)}
               aria-label="Close Menu"
             >
-              <span className="block w-[32px] h-[32px] relative">
-                <span className="absolute left-1/2 top-1/2 w-6 h-0.5 bg-cyan-300 rounded-full transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
-                <span className="absolute left-1/2 top-1/2 w-6 h-0.5 bg-cyan-300 rounded-full transform -translate-x-1/2 -translate-y-1/2 -rotate-45"></span>
+              <span className="block w-[30px] h-[30px] relative">
+                <span className="absolute left-1/2 top-1/2 w-7 h-0.5 bg-cyan-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
+                <span className="absolute left-1/2 top-1/2 w-7 h-0.5 bg-cyan-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 -rotate-45"></span>
               </span>
             </button>
-            {navLinks.map((link) => (
+            {navLinks.map((link, i) => (
               <button
                 key={link.name}
                 type="button"
-                className="text-lg font-semibold text-white tracking-wide neon-mob-link
-                  px-1 py-2 w-full rounded-lg
-                  transition-transform duration-200
-                  hover:scale-105 hover:text-cyan-400
-                  hover:bg-slate-50/10
-                "
-                style={{ fontFamily: "Poppins, sans-serif" }}
+                className={`w-full text-lg font-bold font-inter tracking-wide my-2 nav-link-premium-mob fade-in-up ${staggerVariants[i]}
+                 ${mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}
+                  `}
+                style={{
+                  letterSpacing: "0.06em",
+                  transitionDelay: `${i * 80 + 80}ms`,
+                  transition: "all 0.32s cubic-bezier(.54,1.9,.46,.73)",
+                }}
                 onClick={() => {
                   setMobileOpen(false);
                   handleSmoothScroll(link.anchor);
@@ -260,105 +272,217 @@ export default function Header() {
                 {link.name}
               </button>
             ))}
-
-            {/* Mobile Auth Buttons */}
+            {/* Mobile Auth */}
             {!user ? (
               <div className="w-full flex flex-col gap-3 mt-2 mb-6">
                 <Button
-                  variant="outline"
-                  className="w-full"
+                  variant="ghost"
+                  className="btn-pill-white w-full flex items-center justify-center text-lg font-inter font-semibold px-4 py-2 group border-0"
                   onClick={() => {
                     setMobileOpen(false);
                     navigate("/auth/login");
                   }}
+                  style={{ borderRadius: "999px" }}
                 >
+                  <LogIn className="mr-2 text-[#1e293b] group-hover:rotate-[12deg] transition-transform duration-300" size={20} />
                   Login
                 </Button>
                 <Button
                   variant="default"
-                  className="w-full"
+                  className="btn-pill-signup w-full flex items-center justify-center text-lg font-inter font-semibold px-4 py-2 group"
                   onClick={() => {
                     setMobileOpen(false);
                     navigate("/auth/signup");
                   }}
+                  style={{ borderRadius: "999px" }}
                 >
+                  <PenLine className="mr-2 group-hover:-rotate-12 transition-transform duration-300" size={20} />
                   Sign Up
                 </Button>
               </div>
             ) : (
               <div className="w-full flex flex-col gap-3 mt-2 mb-6">
-                <span className="text-white font-medium">{`Welcome, ${userName}`}</span>
+                <span className="text-gray-900 dark:text-gray-50 font-inter font-semibold">
+                  {`Welcome, ${userName}`}
+                </span>
                 <Button
-                  variant="outline"
-                  className="w-full"
+                  variant="ghost"
+                  className="btn-pill-white w-full px-4 py-2 text-lg"
                   onClick={() => {
                     setMobileOpen(false);
                     handleLogout();
                   }}
+                  style={{ borderRadius: "999px" }}
                 >
                   Logout
                 </Button>
               </div>
             )}
 
+            {/* CTA Mobile */}
             <button
               type="button"
               onClick={() => {
                 setMobileOpen(false);
                 handleSmoothScroll("generate-scripts");
               }}
-              className="w-full mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-white neon-gradient-bg transition-all text-base shadow-xl
-                  hover:scale-105 focus-visible:ring-2 ring-cyan-300"
+              className="w-full mt-2 cta-premium group relative inline-flex items-center justify-center px-5 py-3 mb-4 font-bold text-white text-lg font-inter rounded-full neon-glow-gradient z-10"
               style={{
-                fontFamily: '"Space Grotesk", Poppins, sans-serif',
+                borderRadius: "50px",
+                fontFamily: "Inter, Satoshi, sans-serif",
+                boxShadow: "0 2px 18px 0 #1e40af3c, 0 2px 24px 0 #c084fc44",
               }}
             >
-              <Sparkles className="w-6 h-6 mr-2 text-sky-300 glow" />
+              <Sparkles className="w-6 h-6 mr-2 text-[#38bdf8] shimmer-ltr group-hover:animate-fly" />
               Get Your Free Script
+              <span className="ml-2 animate-fly">✨</span>
             </button>
           </div>
-          {/* Click-away bg */}
+          {/* Glass click-away */}
           <div
             className="fixed inset-0 z-0"
             onClick={() => setMobileOpen(false)}
           ></div>
         </div>
       </header>
-
-      {/* Custom styles for glow/text effects */}
+      {/* CSS */}
       <style>{`
-        .neon-text {
-          text-shadow: 
-            0 0 2.5px #67e8f9,
-            0 0 8px #6366f1,
-            0 0 16px #c084fc,
-            0 0 36px #67e8f9;
+        .brand-gradient {
+          background: linear-gradient(72deg,#00d1ff 14%,#ad53fa 85%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-fill-color: transparent;
         }
-        .neon-gradient-bg {
-          background: linear-gradient(90deg, #a21caf 0%, #2563eb 55%, #22d3ee 100%);
-          box-shadow: 0 0 16px 0 #1e40af88, 0 0 32px 0 #c084fc77;
+        .neon-glow-gradient {
+          background: linear-gradient(87deg, #3a9cff 0%, #ad67fa 108%);
+          filter: drop-shadow(0 0 14px #7dd3fc90);
+          border-radius: 50px;
+          pointer-events: none;
         }
-        .glow {
-          filter: drop-shadow(0 0 5px #67e8f9) drop-shadow(0 0 12px #9333ea60);
+        .cta-premium {
+          background: linear-gradient(90deg, #3a9cff 20%, #9552e8 100%);
+          color: #fff;
+          border-radius: 50px;
+          box-shadow: 0 4px 18px #67e8f941, 0 4px 18px #a78bfa61;
+          font-weight: 700;
+          position: relative;
+          overflow: visible;
+          transition: box-shadow 0.25s, transform 0.25s;
         }
+        .cta-premium:hover {
+          box-shadow: 0 4px 32px #3b82f680, 0 2px 18px #a78bfa90,0 1.5px 18px #ad67fa80;
+          filter: brightness(1.10) drop-shadow(0 0 28px #67e8f9d1);
+          transform: scale(1.045) translateY(-2px);
+        }
+        .shimmer-ltr {
+          animation: shimmer 2.2s linear infinite;
+        }
+        @keyframes shimmer {
+          0% { filter: brightness(1.08); }
+          40% { filter: brightness(1.40); }
+          100% { filter: brightness(1.08); }
+        }
+        @keyframes fly {
+          0% { transform: translateY(0px) scale(1); opacity:.95; }
+          25% { transform: translateY(-7px) scale(1.12); opacity:0.77; }
+          80% { transform: translateY(1px) scale(1.06); opacity:1; }
+          100% { transform: translateY(0px) scale(1); opacity:.95; }
+        }
+        .animate-fly { animation: fly 2.1s ease-in-out infinite alternate; }
+        .shadow-premium {
+          box-shadow: 0px 8px 40px 0 #2be7ff17, 0 2px 24px #faf7fa22, 0 4px 24px #00000032 !important;
+        }
+        /* Glass Card Mobile */
+        .glass-card {
+          background: rgba(255,255,255,0.88);
+          border-radius: 24px;
+          box-shadow: 0 2px 42px 0 #ad67fa1a, 0 4px 28px #38bdf833;
+          backdrop-filter: blur(24px);
+        }
+        .btn-pill-white {
+          background: #fff;
+          color: #181c29;
+          border-radius: 999px;
+          box-shadow: 0 2px 13px #7dd3fc11;
+          transition: background 0.22s, color 0.22s, box-shadow 0.22s;
+        }
+        .btn-pill-white:hover {
+          background: #f0f5ff;
+          color: #333;
+        }
+        .btn-pill-signup {
+          background: linear-gradient(90deg,#19b0ff 0%, #8e55e9 100%);
+          color:white;
+          border-radius:999px;
+          box-shadow:0 2px 18px #67e8f922;
+        }
+        .btn-pill-signup:hover {
+          filter:brightness(1.085) saturate(1.07);
+        }
+        .icon-dark-toggle {
+          transition: box-shadow 0.2s, transform 0.25s cubic-bezier(.63,.36,.29,.87);
+        }
+        /* Nav Link Hover (Underline Animation) */
+        .nav-link-premium, .nav-link-premium-mob {
+          background: transparent;
+          color: #17203d;
+          position: relative;
+          overflow: visible;
+          font-family: Inter, Satoshi, 'Poppins', 'Space Grotesk',sans-serif;
+          border: none;
+          outline: none;
+          transition: color .3s cubic-bezier(.55,.06,.64,.98), text-shadow .3s, letter-spacing .24s;
+        }
+        .nav-link-premium .nav-underline,
+        .nav-link-premium-mob .nav-underline {
+          pointer-events: none;
+          display: block;
+          position: absolute;
+          left: 0;
+          bottom: 2px;
+          height: 2.5px;
+          width: 0%;
+          background: linear-gradient(90deg, #45f4f9 22%, #ad67fa 100%);
+          border-radius: 2px;
+          transition: width .35s cubic-bezier(.45,.12,.62,.74);
+        }
+        .nav-link-premium:hover, .nav-link-premium:focus-visible,
+        .nav-link-premium-mob:hover, .nav-link-premium-mob:focus-visible {
+          color: #67e8f9;
+          letter-spacing: 0.12em;
+        }
+        .nav-link-premium:hover .nav-underline,
+        .nav-link-premium:focus-visible .nav-underline,
+        .nav-link-premium-mob:hover .nav-underline,
+        .nav-link-premium-mob:focus-visible .nav-underline {
+          width: 100%;
+        }
+        /* Mobile nav fade animation */
+        .fade-in-up {
+          opacity: 0;
+          transform: translateY(24px);
+          animation: mobnavfadeup 0.7s forwards;
+        }
+        @keyframes mobnavfadeup {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        /* Animate marquee (for announcement) */
         .animate-marquee {
-          animation: marquee 16s linear infinite;
+          animation: marquee 18s linear infinite;
         }
         @keyframes marquee {
           0% { left: 0; }
           100% { left: -100%; }
         }
-        .neon-bg {
-          background: linear-gradient(120deg, #312e81 20%, #9333ea 70%, #38bdf8 100%);
-          box-shadow: 0 0 10px #60a5fa44;
-        }
-        .neon-mob-link {
-          text-shadow: 0 0 7px #38bdf8, 0 0 13px #9333ea33;
-        }
         @media (max-width: 767px) {
-          .animate-marquee { font-size: 1rem; }
+          .brand-gradient { font-size:1.24rem !important; }
         }
       `}</style>
     </>
   );
 }
+
