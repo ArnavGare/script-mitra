@@ -280,7 +280,7 @@ const Index = () => {
             <div className="text-center pt-8 pb-6 px-4">
               <div className="animate-fade-in">
                 <h1
-                  className="text-4xl md:text-6xl font-playfair font-bold headline-glow headline-texture mb-3 relative"
+                  className="text-4xl md:text-6xl font-playfair font-bold headline-glow mb-3 relative"
                   style={{ lineHeight: "1.17" }}
                 >
                   Script Mitra

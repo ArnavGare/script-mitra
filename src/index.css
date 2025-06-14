@@ -436,27 +436,6 @@ body {
   animation: headline-in 0.69s cubic-bezier(.33,.65,.51,.98);
 }
 
-/* Optional texture, very subtle glass/lines for depth */
-.headline-texture {
-  position: relative;
-  z-index: 1;
-}
-.headline-texture::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    115deg,
-    rgba(255,255,255,0.05),
-    rgba(255,255,255,0.02) 2px,
-    transparent 5px,
-    transparent 8px
-  );
-  pointer-events: none;
-  z-index: 2;
-  mix-blend-mode: screen;
-}
-
 /* Soft pop animation */
 @keyframes headline-in {
   0% {
