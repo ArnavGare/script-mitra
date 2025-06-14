@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
@@ -34,7 +33,10 @@ export function useUserCreditsNew(userId: string | null) {
     },
     onSuccess: () => {
       // Invalidate all queries with the "users-credits" key - partial key match
-      queryClient.invalidateQueries({ queryKey: ["users-credits"] });
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "users-credits"
+      });
     }
   });
 
