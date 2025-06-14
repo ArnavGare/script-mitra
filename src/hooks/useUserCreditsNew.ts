@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  const queryKey = ["users-credits", userId] as const;
+  const queryKey = ["users-credits", userId] as [string, string | null];
 
   const fetchCredits = async () => {
     if (!userId) return null;
@@ -41,4 +41,3 @@ export function useUserCreditsNew(userId: string | null) {
 
   return { ...query, deductCredit };
 }
-
