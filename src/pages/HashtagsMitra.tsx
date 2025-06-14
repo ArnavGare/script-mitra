@@ -27,7 +27,7 @@ export default function HashtagsMitra() {
     setIsLoading(true);
     setHashtags([]);
     try {
-      const res = await fetch("https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
+      const res = await fetch("https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ script: input }),
