@@ -26,7 +26,7 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users-credits", userId] });
+      queryClient.invalidateQueries({ queryKey: ["users-credits", userId] as [string, string | null] });
     }
   });
 
@@ -39,3 +39,4 @@ export function useUserCreditsNew(userId: string | null) {
 
   return { ...query, deductCredit };
 }
+
