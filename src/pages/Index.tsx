@@ -475,8 +475,7 @@ const Index = () => {
                       type="button"
                       variant="outline"
                       onClick={handleReset}
-                      // Add light theme black styling
-                      className="notion-button-secondary h-11 px-6 text-base font-semibold bg-black text-white border-black hover:bg-gray-900 hover:text-white dark:bg-gray-900 dark:text-white dark:border-blue-800"
+                      className="notion-button-secondary h-11 px-6 text-base font-semibold bg-black text-white border-black hover:bg-black focus:bg-black hover:text-white focus:text-white dark:bg-gray-900 dark:text-white dark:border-blue-800"
                     >
                       <RotateCcw className="w-4 h-4 mr-2" />
                       Reset
