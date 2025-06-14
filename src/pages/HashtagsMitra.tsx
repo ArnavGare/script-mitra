@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import { Loader2, Sparkles, ClipboardList, Sun, Moon } from "lucide-react";
@@ -107,8 +106,8 @@ export default function HashtagsMitra() {
 
   return (
     <>
-      <Header />
       <MotionGridBg />
+      <Header />
       <div className="fixed right-6 top-8 z-30">
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -122,16 +121,22 @@ export default function HashtagsMitra() {
         <section className="w-full max-w-[900px] mx-auto glass-panel px-5 sm:px-9 pt-10 pb-8 rounded-2xl shadow-smooth relative z-10 border border-white/10 dark:border-white/10 backdrop-blur-lg bg-white/50 dark:bg-black/50 bg-clip-padding">
           {/* Hero */}
           <div className="text-center mb-7 select-none">
-            <span className="inline-flex items-center justify-center">
-              <span
-                className="text-3xl mr-1 animate-float opacity-80"
-                style={{ fontFamily: "Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol" }}
-                aria-hidden
-              >🔥</span>
-              <h1 className="inline-block text-[2.3rem] sm:text-4xl md:text-5xl lg:text-5xl font-display font-bold leading-tight bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-600 bg-clip-text text-transparent tracking-tighter shadow-none transition-all">
-                Hashtags Mitra – <span className="font-playfair">Your Viral Boost Partner</span>
-              </h1>
-            </span>
+            <h1
+              className="inline-block text-[2.2rem] sm:text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-wide font-inter headline-glow"
+              style={{
+                background: "linear-gradient(90deg,rgba(255,255,255,0.98) 27%,#b7b2fc 55%,#00cfff 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                letterSpacing: "0.08em",
+                textShadow: `
+                  0 3px 22px #4f46e528, 
+                  0 0.5px 12px #93c5fd14,
+                  0 1.5px 4px #7dd3fc12
+                `
+              }}
+            >
+              Hashtags Mitra – <span className="font-playfair">Your Viral Boost Partner</span>
+            </h1>
             <p className="mt-3 text-lg sm:text-xl text-gray-700 dark:text-cyan-100/80 font-sans font-medium drop-shadow-sm max-w-lg mx-auto">
               Generate high-converting hashtags from your script instantly
             </p>
