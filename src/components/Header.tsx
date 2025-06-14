@@ -1,8 +1,6 @@
-
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
-import HeaderAuthButtons from "./HeaderAuthButtons";
 import HeaderMobileMenu from "./HeaderMobileMenu";
 // Removed: import UserCreditsBadge from "./UserCreditsBadge";
 
@@ -51,7 +49,7 @@ export default function Header() {
         </nav>
         <div className="hidden md:flex items-center gap-3">
           {/* Removed: <UserCreditsBadge /> */}
-          <HeaderAuthButtons />
+          {/* Removed: <HeaderAuthButtons /> */}
         </div>
         <div className="md:hidden flex items-center">
           {/* Removed: <UserCreditsBadge /> */}
@@ -82,4 +80,3 @@ export default function Header() {
     </header>
   );
 }
-

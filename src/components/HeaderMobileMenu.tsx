@@ -1,8 +1,6 @@
-
 import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import NavLinks from "./NavLinks";
-import HeaderAuthButtons from "./HeaderAuthButtons";
 import Logo from "./Logo";
 
 type Props = {
@@ -55,7 +53,6 @@ export default function HeaderMobileMenu({ onNavClick }: Props) {
             </nav>
             <div className="h-px bg-cyan-900/25 w-11/12 mx-auto mb-3 rounded" />
             <div className="flex justify-center items-center px-4">
-              <HeaderAuthButtons />
             </div>
             {/* Decorative bottom glow */}
             <div className="absolute left-1/2 -translate-x-1/2 bottom-0 pointer-events-none opacity-80">
