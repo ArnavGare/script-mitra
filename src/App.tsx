@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import AuthSignUp from "./pages/AuthSignUp";
 import AuthLogin from "./pages/AuthLogin";
 import AuthForgotPassword from "./pages/AuthForgotPassword";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,23 @@ const App = () => (
           <Route path="/auth/signup" element={<AuthSignUp />} />
           <Route path="/auth/login" element={<AuthLogin />} />
           <Route path="/auth/forgot-password" element={<AuthForgotPassword />} />
+          {/* Protected Routes */}
+          <Route
+            path="/generate-scripts"
+            element={
+              <ProtectedRoute>
+                <Index /> {/* replace with your actual Generate Scripts page if it's a separate component */}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store"
+            element={
+              <ProtectedRoute>
+                <Index /> {/* replace with your actual Store page if it's a separate component */}
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
