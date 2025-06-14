@@ -302,7 +302,7 @@ const Index = () => {
         </div>
         
         {/* Dark Mode Toggle */}
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 md:top-20 right-4 z-[200]">
           <Button
             onClick={toggleDarkMode}
             variant="outline"
