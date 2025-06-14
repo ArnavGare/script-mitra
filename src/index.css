@@ -372,6 +372,37 @@ body {
 /* Other neon-glow utility classes could go here */
 /* (neon, gradient, and glow classes are set in component-level styles for scoping) */
 
+/* --- Premium "zoom-out-fade-whoosh" animation for app after access unlocked --- */
+.premium-zoomin {
+  animation: premium-zoom-keyframes 0.45s cubic-bezier(0.45, 0, 0.28, 1) forwards;
+  will-change: opacity, transform, filter;
+  /* Makes animation sharp, no border/visible edge, ultra minimal */
+  backface-visibility: hidden;
+}
+
+@keyframes premium-zoom-keyframes {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(6px) brightness(0.94);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1.012);
+    filter: blur(0.5px) brightness(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* --- Floating in app animation for landing (legacy, no longer used) --- */
+.app-float-in {
+  /* Remove old animation—deprecated */
+}
+
 /* --- Floating in app animation for landing --- */
 .app-float-in {
   animation: app-float-in-keyframes 0.8s cubic-bezier(0.34, 1.36, 0.64, 1) both;

@@ -100,9 +100,9 @@ export default function LandingGuard({ children }: { children: React.ReactNode }
     );
   }
 
-  // Wrap main app with a floating-in animation
+  // Wrap main app with a premium zoom-in animation
   return (
-    <div className="app-float-in min-h-screen">
+    <div className="premium-zoomin min-h-screen">
       {children}
     </div>
   );
