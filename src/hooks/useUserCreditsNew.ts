@@ -1,3 +1,4 @@
+
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
@@ -6,7 +7,7 @@ import type { Database } from "@/integrations/supabase/types";
 type UsersCreditsRow = Database["public"]["Tables"]["users_credits"]["Row"];
 
 // Explicitly define queryKey type
-type UserCreditsQueryKey = readonly [string, string | null];
+type UserCreditsQueryKey = [string, string | null];
 
 // Fetches row for currently logged-in user
 export function useUserCreditsNew(userId: string | null) {
@@ -36,8 +37,8 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Explicitly specify generic so queryKey type matches expected signature
-      queryClient.invalidateQueries<UserCreditsQueryKey>({ queryKey });
+      // Remove the generic argument here (fixes build error)
+      queryClient.invalidateQueries({ queryKey });
     }
   });
 
