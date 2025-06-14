@@ -11,6 +11,7 @@ import Header from "@/components/Header";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import ScriptGenerationTips from "@/components/ScriptGenerationTips";
 
 const Index = () => {
   const [formData, setFormData] = useState({
@@ -452,7 +453,11 @@ const Index = () => {
                     <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
                     Your Generated Script
                   </h3>
-                  
+
+                  {isLoading && (
+                    <ScriptGenerationTips />
+                  )}
+
                   <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-xl p-6 mb-4 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
                     <ScrollArea className="h-80 w-full pr-4">
                       <div className="text-gray-800 dark:text-gray-300 font-medium text-sm leading-relaxed">
