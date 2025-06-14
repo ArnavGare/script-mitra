@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import { Loader2, Sparkles } from "lucide-react";
@@ -49,7 +48,7 @@ export default function HashtagsMitra() {
     return () => intervalRef.current && clearInterval(intervalRef.current);
   }, []);
 
-  // Generate hashtags using OpenAI Edge Function (assumed POST /api/generate-hashtags, replace with your endpoint)
+  // Generate hashtags by POSTing to main webhook
   async function handleGenerate(e?: React.FormEvent) {
     if (e) e.preventDefault();
     if (!input.trim()) {
@@ -59,25 +58,19 @@ export default function HashtagsMitra() {
     setIsLoading(true);
     setHashtags([]);
     try {
-      const res = await fetch("/api/generate-hashtags", {
+      const res = await fetch("/api/main-webhook", { // <-- change this if your actual main webhook URL is different!
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ script: input }),
       });
       if (!res.ok) throw new Error("Could not generate hashtags");
       const data = await res.json();
-      setHashtags(data.hashtags || []);
-      if (!data.hashtags || data.hashtags.length === 0)
+      setHashtags(data.hashtags || data.tags || []);
+      if (!(data.hashtags && data.hashtags.length) && !(data.tags && data.tags.length)) {
         toast.error("No hashtags found. Try revising your script!");
+      }
     } catch (err) {
-      // Demo: fallback dummy data
-      setHashtags([
-        "ViralGrowth", "ForYou", "InstaSuccess",
-        "Trending2025", "LifeHacks", "FinanceTips",
-        "StartupIndia", "Motivation", "HotTopic", "SocialMedia",
-        "ViralReels", "NicheTribe"
-      ]);
-      toast("Showing sample hashtags (demo mode)");
+      toast.error("Unable to generate hashtags. Please try again.");
     }
     setIsLoading(false);
   }
@@ -168,4 +161,3 @@ export default function HashtagsMitra() {
     </>
   );
 }
-
