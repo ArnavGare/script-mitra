@@ -18,11 +18,8 @@ export default function Hero() {
           `
         }}
       >
-        Hashtags Mitra – <span className="font-playfair">Your Viral Boost Partner</span>
+        Hashtags Mitra
       </h1>
-      <p className="mt-3 text-lg sm:text-xl text-gray-700 dark:text-cyan-100/80 font-sans font-medium drop-shadow-sm max-w-lg mx-auto">
-        Generate high-converting hashtags from your script instantly
-      </p>
     </div>
   );
 }

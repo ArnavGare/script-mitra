@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -68,19 +67,21 @@ export default function HashtagsMitra() {
       <MotionGridBg />
       <Header />
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 transition-colors duration-500 overflow-x-hidden">
-        <section className="w-full max-w-[900px] mx-auto glass-panel px-5 sm:px-9 pt-10 pb-8 rounded-2xl shadow-smooth relative z-10 border border-white/10 dark:border-white/10 backdrop-blur-lg bg-white/50 dark:bg-black/50 bg-clip-padding">
-          <Hero />
-          <ScriptForm
-            input={input}
-            setInput={setInput}
-            handleGenerate={handleGenerate}
-            isLoading={isLoading}
-            placeholder={placeholder}
-          />
-          <TipCarousel className="my-7" />
-          <HashtagList hashtags={hashtags} copy={copy} copiedIdx={copiedIdx} />
-          <TipsSection />
-        </section>
+        <div className="w-full max-w-[900px] mx-auto p-px rounded-2xl bg-gradient-to-b from-white/20 to-transparent">
+          <section className="w-full h-full bg-white/60 dark:bg-black/70 px-5 sm:px-9 pt-10 pb-8 rounded-[15px] shadow-smooth relative z-10 border-white/10 dark:border-white/10 backdrop-blur-xl saturate-150">
+            <Hero />
+            <ScriptForm
+              input={input}
+              setInput={setInput}
+              handleGenerate={handleGenerate}
+              isLoading={isLoading}
+              placeholder={placeholder}
+            />
+            <TipCarousel className="my-7" />
+            <HashtagList hashtags={hashtags} copy={copy} copiedIdx={copiedIdx} />
+            <TipsSection />
+          </section>
+        </div>
       </div>
       <style>
         {`

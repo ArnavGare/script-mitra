@@ -23,7 +23,13 @@ export default function ScriptForm({ input, setInput, handleGenerate, isLoading,
       </label>
       <Textarea
         id="script-input"
-        className="glass-input w-full font-sans text-lg min-h-[128px] max-h-72 px-6 py-4 rounded-xl shadow backdrop-blur-lg transition-border focus:border-cyan-400 bg-white/40 dark:bg-black/40 border border-white/30 dark:border-gray-800/80 placeholder-gray-400 placeholder-opacity-70 focus:ring-2 focus:ring-cyan-500"
+        className="w-full font-sans text-lg min-h-[128px] max-h-72 px-6 py-4 rounded-xl shadow-inner backdrop-blur-sm 
+                   bg-white/60 dark:bg-black/40 
+                   border border-slate-300/40 dark:border-slate-800/60
+                   placeholder-gray-500/80 dark:placeholder-gray-400/70
+                   focus:ring-2 focus:ring-cyan-400/50 focus:ring-offset-2 focus:ring-offset-slate-100 dark:focus:ring-offset-slate-900 
+                   focus:border-cyan-300 dark:focus:border-cyan-400 
+                   transition-all duration-300 ease-in-out"
         placeholder={placeholder}
         value={input}
         onChange={e => setInput(e.target.value)}
