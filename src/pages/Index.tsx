@@ -94,7 +94,7 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
+      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,6 +160,13 @@ const Index = () => {
     toast({
       title: "Reset Complete",
       description: "Form cleared and ready for new script generation.",
+    });
+  };
+
+  const handleStoreItemClick = (itemTitle: string) => {
+    toast({
+      title: "Coming Soon!",
+      description: `${itemTitle} will be available for download soon. Stay tuned!`,
     });
   };
 
@@ -613,12 +620,12 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Section 5: Resources & Downloads */}
+        {/* Section 5: Store */}
         <div className="max-w-6xl mx-auto px-4 py-12 pb-16">
           <div className="text-center mb-8 animate-fade-in-up">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
               <Gift className="w-8 h-8 text-pink-300" />
-              Free Tools for Financial Creators
+              Store
             </h2>
             <p className="text-lg text-white/80 dark:text-gray-300">Download these resources to boost your content game</p>
           </div>
@@ -632,7 +639,8 @@ const Index = () => {
               <Button
                 key={index}
                 variant="outline"
-                className="notion-button h-auto p-6"
+                onClick={() => handleStoreItemClick(resource.title)}
+                className="notion-button h-auto p-6 hover:transform hover:scale-105 transition-all duration-300"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="text-center w-full">
