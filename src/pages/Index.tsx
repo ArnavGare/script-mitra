@@ -9,7 +9,6 @@ import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Pl
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
-import { useUserCreditsNew } from "@/hooks/useUserCreditsNew";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -27,7 +26,7 @@ const Index = () => {
   const [showCustomTopic, setShowCustomTopic] = useState(false);
   const { toast } = useToast();
   const { user, isLoading: userLoading } = useSupabaseUser();
-  const { data: userCreditsData, refetch: refetchCredits, isLoading: creditsLoading } = useUserCreditsNew(user?.id ?? null);
+  const userCreditsData = null;
   const navigate = useNavigate();
 
   const topics = [
@@ -79,7 +78,6 @@ const Index = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // If user required, only allow script gen if logged in
     if (userLoading) return;
     if (!user?.id) {
       toast({
@@ -88,17 +86,6 @@ const Index = () => {
         variant: "destructive"
       });
       navigate("/auth/login");
-      return;
-    }
-
-    // Credit check before generation using new table/logic
-    if (!creditsLoading && (!userCreditsData || userCreditsData.credits_remaining <= 0)) {
-      toast({
-        title: "You’ve used all your credits.",
-        description: "Please upgrade your plan on the Pricing page.",
-        variant: "destructive"
-      });
-      navigate("/pricing");
       return;
     }
 
@@ -124,24 +111,7 @@ const Index = () => {
 
     setIsLoading(true);
     
-    // Deduct 1 credit (before generation) -- using update on users_credits
-    const deductCredit = async () => {
-      // Use update to decrement credits_remaining atomically IF > 0
-      const { error } = await supabase
-        .from("users_credits")
-        .update({ 
-          credits_remaining: (userCreditsData?.credits_remaining ?? 0) - 1,
-          last_refill_date: userCreditsData?.last_refill_date // unchanged, handled by refill
-        })
-        .eq("user_id", user.id)
-        .gte("credits_remaining", 1);
-
-      if (error) throw error;
-    };
-
     try {
-      await deductCredit();
-
       const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
         method: 'POST',
         headers: {
@@ -161,32 +131,18 @@ const Index = () => {
 
       const result = await response.json();
       setScript(result.output || '');
-      refetchCredits(); // refresh credits count!
       
       toast({
         title: "Script Generated!",
         description: "Your personalized video script is ready to use.",
       });
     } catch (error) {
-      if (
-        // If credits are gone
-        String(error).includes("row security") ||
-        String(error).includes("No rows updated")
-      ) {
-        toast({
-          title: "You’ve used all your credits.",
-          description: "Please upgrade your plan on the Pricing page.",
-          variant: "destructive"
-        });
-        navigate("/pricing");
-      } else {
-        toast({
-          title: "Generation Failed",
-          description: "Unable to generate script. Please check your connection and try again.",
-          variant: "destructive"
-        });
-        console.error('Error generating script:', error);
-      }
+      toast({
+        title: "Generation Failed",
+        description: "Unable to generate script. Please check your connection and try again.",
+        variant: "destructive"
+      });
+      console.error('Error generating script:', error);
     } finally {
       setIsLoading(false);
     }
@@ -735,22 +691,6 @@ const Index = () => {
             </p>
           </div>
         </div>
-      </div>
-      {/* Enhancement: Show user's remaining credits and plan */}
-      <div className="fixed top-4 left-4 z-[200] flex flex-col gap-1 items-start">
-        {!!userCreditsData && (
-          <div className="bg-white/90 dark:bg-gray-800/80 border border-blue-400 dark:border-blue-900 px-3 py-1 rounded-xl flex gap-2 items-center text-xs font-medium shadow">
-            <span className="text-blue-700 dark:text-blue-200 font-semibold">
-              Credits Left:&nbsp;
-              <span className="font-bold">
-                {userCreditsData.credits_remaining}
-              </span>
-            </span>
-            <span className="border-l ml-2 pl-2 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-300 font-normal">
-              {userCreditsData.plan_type}
-            </span>
-          </div>
-        )}
       </div>
     </>
   );

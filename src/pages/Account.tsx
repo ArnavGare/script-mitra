@@ -2,7 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
-import { useUserCreditsNew } from "@/hooks/useUserCreditsNew";
+// Removed: import { useUserCreditsNew } from "@/hooks/useUserCreditsNew";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -15,7 +15,7 @@ function formatDate(iso?: string) {
 export default function Account() {
   const navigate = useNavigate();
   const { user, isLoading } = useSupabaseUser();
-  const { data: dbData, isLoading: loadingCredits } = useUserCreditsNew(user?.id || null);
+  // Removed: const { data: dbData, isLoading: loadingCredits } = useUserCreditsNew(user?.id || null);
 
   // If user not logged in, redirect.
   React.useEffect(() => {
@@ -29,8 +29,9 @@ export default function Account() {
   const fullName = user.user_metadata?.name || "User";
   const email = user.email;
   const signupDate = formatDate(user.created_at);
-  const credits = loadingCredits ? null : dbData?.credits_remaining ?? 0;
-  const planType = dbData?.plan_type || "Free";
+  // Fallbacks since user credits & plan loading are removed:
+  const credits = "-";
+  const planType = "Free";
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-tr from-blue-100 via-blue-200/40 to-white dark:from-gray-900 dark:via-blue-900/40 dark:to-black px-2 py-10">
@@ -57,7 +58,7 @@ export default function Account() {
             <div className="animate-fade-in fade-in text-center" style={{ animationDelay: "0.21s" }}>
               <div className="mt-1 mb-0.5 text-xs text-muted-foreground">Credits Remaining</div>
               <div className="text-5xl md:text-6xl font-extrabold tracking-tight text-blue-800 dark:text-blue-200 mb-1">
-                {loadingCredits ? <span className="animate-pulse">...</span> : credits}
+                {credits}
               </div>
             </div>
             <div className="animate-fade-in fade-in text-center" style={{ animationDelay: "0.28s" }}>
@@ -77,3 +78,4 @@ export default function Account() {
     </main>
   );
 }
+

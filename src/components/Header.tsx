@@ -1,9 +1,10 @@
+
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import HeaderAuthButtons from "./HeaderAuthButtons";
 import HeaderMobileMenu from "./HeaderMobileMenu";
-import UserCreditsBadge from "./UserCreditsBadge";
+// Removed: import UserCreditsBadge from "./UserCreditsBadge";
 
 // Smooth scroll to section helper
 const scrollToSection = (id: string) => {
@@ -49,12 +50,11 @@ export default function Header() {
           <NavLinks onNavigate={handleNavClick} />
         </nav>
         <div className="hidden md:flex items-center gap-3">
-          <UserCreditsBadge />
+          {/* Removed: <UserCreditsBadge /> */}
           <HeaderAuthButtons />
         </div>
         <div className="md:hidden flex items-center">
-          <UserCreditsBadge />
-          {/* pass handleNavClick so mobile menu can use same smooth scroll */}
+          {/* Removed: <UserCreditsBadge /> */}
           <HeaderMobileMenu onNavClick={handleNavClick} />
         </div>
       </div>
@@ -82,3 +82,4 @@ export default function Header() {
     </header>
   );
 }
+
