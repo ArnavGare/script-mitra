@@ -115,7 +115,7 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
+      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,11 +124,14 @@ const Index = () => {
           topic: finalTopic,
           style: formData.style,
           language: formData.language,
-          length: formData.length
-        })
+          length: formData.length,
+        }),
       });
 
       if (!response.ok) {
+        // Log status and body for debugging
+        const errorText = await response.text();
+        console.error("Fetch failed. Status:", response.status, "Error body:", errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -140,12 +143,13 @@ const Index = () => {
         description: "Your personalized video script is ready to use.",
       });
     } catch (error) {
+      console.error('Error generating script:', error);
+
       toast({
         title: "Generation Failed",
         description: "Unable to generate script. Please check your connection and try again.",
         variant: "destructive"
       });
-      console.error('Error generating script:', error);
     } finally {
       setIsLoading(false);
     }
