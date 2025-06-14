@@ -6,8 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  // Use a 'readonly' tuple (best for Tanstack's key inference)
-  const queryKey = ["users-credits", userId] as const;
+  // Explicitly type as readonly tuple
+  const queryKey: readonly [string, string | null] = ["users-credits", userId];
 
   const fetchCredits = async () => {
     if (!userId) return null;
@@ -29,7 +29,7 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Pass queryKey in the expected structure
+      // Use the exact queryKey reference
       queryClient.invalidateQueries({ queryKey });
     }
   });
