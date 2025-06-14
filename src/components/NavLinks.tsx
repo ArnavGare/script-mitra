@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   { name: "Home", anchor: "home" },
@@ -19,8 +20,8 @@ export default function NavLinks({ onNavigate, compact }: Props) {
       {navLinks.map((link) => (
         <li key={link.name}>
           {link.to ? (
-            <a
-              href={link.to}
+            <Link
+              to={link.to}
               className="relative px-2 py-1 sm:px-3 font-semibold text-[1.01rem]
                 tracking-wide font-inter transition-all duration-300 group"
               style={{ letterSpacing: "0.05em" }}
@@ -31,7 +32,7 @@ export default function NavLinks({ onNavigate, compact }: Props) {
               <span
                 className="absolute left-0 bottom-1 w-0 h-[2px] bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full transition-all duration-300 group-hover:w-full"
               />
-            </a>
+            </Link>
           ) : (
             <button
               type="button"
