@@ -9,6 +9,7 @@ import AuthSignUp from "./pages/AuthSignUp";
 import AuthLogin from "./pages/AuthLogin";
 import AuthForgotPassword from "./pages/AuthForgotPassword";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

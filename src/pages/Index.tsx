@@ -8,6 +8,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Copy, Download, RotateCcw, Sparkles, Users, Brain, Clock, Moon, Sun, Plus, Video, Mic, TrendingUp, Star, FileText, Camera, Volume2, Eye, Play, MessageCircle, BarChart3, Award, Gift } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
+import { useSupabaseUser } from "@/hooks/useSupabaseUser";
+import { useUserCredits } from "@/hooks/useUserCredits";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +25,9 @@ const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showCustomTopic, setShowCustomTopic] = useState(false);
   const { toast } = useToast();
+  const { user, isLoading: userLoading } = useSupabaseUser();
+  const { data: userCredits, refetch: refetchCredits, isLoading: creditsLoading } = useUserCredits(user?.id ?? null);
+  const navigate = useNavigate();
 
   const topics = [
     "Mutual Fund Basics",
@@ -72,6 +78,29 @@ const Index = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // If user required, only allow script gen if logged in
+    if (userLoading) return;
+    if (!user?.id) {
+      toast({
+        title: "Please Login",
+        description: "Sign in to generate scripts and manage credits.",
+        variant: "destructive"
+      });
+      navigate("/auth/login");
+      return;
+    }
+
+    // Credit check before generation
+    if (!creditsLoading && (userCredits === null || userCredits <= 0)) {
+      toast({
+        title: "You’ve used all your free credits.",
+        description: "Please upgrade your plan on the Pricing page.",
+        variant: "destructive"
+      });
+      navigate("/pricing");
+      return;
+    }
+
     const finalTopic = formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
     
     if (!finalTopic || !formData.style || !formData.language || !formData.length) {
@@ -94,7 +123,20 @@ const Index = () => {
 
     setIsLoading(true);
     
+    // Deduct 1 credit from user_credits (before generation)
+    const deductCredit = async () => {
+      // Use update to decrement credits atomically IF > 0
+      const { error } = await supabase
+        .from("user_credits")
+        .update({ credits: (userCredits ?? 0) - 1, updated_at: new Date().toISOString() })
+        .eq("user_id", user.id)
+        .gte("credits", 1); // Only allow if credits >=1
+      if (error) throw error;
+    };
+
     try {
+      await deductCredit();
+
       const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
         method: 'POST',
         headers: {
@@ -114,18 +156,32 @@ const Index = () => {
 
       const result = await response.json();
       setScript(result.output || '');
+      refetchCredits(); // refresh credits count!
       
       toast({
         title: "Script Generated!",
         description: "Your personalized video script is ready to use.",
       });
     } catch (error) {
-      console.error('Error generating script:', error);
-      toast({
-        title: "Generation Failed",
-        description: "Unable to generate script. Please check your connection and try again.",
-        variant: "destructive"
-      });
+      if (
+        // If credits are gone
+        String(error).includes("row security") ||
+        String(error).includes("No rows updated")
+      ) {
+        toast({
+          title: "You’ve used all your free credits.",
+          description: "Please upgrade your plan on the Pricing page.",
+          variant: "destructive"
+        });
+        navigate("/pricing");
+      } else {
+        toast({
+          title: "Generation Failed",
+          description: "Unable to generate script. Please check your connection and try again.",
+          variant: "destructive"
+        });
+        console.error('Error generating script:', error);
+      }
     } finally {
       setIsLoading(false);
     }
