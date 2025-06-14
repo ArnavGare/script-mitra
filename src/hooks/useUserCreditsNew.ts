@@ -6,15 +6,13 @@ import type { Database } from "@/integrations/supabase/types";
 // Fix the type for user credits
 type UsersCreditsRow = Database["public"]["Tables"]["users_credits"]["Row"];
 
-// Explicitly define queryKey type
-type UserCreditsQueryKey = [string, string | null];
-
 // Fetches row for currently logged-in user
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  // queryKey should be typed explicitly everywhere
-  const queryKey: UserCreditsQueryKey = ["users-credits", userId];
+  // Use 'as const' for a more specific and stable query key type.
+  // This helps with type inference in invalidateQueries.
+  const queryKey = ["users-credits", userId] as const;
 
   const fetchCredits = async (): Promise<UsersCreditsRow | null> => {
     if (!userId) return null;
@@ -37,15 +35,15 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Pass the queryKey object directly to invalidateQueries
-      // This avoids the problematic explicit type annotation on an intermediate 'filters' variable
+      // The 'queryKey' with 'as const' should now have a type that
+      // works correctly with invalidateQueries.
       queryClient.invalidateQueries({ queryKey: queryKey });
     }
   });
 
   // Tell useQuery what data to expect (fixing type inference!)
   const query = useQuery<UsersCreditsRow | null>({
-    queryKey,
+    queryKey, // This will now be Readonly<["users-credits", string | null]>
     queryFn: fetchCredits,
     enabled: !!userId,
     refetchInterval: 30000, // Refetch every 30 seconds
@@ -53,4 +51,3 @@ export function useUserCreditsNew(userId: string | null) {
 
   return { ...query, deductCredit };
 }
-
