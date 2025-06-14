@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Pricing from "./pages/Pricing";
 import Account from "./pages/Account";
 import LandingGuard from "./components/LandingGuard";
+import HashtagsMitra from "./pages/HashtagsMitra";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/account" element={<Account />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/hashtags-mitra" element={<HashtagsMitra />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
