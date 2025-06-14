@@ -10,6 +10,7 @@ import AuthLogin from "./pages/AuthLogin";
 import AuthForgotPassword from "./pages/AuthForgotPassword";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Pricing from "./pages/Pricing";
+import Account from "./pages/Account";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,11 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route path="/account" element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          } />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
