@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
+  const queryKey = ["users-credits", userId] as const;
+
   const fetchCredits = async () => {
     if (!userId) return null;
     const { data, error } = await supabase
@@ -26,12 +28,12 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users-credits", userId] as [string, string | null] });
+      queryClient.invalidateQueries({ queryKey });
     }
   });
 
   const query = useQuery({
-    queryKey: ["users-credits", userId],
+    queryKey,
     queryFn: fetchCredits,
     enabled: !!userId,
     refetchInterval: 30000,
