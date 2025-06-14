@@ -1,5 +1,5 @@
 
-import { useQuery, useMutation, useQueryClient, type InvalidateQueryFilters } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -10,7 +10,7 @@ type UsersCreditsRow = Database["public"]["Tables"]["users_credits"]["Row"];
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  const queryKey = ["users-credits", userId];
+  const queryKey = ["users-credits", userId] as const;
 
   const fetchCredits = async (): Promise<UsersCreditsRow | null> => {
     if (!userId) return null;
@@ -33,9 +33,10 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // Invalidate all queries with the "users-credits" key
+      // Use the predicate instead of queryKey to avoid TS type issues
       queryClient.invalidateQueries({
-        queryKey: ["users-credits"]
+        predicate: (q) =>
+          Array.isArray(q.queryKey) && q.queryKey[0] === "users-credits",
       });
     }
   });
