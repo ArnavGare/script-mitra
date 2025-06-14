@@ -10,9 +10,7 @@ type UsersCreditsRow = Database["public"]["Tables"]["users_credits"]["Row"];
 export function useUserCreditsNew(userId: string | null) {
   const queryClient = useQueryClient();
 
-  // Use 'as const' for a more specific and stable query key type.
-  // This helps with type inference in invalidateQueries.
-  const queryKey = ["users-credits", userId] as const;
+  const queryKey = ["users-credits", userId];
 
   const fetchCredits = async (): Promise<UsersCreditsRow | null> => {
     if (!userId) return null;
@@ -35,15 +33,18 @@ export function useUserCreditsNew(userId: string | null) {
       if (error) throw error;
     },
     onSuccess: () => {
-      // The 'queryKey' with 'as const' should now have a type that
-      // works correctly with invalidateQueries.
-      queryClient.invalidateQueries({ queryKey: queryKey });
+      // Use a more explicit approach to avoid TypeScript inference issues
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          return query.queryKey[0] === "users-credits" && query.queryKey[1] === userId;
+        }
+      });
     }
   });
 
   // Tell useQuery what data to expect (fixing type inference!)
   const query = useQuery<UsersCreditsRow | null>({
-    queryKey, // This will now be Readonly<["users-credits", string | null]>
+    queryKey,
     queryFn: fetchCredits,
     enabled: !!userId,
     refetchInterval: 30000, // Refetch every 30 seconds
