@@ -420,18 +420,14 @@ body {
   font-family: 'Playfair Display', 'Inter', 'Satoshi', 'Poppins', 'Space Grotesk', system-ui, serif !important;
 }
 
-/* Premium gradient-glow headline */
+/* Premium minimal clean headline (plain white inside, soft outer shadow only) */
 .headline-glow {
-  background: linear-gradient(92deg,#fff 25%,#60a5fa 55%,#a06fff 82%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #fff !important;
   text-shadow:
-    0 3px 32px #4f46e540,
-    0 0px 12px #7dd3fc88,
-    0 1.5px 4px #8b5cf655,
-    0 2px 18px #7f9cf555;
-  filter: brightness(1.18) drop-shadow(0 1px 14px #93c5fd81);
+    0 3px 22px #4f46e528,   /* gentle blue/purple shadow for soft lift */
+    0 0.5px 12px #93c5fd14,
+    0 1.5px 4px #7dd3fc12;
+  filter: brightness(1.09);
   letter-spacing: 0.016em;
   animation: headline-in 0.69s cubic-bezier(.33,.65,.51,.98);
 }
