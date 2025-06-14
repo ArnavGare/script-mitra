@@ -67,31 +67,8 @@ export default function HashtagsMitra() {
       <MotionGridBg />
       <Header />
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 transition-colors duration-500 overflow-x-hidden">
-        <div
-          className={`
-            w-full max-w-[800px] mx-auto animate-fade-in
-            relative group transition-all duration-300
-          `}
-        >
-          <section
-            className={`
-              w-full px-5 sm:px-10 pt-10 pb-8 rounded-2xl
-              relative z-10 backdrop-blur-3xl
-              border border-cyan-200/28 dark:border-violet-300/18
-              bg-[linear-gradient(124deg,rgba(44,62,122,0.44)_12%,rgba(41,54,99,0.66)_63%,rgba(60,91,148,0.54)_100%)]
-              shadow-[0_8px_64px_1.5px_rgba(63,242,255,0.08),0_1.5px_8px_0_rgba(113,86,255,0.07)]
-              transition-all duration-300
-              group-hover:shadow-[0_0_22px_2px_#47fdff80,0_6px_64px_0_#b07fff66,0_2px_8px_0_rgba(87,96,210,0.18)]
-              group-hover:border-cyan-300/95
-              before:absolute before:inset-0 before:-z-10 before:rounded-2xl before:border-2 before:border-transparent before:transition-all before:duration-300
-              group-hover:before:border-cyan-400/70
-            `}
-            style={{
-              boxShadow:
-                "0 12px 60px 0 rgba(69,180,255,0.15), 0 1.5px 4px rgba(87,96,210,0.05), 0 0 4px #66fcff40",
-              background: "linear-gradient(120deg,rgba(54,77,147,0.48) 10%,rgba(41,54,99,0.72) 63%,rgba(60,91,148,0.54) 100%)",
-            }}
-          >
+        <div className="w-full max-w-[900px] mx-auto p-px rounded-2xl bg-gradient-to-b from-white/20 to-transparent">
+          <section className="w-full h-full bg-white/60 dark:bg-black/70 px-5 sm:px-9 pt-10 pb-8 rounded-[15px] shadow-smooth relative z-10 border-white/10 dark:border-white/10 backdrop-blur-xl saturate-150">
             <Hero />
             <ScriptForm
               input={input}
@@ -117,10 +94,10 @@ export default function HashtagsMitra() {
             background: rgba(24,19,38,0.76);
           }
           .glass-input {
-            background: rgba(249, 250, 255, 0.58) !important;
+            background: rgba(249, 250, 255, 0.6);
           }
           .dark .glass-input {
-            background: rgba(28,23,44,0.28) !important;
+            background: rgba(25,16,39,0.38);
           }
         `}
       </style>
