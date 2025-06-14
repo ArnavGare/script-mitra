@@ -84,12 +84,19 @@ export default function HashtagsMitra() {
   return (
     <>
       <Header />
-      <div className="min-h-screen flex flex-col items-center justify-center py-9 px-2 relative overflow-hidden
-        bg-gradient-to-br from-[#19214d] via-[#310b5e] to-[#192d61] animate-gradient-x">
-        {/* Decorative animated waves or glow */}
-        <div className="absolute top-0 left-0 w-full h-[340px] pointer-events-none select-none z-0" style={{background: "radial-gradient(ellipse at 50% 0%, #7de7fd22 50%, transparent 120%)"}}>
-          <div className="absolute left-1/3 top-10 w-2/3 h-28 rounded-full blur-2xl bg-gradient-to-r from-cyan-400/20 via-purple-500/30 to-cyan-400/10"></div>
-          <div className="absolute top-36 left-0 w-full h-32 bg-gradient-to-l from-purple-900/20 via-transparent to-cyan-600/10 blur-3xl"></div>
+      <div
+        className="min-h-screen flex flex-col items-center justify-center py-10 px-2 relative overflow-hidden bg-black">
+        {/* Animated Motion Grid BG Overlays, matching the main page */}
+        {/* Animation layer uses a grid pattern with subtle shimmer */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 w-full h-full -z-10"
+        >
+          {/* Main animated grid: soft lines + animated dots */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.02)_1px,_transparent_1px)] [background-size:36px_36px] animate-[gradientX_16s_linear_infinite] opacity-70"></div>
+          {/* Animated subtle grid shimmer */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70" />
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[90vw] h-48 rounded-full blur-3xl bg-gradient-to-r from-[#383afc0a] via-[#8f68f914] to-[#16f8ef09] animate-pulse opacity-80 pointer-events-none" />
         </div>
         <section className="max-w-2xl w-full mx-auto relative z-10">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3 text-white tracking-tight text-center font-playfair headline-glow">
@@ -166,8 +173,6 @@ export default function HashtagsMitra() {
             )}
           </div>
         </section>
-        {/* Animated BG glows */}
-        <div className="absolute bottom-0 left-0 w-full h-44 pointer-events-none -z-10" style={{background: "radial-gradient(ellipse at 50% 90%, #7de7fd22 70%, transparent 110%)"}} />
       </div>
     </>
   );
