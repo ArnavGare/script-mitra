@@ -48,7 +48,7 @@ export default function HashtagsMitra() {
     return () => intervalRef.current && clearInterval(intervalRef.current);
   }, []);
 
-  // Generate hashtags by POSTing to main webhook
+  // Generate hashtags by POSTing to the provided webhook URL
   async function handleGenerate(e?: React.FormEvent) {
     if (e) e.preventDefault();
     if (!input.trim()) {
@@ -58,7 +58,7 @@ export default function HashtagsMitra() {
     setIsLoading(true);
     setHashtags([]);
     try {
-      const res = await fetch("/api/main-webhook", { // <-- change this if your actual main webhook URL is different!
+      const res = await fetch("https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ script: input }),
