@@ -48,7 +48,7 @@ export default function HashtagsMitra() {
     return () => intervalRef.current && clearInterval(intervalRef.current);
   }, []);
 
-  // Generate hashtags by POSTing to the provided webhook URL
+  // Generate hashtags by POSTing to the provided webhook URL and parsing .output
   async function handleGenerate(e?: React.FormEvent) {
     if (e) e.preventDefault();
     if (!input.trim()) {
@@ -65,8 +65,36 @@ export default function HashtagsMitra() {
       });
       if (!res.ok) throw new Error("Could not generate hashtags");
       const data = await res.json();
-      setHashtags(data.hashtags || data.tags || []);
-      if (!(data.hashtags && data.hashtags.length) && !(data.tags && data.tags.length)) {
+
+      let finalTags: string[] = [];
+      // If webhook returns .output as a string: "#tag1 #tag2 #tag3"
+      if (data.output && typeof data.output === "string") {
+        // Extract all hashtags as words prefixed by #
+        finalTags = data.output
+          .split(/[#\s]/)
+          .map(t => t.trim())
+          .filter(t => !!t)
+          .filter(t => t[0] !== '@'); // skip any accidental mentions
+        // restore # prefix (output format is '#tag1 #tag2 ...')
+        finalTags = data.output
+          .split(/[#]/)
+          .map(s => s.trim())
+          .filter(Boolean)
+          .map(tagStr => {
+            // only take the first sequence of non-space chars (up to space or punctuation)
+            const [firstWord] = tagStr.split(/\s|,|\./);
+            return firstWord ? firstWord.replace(/\s/g, '') : '';
+          })
+          .filter(t => t.length > 0);
+      } else if (Array.isArray(data.hashtags)) {
+        finalTags = data.hashtags;
+      } else if (Array.isArray(data.tags)) {
+        finalTags = data.tags;
+      }
+
+      setHashtags(finalTags);
+
+      if (!finalTags.length) {
         toast.error("No hashtags found. Try revising your script!");
       }
     } catch (err) {
@@ -122,6 +150,9 @@ export default function HashtagsMitra() {
           {/* Hashtag Output */}
           {hashtags.length > 0 && (
             <div className="w-full mt-8 flex flex-col items-center gap-2 fade-in">
+              <div className="w-full text-center mb-1">
+                <span className="text-lg font-semibold text-cyan-300">Hashtags generated:</span>
+              </div>
               <div className="flex flex-wrap justify-center gap-2 mb-2">
                 {hashtags.map((tag, i) => (
                   <Badge key={tag+i} variant="secondary" className="rounded-full px-4 py-2 font-mono text-lg bg-gradient-to-r from-[#3ddadf] via-[#9877ec] to-[#9f8af3] text-white shadow hover:scale-105 transition duration-300 cursor-pointer select-text">
