@@ -100,12 +100,8 @@ export default function LandingGuard({ children }: { children: React.ReactNode }
     );
   }
 
-  // Wrap main app with a premium zoom-in animation
-  return (
-    <div className="premium-zoomin min-h-screen">
-      {children}
-    </div>
-  );
+  // Render main app if access key is entered
+  return <>{children}</>;
 }
 
 // Utility to clear access key (for logout, to be used elsewhere)
