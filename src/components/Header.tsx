@@ -1,6 +1,8 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 
 // Animated glowing announcement bar
 function AnnouncementBar() {
@@ -48,13 +50,56 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shrink, setShrink] = useState(false);
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setShrink(window.scrollY > 14);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+  // Authentication state
+  const [session, setSession] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
+  const [userName, setUserName] = useState<string>("");
+
+  const navigate = useNavigate();
+
+  // Set up listener for auth state change - BEST PRACTICE
+  useEffect(() => {
+    // Attach listener before fetching current session
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
+
+  // Determine display name
+  useEffect(() => {
+    if (!user) {
+      setUserName("");
+      return;
+    }
+    // Name may be in user.user_metadata, else fallback to email
+    const meta = user.user_metadata || {};
+    if (meta.name) {
+      setUserName(meta.name);
+    } else if (meta.full_name) {
+      setUserName(meta.full_name);
+    } else if (user.email) {
+      // fallback to part before '@'
+      setUserName(user.email.split("@")[0]);
+    } else {
+      setUserName("User");
+    }
+  }, [user]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+    setUser(null);
+    setUserName("");
+    navigate("/", { replace: true });
+  };
 
   return (
     <>
@@ -114,6 +159,36 @@ export default function Header() {
               </li>
             ))}
           </ul>
+
+          {/* Auth Buttons/Info - Desktop */}
+          <div className="hidden md:flex gap-2 items-center ml-6">
+            {!user ? (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/auth/login")}
+                >
+                  Login
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={() => navigate("/auth/signup")}
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <>
+                <span className="text-white font-medium mr-2">{`Welcome, ${userName}`}</span>
+                <Button
+                  variant="outline"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </>
+            )}
+          </div>
 
           {/* Call-to-action Button */}
           <button
@@ -185,13 +260,54 @@ export default function Header() {
                 {link.name}
               </button>
             ))}
+
+            {/* Mobile Auth Buttons */}
+            {!user ? (
+              <div className="w-full flex flex-col gap-3 mt-2 mb-6">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    navigate("/auth/login");
+                  }}
+                >
+                  Login
+                </Button>
+                <Button
+                  variant="default"
+                  className="w-full"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    navigate("/auth/signup");
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </div>
+            ) : (
+              <div className="w-full flex flex-col gap-3 mt-2 mb-6">
+                <span className="text-white font-medium">{`Welcome, ${userName}`}</span>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    handleLogout();
+                  }}
+                >
+                  Logout
+                </Button>
+              </div>
+            )}
+
             <button
               type="button"
               onClick={() => {
                 setMobileOpen(false);
                 handleSmoothScroll("generate-scripts");
               }}
-              className="w-full mt-6 inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-white neon-gradient-bg transition-all text-base shadow-xl
+              className="w-full mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-full font-bold text-white neon-gradient-bg transition-all text-base shadow-xl
                   hover:scale-105 focus-visible:ring-2 ring-cyan-300"
               style={{
                 fontFamily: '"Space Grotesk", Poppins, sans-serif',
