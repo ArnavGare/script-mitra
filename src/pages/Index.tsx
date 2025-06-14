@@ -93,7 +93,7 @@ const Index = () => {
     }
 
     const finalTopic = formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
-    
+
     if (!finalTopic || !formData.style || !formData.language || !formData.length) {
       toast({
         title: "Missing Information",
@@ -113,9 +113,9 @@ const Index = () => {
     }
 
     setIsLoading(true);
-    
+
     try {
-      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
+      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const Index = () => {
 
       const result = await response.json();
       setScript(result.output || '');
-      
+
       toast({
         title: "Script Generated!",
         description: "Your personalized video script is ready to use.",

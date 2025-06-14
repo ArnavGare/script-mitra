@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -12,7 +11,7 @@ import HashtagList from "@/components/hashtags-mitra/HashtagList";
 import TipsSection from "@/components/hashtags-mitra/TipsSection";
 import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 
-const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950";
+const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950";
 
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
