@@ -183,8 +183,12 @@
 
   /* Card hover premium glow */
   .glow-hover-card {
-    transition: box-shadow 0.25s cubic-bezier(.44,.75,.49,1.23), 
-                filter 0.2s cubic-bezier(.44,.75,.49,1.23);
+    /* ANIMATION: Make glow and shadow fade in/out smoothly */
+    transition: 
+      box-shadow 0.5s cubic-bezier(.44,.75,.49,1.23),
+      filter 0.5s cubic-bezier(.44,.75,.49,1.23);
+    /* Ensure transition is only when hovered, not always */
+    will-change: box-shadow, filter;
   }
   .glow-hover-card:hover, .glow-hover-card:focus-visible {
     box-shadow: 0 8px 32px 0 rgba(140,43,255,0.13), /* Purple Glow */
