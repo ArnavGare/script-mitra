@@ -28,39 +28,56 @@ export default function HashtagsMitra() {
   const [captions, setCaptions] = useState<string[]>([]);
   const [structuredOutput, setStructuredOutput] = useState<StructuredResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [webhookResponse, setWebhookResponse] = useState<any>(null);
   const { copy, copiedIdx } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim()) {
-      toast.error("Paste your script first!");
+      toast.error("Please enter your script first!");
       return;
     }
+    
     setIsLoading(true);
     setCaptions([]);
     setStructuredOutput(null);
+    setWebhookResponse(null);
+    
     try {
-      // Send the script to the webhook as required
+      console.log("Sending script to webhook:", input);
+      
+      // Send the script to the webhook
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ script: input, type: "captions" }),
       });
-      if (!res.ok) throw new Error("Could not generate captions");
+      
+      if (!res.ok) {
+        throw new Error(`Webhook responded with status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log("Webhook response:", data);
+      
+      // Store the full webhook response for debugging
+      setWebhookResponse(data);
 
       // Check if we have structured output (title, caption, hashtags, description)
       if (data.title || data.caption || data.hashtags || data.description) {
+        console.log("Setting structured output:", data);
         setStructuredOutput({
           title: data.title,
           caption: data.caption,
           hashtags: data.hashtags,
           description: data.description
         });
+        toast.success("Content generated successfully!");
       } else {
         // Fall back to original captions list format
         let finalCaptions: string[] = [];
+        
         if (data.output && typeof data.output === "string") {
           finalCaptions = data.output
             .split(/\n/)
@@ -71,17 +88,28 @@ export default function HashtagsMitra() {
           finalCaptions = data.captions;
         } else if (Array.isArray(data.text)) {
           finalCaptions = data.text;
+        } else if (typeof data === "string") {
+          finalCaptions = data
+            .split(/\n/)
+            .map(s => s.trim())
+            .filter(Boolean)
+            .filter(caption => caption.length > 10);
         }
 
         setCaptions(finalCaptions);
 
-        if (!finalCaptions.length) {
-          toast.error("No captions found. Try revising your script!");
+        if (finalCaptions.length > 0) {
+          toast.success(`Generated ${finalCaptions.length} captions!`);
+        } else {
+          toast.error("No captions found in response. Please check your script and try again.");
+          console.log("Full webhook response for debugging:", data);
         }
       }
     } catch (err) {
+      console.error("Error generating captions:", err);
       toast.error("Unable to generate captions. Please try again.");
     }
+    
     setIsLoading(false);
   }
 
@@ -118,6 +146,7 @@ export default function HashtagsMitra() {
                 </OGFlyInText>
               </h1>
             </div>
+            
             <ScriptForm
               input={input}
               setInput={setInput}
@@ -125,6 +154,7 @@ export default function HashtagsMitra() {
               isLoading={isLoading}
               placeholder={placeholder}
             />
+            
             <TipCarousel className="my-7" />
             
             {/* Display structured output if available */}
@@ -133,8 +163,16 @@ export default function HashtagsMitra() {
             )}
             
             {/* Fall back to caption list if no structured output */}
-            {!structuredOutput && (
+            {!structuredOutput && captions.length > 0 && (
               <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
+            )}
+            
+            {/* Debug information (remove in production) */}
+            {webhookResponse && process.env.NODE_ENV === 'development' && (
+              <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                <h3 className="text-sm font-semibold mb-2">Webhook Response (Debug):</h3>
+                <pre className="text-xs overflow-x-auto">{JSON.stringify(webhookResponse, null, 2)}</pre>
+              </div>
             )}
             
             <TipsSection />
