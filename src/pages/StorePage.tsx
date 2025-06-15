@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -11,7 +10,6 @@ import { ProductCard } from "@/components/ProductCard";
 
 // CATEGORY MAPPING for filter usability
 const categories = ["All", "Templates", "Hooks", "Scripts", "Workflows", "PDFs"];
-
 function getCategoryFromTag(tag?: string | null) {
   if (!tag) return "";
   if (tag.toLowerCase().includes("template")) return "Templates";
@@ -21,35 +19,42 @@ function getCategoryFromTag(tag?: string | null) {
   if (tag.toLowerCase().includes("hook")) return "Hooks";
   return "";
 }
-
 export default function StorePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   // 1. Load products from database
-  const { data: products, isLoading, error } = useQuery({
+  const {
+    data: products,
+    isLoading,
+    error
+  } = useQuery({
     queryKey: ["store-products"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const {
+        data,
+        error
+      } = await supabase.from("products").select("*").order("created_at", {
+        ascending: false
+      });
       if (error) throw error;
       return data || [];
-    },
+    }
   });
 
   // 2. Load download counts for all products
-  const { data: downloadsData } = useQuery({
+  const {
+    data: downloadsData
+  } = useQuery({
     queryKey: ["downloads-counts"],
     queryFn: async () => {
       if (!products) return {};
       if (products.length === 0) return {};
       // Get counts for all product ids in a single request
-      const ids = products.map((p) => p.id);
-      const { data, error } = await supabase
-        .from("product_downloads")
-        .select("product_id, count:product_id")
-        .in("product_id", ids);
+      const ids = products.map(p => p.id);
+      const {
+        data,
+        error
+      } = await supabase.from("product_downloads").select("product_id, count:product_id").in("product_id", ids);
       if (error) return {};
       // Return { [product_id]: count }
       const counts: Record<string, number> = {};
@@ -59,26 +64,19 @@ export default function StorePage() {
       return counts;
     },
     // Only fetch when products is loaded
-    enabled: !!products && products.length > 0,
+    enabled: !!products && products.length > 0
   });
 
   // 3. Filtered product list
   let filteredProducts = products || [];
   if (selectedCategory !== "All") {
-    filteredProducts = filteredProducts.filter(
-      (p) =>
-        (p.category && p.category.toLowerCase() === selectedCategory.toLowerCase()) ||
-        (selectedCategory === "PDFs" && p.tag === "PDF")
-    );
+    filteredProducts = filteredProducts.filter(p => p.category && p.category.toLowerCase() === selectedCategory.toLowerCase() || selectedCategory === "PDFs" && p.tag === "PDF");
   }
 
   // 4. Find popular picks
   const popularResources = (products || []).filter((p: any) => !!p.popular);
-
   if (error) return <div className="text-red-500">Error loading products</div>;
-
-  return (
-    <>
+  return <>
       <Header />
       {/* Hero Section */}
       <div className="relative pt-12 pb-2 min-h-[225px] flex items-center justify-center w-full bg-gradient-to-br from-[#181d2b] via-[#221f32] to-[#22184a] mx-0 my-0 px-[173px] rounded-sm py-[23px]">
@@ -98,28 +96,10 @@ export default function StorePage() {
 
       {/* Categories Section */}
       <section className="max-w-5xl mx-auto w-full mt-8 px-4">
-        <div className="flex flex-wrap gap-3 items-center justify-center pb-4">
-          {categories.map((cat) => (
-            <Button
-              key={cat}
-              variant={selectedCategory === cat ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedCategory(cat)}
-              className={clsx(
-                "rounded-full px-5 font-medium text-sm transition-shadow duration-200",
-                selectedCategory === cat
-                  ? "bg-gradient-to-r from-blue-600 to-purple-500 text-white shadow-lg"
-                  : "bg-white/20 border-cyan-100/15 text-blue-800 dark:text-white hover:bg-blue-100/60"
-              )}
-            >
-              {cat}
-            </Button>
-          ))}
-        </div>
+        
       </section>
 
-      {!isLoading && (
-        <>
+      {!isLoading && <>
           {/* Popular Picks */}
           <section className="max-w-5xl mx-auto w-full px-4">
             <div className="flex items-center gap-2 mb-3">
@@ -129,14 +109,7 @@ export default function StorePage() {
               </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-              {popularResources.map((prod: any, i: number) => (
-                <ProductCard
-                  key={prod.id}
-                  item={prod}
-                  delay={i * 0.04}
-                  downloadCount={downloadsData?.[prod.id] || 0}
-                />
-              ))}
+              {popularResources.map((prod: any, i: number) => <ProductCard key={prod.id} item={prod} delay={i * 0.04} downloadCount={downloadsData?.[prod.id] || 0} />)}
             </div>
           </section>
 
@@ -146,18 +119,10 @@ export default function StorePage() {
               Digital Library
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
-              {filteredProducts.map((prod: any, i: number) => (
-                <ProductCard
-                  key={prod.id}
-                  item={prod}
-                  delay={i * 0.03}
-                  downloadCount={downloadsData?.[prod.id] || 0}
-                />
-              ))}
+              {filteredProducts.map((prod: any, i: number) => <ProductCard key={prod.id} item={prod} delay={i * 0.03} downloadCount={downloadsData?.[prod.id] || 0} />)}
             </div>
           </section>
-        </>
-      )}
+        </>}
 
       {isLoading && <div className="px-8 py-20 text-center text-xl">Loading products…</div>}
 
@@ -169,6 +134,5 @@ export default function StorePage() {
           </span>
         </div>
       </footer>
-    </>
-  );
+    </>;
 }
