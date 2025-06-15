@@ -18,7 +18,7 @@ export default function ScriptForm({
   setInput,
   handleGenerate,
   isLoading,
-  placeholder
+  placeholder // Keep this prop but don't use it
 }: ScriptFormProps) {
 
   const handlePaste = async (e: React.MouseEvent) => {
@@ -41,7 +41,7 @@ export default function ScriptForm({
         <div className="relative w-full">
           <Textarea
             id="script-input"
-            placeholder={placeholder}
+            placeholder=""
             value={input}
             onChange={e => setInput(e.target.value)}
             rows={6}
