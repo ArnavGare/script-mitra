@@ -1,4 +1,3 @@
-
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
@@ -48,7 +47,7 @@ export default function Header() {
           <Logo />
         </div>
         <nav className="hidden md:flex items-center flex-1 justify-center">
-          <NavLinks onNavigate={handleNavClick} />
+          <NavLinks />
         </nav>
         <div className="hidden md:flex items-center gap-3">
           {hasAccess && (

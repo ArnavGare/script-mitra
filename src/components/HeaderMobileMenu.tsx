@@ -46,10 +46,7 @@ export default function HeaderMobileMenu({ onNavClick }: Props) {
               </button>
             </div>
             <nav className="flex flex-col items-center justify-center px-5 pt-5 pb-3 gap-6">
-              <NavLinks
-                onNavigate={handleNavigate}
-                compact
-              />
+              <NavLinks compact />
             </nav>
             <div className="h-px bg-cyan-900/25 w-11/12 mx-auto mb-3 rounded" />
             <div className="flex justify-center items-center px-4">
