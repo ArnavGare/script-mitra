@@ -34,24 +34,7 @@ const Index = () => {
       <Header />
       {/* SUPER PROMINENT FLOATING LOGOUT BUTTON, BOTTOM RIGHT */}
       <FloatingLogoutButton />
-      {/* --- Floating DailyQuotaBox, BOTTOM RIGHT, always under header --- */}
-      <div
-        className="fixed z-30 bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-12"
-        style={{
-          pointerEvents: "none",
-        }}
-      >
-        <div
-          style={{
-            pointerEvents: "auto",
-            // Prevent covering header's shadow/interactivity when scrolled to top
-            maxWidth: 260,
-            boxShadow: "0 4px 32px 2px rgba(50,60,120,0.07)",
-          }}
-        >
-          <DailyQuotaBox />
-        </div>
-      </div>
+      {/* --- Remove floating quota box, now globally rendered in App.tsx --- */}
       {/* --- GRID ANIMATED BACKGROUND (premium grid, above ultra-premium video/bg, below content) --- */}
       <MotionGridBg />
       {/* --- ULTRA-PREMIUM ANIMATED BACKGROUND, below all content (z-index ordering important) --- */}

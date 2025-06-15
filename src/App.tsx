@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +13,7 @@ import PrivateRoute from "@/components/PrivateRoute";
 import ForbiddenPage from "@/pages/ForbiddenPage";
 import ScriptMitraPage from "@/pages/ScriptMitraPage";
 import AccountPage from "./pages/AccountPage";
+import DailyQuotaBox from "@/components/DailyQuotaBox"; // <-- Import
 
 const queryClient = new QueryClient();
 
@@ -21,6 +23,23 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        {/* Floating DailyQuotaBox, bottom-right on every page */}
+        <div
+          className="fixed z-30 bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-12"
+          style={{
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              pointerEvents: "auto",
+              maxWidth: 260,
+              boxShadow: "0 4px 32px 2px rgba(50,60,120,0.07)",
+            }}
+          >
+            <DailyQuotaBox />
+          </div>
+        </div>
         <Routes>
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/403" element={<ForbiddenPage />} />
@@ -70,3 +89,4 @@ const App = () => (
 );
 
 export default App;
+
