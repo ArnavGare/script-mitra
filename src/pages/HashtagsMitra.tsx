@@ -171,8 +171,7 @@ export default function HashtagsMitra() {
             <div className="flex justify-center mb-3">
               <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow font-playfair relative">
                 <OGFlyInText>
-                  <span role="img" aria-label="captions-mitra">📝</span>
-                  Captions Mitra – Generate Engaging Captions for Your Content
+                  Captions Mitra
                 </OGFlyInText>
               </h1>
             </div>
