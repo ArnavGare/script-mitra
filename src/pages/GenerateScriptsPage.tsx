@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 
 export default function GenerateScriptsPage() {
   // No login, signup, or user checks anywhere.
+  // Removed any code that may notify 'Please Login'
   return (
     <>
       <Header />
