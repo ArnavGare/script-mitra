@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -109,11 +108,6 @@ export function ProductCard({
         <span className="relative z-10 flex items-center justify-center w-full h-full">
           <IconComp className="w-10 h-10 text-white drop-shadow-lg" />
         </span>
-        {fileExt && (
-          <span className="absolute -bottom-2 right-2 z-20 bg-black/90 text-white font-bold rounded-full text-xs px-2 py-[2px] shadow border border-white/20 select-none">
-            {fileExt}
-          </span>
-        )}
       </div>
       <div className="flex-1 flex flex-col items-center justify-center px-5 w-full">
         <h3 className="font-bold text-gray-900 dark:text-white text-base md:text-lg text-center mb-1 font-inter">
@@ -156,4 +150,3 @@ export function ProductCard({
     </div>
   );
 }
-
