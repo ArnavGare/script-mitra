@@ -94,4 +94,32 @@
     will-change: transform, opacity, filter;
     backface-visibility: hidden;
   }
+  /* Premium glass-glow box for 1M$ look */
+  .premium-glassbox {
+    position: relative;
+    background: linear-gradient(115deg,rgba(11,16,52,0.73) 44%,rgba(56,59,104,0.38) 100%);
+    border-radius: 2rem;
+    box-shadow: 0 4px 32px #3146ff22, 0 2px 18px #00fff055;
+    backdrop-filter: blur(14px) saturate(1.11);
+    overflow: hidden;
+  }
+  .premium-glassbox:hover,
+  .premium-glassbox:focus-visible {
+    box-shadow:
+      0 8px 46px 2px #2bf1faf2,
+      0 8px 40px #9377ff77,
+      0 2px 14px #36b3ff90,
+      0 0.5px 2px #5eeeffbb;
+    /* subtle glow and color around border */
+    filter: brightness(1.04) drop-shadow(0 0 16px #b4e1ff48);
+    outline: none;
+  }
+  .premium-glassbox:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 18px #72e4ff44;
+  }
+  .premium-glassbox .group-hover\:filter-bright:hover,
+  .premium-glassbox .group-hover\:filter-bright:focus {
+    filter: brightness(1.19) blur(1.2px);
+  }
 }
