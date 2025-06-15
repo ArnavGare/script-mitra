@@ -450,7 +450,7 @@ body {
 }
 
 /* Apply font to Playfair utility */
-// Optional, for global override with Tailwind:
+/* Optional, for global override with Tailwind: */
 .font-playfair {
   font-family: 'Playfair Display', serif !important;
 }
