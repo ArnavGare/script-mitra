@@ -38,7 +38,7 @@ export default function HashtagsMitra() {
     setIsLoading(true);
     setHashtags([]);
 
-    // Helper to poll webhook until user_id matches current user or timeout
+    // Poll the webhook until we get an output with the correct user id, or time out
     async function fetchUntilMatched(retries = 6): Promise<any> {
       for (let i = 0; i < retries; ++i) {
         const res = await fetch(WEBHOOK_URL, {
@@ -50,11 +50,11 @@ export default function HashtagsMitra() {
         const data = await res.json();
         let outStr = typeof data.output === "string" ? data.output : "";
         if (outStr) {
-          // Safely identify user id in first non-empty line, then check
           const lines = outStr.split('\n');
+          // Find the first non-empty line (should be user_id)
           const foundUid = lines.find(l => l.trim().length > 0)?.trim() || "";
           if (foundUid === user.id) {
-            // Output lines after user_id and first following blank line
+            // Output lines after user id and first following blank line
             let firstBlankIdx = lines.findIndex((l, idx) => idx > 0 && l.trim() === "");
             let outputLines = lines.slice(firstBlankIdx + 1);
             return { ...data, output: outputLines.join('\n') };
