@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +8,7 @@ import OGFlyInText from "@/components/OGFlyInText";
 import ScriptMitraForm from "./scriptmitra/ScriptMitraForm";
 import ScriptMitraScriptBox from "./scriptmitra/ScriptMitraScriptBox";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
+import { Button } from "@/components/ui/button";
 
 const topics = [
   "Mutual Fund Basics",
@@ -207,6 +209,7 @@ export default function ScriptMitraPage() {
     });
   };
 
+  // ---- PAGE RENDER ----
   return (
     <>
       <Header />
@@ -232,15 +235,61 @@ export default function ScriptMitraPage() {
           </div>
         </div>
         <div className="relative z-10">
-          <section className="max-w-3xl mx-auto px-4 pb-8 mt-12">
-            <div className="mb-4 flex items-center justify-center">
-              <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow font-playfair relative">
-                <OGFlyInText>
-                  <span role="img" aria-label="script-mitra">🎬</span>
-                  Script Mitra – Generate AI-Powered Video Scripts Instantly
-                </OGFlyInText>
-              </h1>
+          {/* HERO SECTION */}
+          <section className="max-w-3xl mx-auto px-4 pb-10 mt-12 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold font-playfair headline-glow mb-3">
+              <OGFlyInText>
+                <span role="img" aria-label="script-mitra">🎬</span>{" "}
+                Script Mitra — AI Video Script Generator
+              </OGFlyInText>
+            </h1>
+            <p className="text-lg md:text-2xl text-[#0ca67c] dark:text-[#7efae2] font-semibold mb-5 animate-fade-in-up">
+              Craft high-converting, attention-grabbing video scripts in seconds — tailored for financial creators, advisors, and educators.
+            </p>
+            <Button
+              size="lg"
+              className="mx-auto font-semibold notion-button-primary shadow-xl px-7 mb-3 animate-fade-in-up"
+              onClick={() => {
+                const el = document.getElementById("scriptmitra-form");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              <span role="img" aria-label="">🔹</span> Generate My Script Now →
+            </Button>
+          </section>
+
+          {/* HOW IT WORKS */}
+          <section className="max-w-2xl mx-auto px-4 py-8">
+            <h2 className="text-2xl md:text-3xl font-bold font-playfair text-center mb-7 animate-3d-fly-in">
+              <OGFlyInText>How Script Mitra Works</OGFlyInText>
+            </h2>
+            <div className="grid gap-8 md:grid-cols-3 text-center">
+              <div>
+                <div className="text-3xl mb-2">📚</div>
+                <p className="font-semibold text-base mb-1">Select Your Topic</p>
+                <p className="text-sm text-white/80 dark:text-gray-300 min-h-[60px]">
+                  Choose from ready-made financial categories like SIPs, Insurance, Tax Planning, Market Trends, and more.
+                </p>
+              </div>
+              <div>
+                <div className="text-3xl mb-2">🎭</div>
+                <p className="font-semibold text-base mb-1">Pick Style &amp; Language</p>
+                <p className="text-sm text-white/80 dark:text-gray-300 min-h-[60px]">
+                  Whether you want it to be Informative, Storytelling, or Conversational — just pick and go. Also supports multiple Indian languages.
+                </p>
+              </div>
+              <div>
+                <div className="text-3xl mb-2">⚡</div>
+                <p className="font-semibold text-base mb-1">Get Script Instantly</p>
+                <p className="text-sm text-white/80 dark:text-gray-300 min-h-[60px]">
+                  AI generates your complete script with hooks, body, and CTA — optimized for Reels, Shorts &amp; YouTube.
+                </p>
+              </div>
             </div>
+          </section>
+
+          {/* FORM + SCRIPT BOX COMPONENTS */}
+          <section id="scriptmitra-form" className="max-w-3xl mx-auto px-4 py-6 mb-6">
             <ScriptMitraForm
               topics={topics}
               styles={styles}
@@ -261,6 +310,68 @@ export default function ScriptMitraPage() {
               onDownload={handleDownload}
               formatScriptWithColors={formatScriptWithColors}
             />
+          </section>
+
+          {/* BENEFITS */}
+          <section className="max-w-2xl mx-auto px-4 py-8 rounded-xl">
+            <h2 className="text-2xl md:text-3xl font-bold font-playfair text-center mb-6 animate-3d-fly-in">
+              <OGFlyInText>Why Financial Creators Love Script Mitra</OGFlyInText>
+            </h2>
+            <ul className="space-y-3">
+              <li className="flex gap-3 items-start">
+                <span className="text-2xl mt-0.5">⚡</span>
+                <span>
+                  <span className="font-semibold">Instant Results:</span> No more writer’s block — get powerful scripts in seconds.
+                </span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="text-2xl mt-0.5">🧠</span>
+                <span>
+                  <span className="font-semibold">Tailored for Finance:</span> Content made by AI trained on finance best practices.
+                </span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="text-2xl mt-0.5">📱</span>
+                <span>
+                  <span className="font-semibold">Platform Ready:</span> Optimized for Instagram, YouTube, WhatsApp &amp; more.
+                </span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="text-2xl mt-0.5">🔄</span>
+                <span>
+                  <span className="font-semibold">Reusable Structure:</span> Edit, remix, or expand for multiple use cases.
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          {/* PRO TIPS */}
+          <section className="max-w-2xl mx-auto px-4 py-6">
+            <h3 className="text-xl md:text-2xl font-bold font-playfair text-center mb-5 animate-3d-fly-in">
+              <OGFlyInText>Tips to Make the Most of Your Scripts</OGFlyInText>
+            </h3>
+            <ul className="space-y-2 text-sm text-white/90 dark:text-gray-200 text-center">
+              <li>Use a strong visual hook in the first 3 seconds.</li>
+              <li>Add personal stories to enhance relatability.</li>
+              <li>Pair your scripts with trending sounds &amp; transitions.</li>
+            </ul>
+          </section>
+
+          {/* FINAL CTA */}
+          <section className="max-w-2xl mx-auto text-center px-4 pb-12 pt-4">
+            <h2 className="text-2xl md:text-3xl font-bold font-playfair headline-glow mb-4 animate-3d-fly-in">
+              <OGFlyInText>Ready to Create Magnetic Financial Videos?</OGFlyInText>
+            </h2>
+            <Button
+              size="lg"
+              className="notion-button-primary shadow-xl px-7 font-semibold animate-fade-in-up"
+              onClick={() => {
+                const el = document.getElementById("scriptmitra-form");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              <span role="img" aria-label="">🔹</span> Start Generating Scripts Now →
+            </Button>
           </section>
         </div>
       </div>
