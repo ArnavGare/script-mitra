@@ -15,6 +15,27 @@ const iconMap: Record<string, React.ElementType> = {
   Workflows: ClipboardList,
 };
 
+function getLogoBgStyle(tag: string) {
+  switch (tag) {
+    case "PDF":
+      return "from-purple-400/70 to-fuchsia-600/90";
+    case "Notion Template":
+      return "from-blue-500/80 to-blue-800/70";
+    case "Checklist":
+      return "from-pink-400/90 to-rose-400/80";
+    case "Text File":
+      return "from-cyan-400/80 to-blue-300/50";
+    case "Scripts":
+      return "from-green-400/80 to-emerald-600/70";
+    case "Hooks":
+      return "from-cyan-700/80 to-cyan-400/30";
+    case "Workflows":
+      return "from-purple-500/60 to-purple-300/80";
+    default:
+      return "from-gray-200/90 to-slate-400/80";
+  }
+}
+
 export function ProductCard({
   item,
   delay,
@@ -62,11 +83,34 @@ export function ProductCard({
       style={{ animation: "fade-in 0.36s", animationDelay: `${delay}s` }}
       tabIndex={0}
     >
-      {/* Icon or Image */}
-      <div className="mt-6 mb-3 flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100/80 to-purple-100/70 dark:from-blue-800/60 dark:to-purple-800/50 relative">
-        <IconComp className="w-9 h-9 text-blue-600 dark:text-purple-200 drop-shadow" />
+      {/* Fancy Icon or Image */}
+      <div className="relative flex items-center justify-center mt-7 mb-3 w-20 h-20 rounded-2xl overflow-visible z-10">
+        {/* Soft glow blob */}
+        <span
+          className={`
+            absolute -inset-3 z-0 rounded-2xl blur-[22px] opacity-70 pointer-events-none
+            bg-gradient-to-br ${getLogoBgStyle(item.tag)}
+            animate-float-delayed
+            group-hover:opacity-90 transition-all
+          `}
+        />
+        {/* Gradient background for icon */}
+        <span
+          className={`
+            absolute inset-0 z-1 rounded-2xl
+            bg-gradient-to-br ${getLogoBgStyle(item.tag)}
+            opacity-90
+            shadow-2xl
+            border border-white/30
+            group-hover:scale-105 transition-transform
+          `}
+        />
+        {/* Main icon */}
+        <span className="relative z-10 flex items-center justify-center w-full h-full">
+          <IconComp className="w-10 h-10 text-white drop-shadow-lg" />
+        </span>
         {fileExt && (
-          <span className="absolute -bottom-2 right-0 bg-slate-800 text-white rounded-full text-xs px-2 py-[2px] shadow border border-slate-400/30">
+          <span className="absolute -bottom-2 right-2 z-20 bg-black/90 text-white font-bold rounded-full text-xs px-2 py-[2px] shadow border border-white/20 select-none">
             {fileExt}
           </span>
         )}
@@ -112,3 +156,4 @@ export function ProductCard({
     </div>
   );
 }
+
