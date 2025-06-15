@@ -6,7 +6,7 @@ const navLinks = [
   { name: "Home", to: "/" },
   { name: "Generate Scripts", anchor: "generate-scripts" },
   { name: "Hashtags Mitra", to: "/hashtags-mitra" },
-  { name: "Store", anchor: "store" },
+  { name: "Store", to: "/store" }, // Changed anchor to route
 ];
 
 type Props = {
