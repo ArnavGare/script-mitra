@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/index/HeroSection";
@@ -9,6 +8,7 @@ import GrowthBlueprint from "@/components/index/GrowthBlueprint";
 import Testimonials from "@/components/index/Testimonials";
 import ContactSection from "@/components/index/ContactSection";
 import FooterSection from "@/components/index/FooterSection";
+import OGFlyInText from "@/components/OGFlyInText";
 
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -39,6 +39,14 @@ const Index = () => {
         </div>
         {/* Main Content */}
         <div className="relative z-10">
+          {/* Fly-in animation on main hero section title */}
+          <div className="pt-10 pb-4 flex justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-center max-w-2xl mx-auto headline-glow">
+              <OGFlyInText>
+                Script Mitra: The Ultimate AI Toolkit for Finance Creators
+              </OGFlyInText>
+            </h1>
+          </div>
           <HeroSection />
           <ProductBoxes />
           <VideoMakingTips />

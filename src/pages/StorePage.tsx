@@ -1,9 +1,9 @@
-
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { BadgeCheck, FileText, BookOpen, ClipboardList, Tags, Image as ImageIcon, ArrowRight } from "lucide-react";
 import React, { useState } from "react";
 import clsx from "clsx";
+import OGFlyInText from "@/components/OGFlyInText";
 
 // Product data
 const products = [
@@ -90,8 +90,10 @@ export default function StorePage() {
           <div className="absolute left-0 bottom-0 bg-cyan-400/20 blur-2xl w-48 h-24 rounded-full opacity-60" />
         </div>
         <div className="relative z-10 flex flex-col items-center px-6 text-center w-full">
-          <h1 className="font-playfair font-bold text-3xl md:text-5xl mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-200 to-white shadow-lg drop-shadow-lg">
-            The Store – Tools to Power Your Financial Content Journey
+          <h1 className="font-playfair font-bold text-3xl md:text-5xl mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-200 to-white shadow-lg drop-shadow-lg headline-glow">
+            <OGFlyInText>
+              The Store – Tools to Power Your Financial Content Journey
+            </OGFlyInText>
           </h1>
           <p className="max-w-xl text-lg md:text-xl text-white/85 mb-3 font-inter bg-white/10 rounded-xl px-4 py-2 backdrop-blur-sm shadow transition-all">
             Curated templates, guides & resources to elevate your financial marketing game.
@@ -221,4 +223,3 @@ function ProductCard({ item, delay }: { item: any, delay: number }) {
     </div>
   );
 }
-

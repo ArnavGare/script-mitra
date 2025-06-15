@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import ScriptGenerationTips from "@/components/ScriptGenerationTips";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useNavigate } from "react-router-dom";
+import OGFlyInText from "@/components/OGFlyInText";
 
 export default function ScriptMitraPage() {
   const [formData, setFormData] = useState({
@@ -250,10 +251,14 @@ export default function ScriptMitraPage() {
         {/* Main Content */}
         <div className="relative z-10">
           <section className="max-w-3xl mx-auto px-4 pb-8 mt-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 flex items-center gap-2">
-              <span role="img" aria-label="script-mitra">🎬</span>
-              Script Mitra – Generate AI-Powered Video Scripts Instantly
-            </h1>
+            <div className="mb-4 flex items-center justify-center">
+              <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow">
+                <OGFlyInText>
+                  <span role="img" aria-label="script-mitra">🎬</span>
+                  Script Mitra – Generate AI-Powered Video Scripts Instantly
+                </OGFlyInText>
+              </h1>
+            </div>
             <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 transition-all duration-500 glow-hover-card">
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-4">

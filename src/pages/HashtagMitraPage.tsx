@@ -1,8 +1,8 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import ScriptForm from "@/components/hashtags-mitra/ScriptForm";
 import HashtagList from "@/components/hashtags-mitra/HashtagList";
+import OGFlyInText from "@/components/OGFlyInText";
 
 export default function HashtagMitraPage() {
   const [input, setInput] = useState("");
@@ -33,10 +33,14 @@ export default function HashtagMitraPage() {
       <Header />
       <main className="min-h-screen py-10">
         <section className="max-w-2xl mx-auto px-4 pb-6">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 flex items-center gap-2">
-            <span role="img" aria-label="hashtag-mitra">#️⃣</span>
-            Hashtag Mitra – Discover Trending, High-Performing Hashtags
-          </h1>
+          <div className="flex justify-center mb-3">
+            <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow">
+              <OGFlyInText>
+                <span role="img" aria-label="hashtag-mitra">#️⃣</span>
+                Hashtag Mitra – Discover Trending, High-Performing Hashtags
+              </OGFlyInText>
+            </h1>
+          </div>
           <ScriptForm
             input={input}
             setInput={setInput}

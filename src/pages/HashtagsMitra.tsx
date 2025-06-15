@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -11,6 +10,7 @@ import ScriptForm from "@/components/hashtags-mitra/ScriptForm";
 import HashtagList from "@/components/hashtags-mitra/HashtagList";
 import TipsSection from "@/components/hashtags-mitra/TipsSection";
 import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
+import OGFlyInText from "@/components/OGFlyInText";
 
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950";
 
@@ -91,7 +91,15 @@ export default function HashtagsMitra() {
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 transition-colors duration-500 overflow-x-hidden">
         <div className="w-full max-w-[900px] mx-auto p-px rounded-2xl bg-gradient-to-b from-white/20 to-transparent">
           <section className="w-full h-full bg-white/60 dark:bg-black/70 px-5 sm:px-9 pt-10 pb-8 rounded-[15px] shadow-smooth relative z-10 border-white/10 dark:border-white/10 backdrop-blur-xl saturate-150">
-            <Hero />
+            {/* Fly-in headline */}
+            <div className="flex justify-center mb-3">
+              <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow">
+                <OGFlyInText>
+                  <span role="img" aria-label="hashtags-mitra">#️⃣</span>
+                  Hashtags Mitra – Discover Trending, High-Performing Hashtags
+                </OGFlyInText>
+              </h1>
+            </div>
             <ScriptForm
               input={input}
               setInput={setInput}
