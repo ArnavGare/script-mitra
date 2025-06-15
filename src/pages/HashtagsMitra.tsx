@@ -13,16 +13,13 @@ import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
 import StructuredOutput from "@/components/hashtags-mitra/StructuredOutput";
-
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950";
-
 interface StructuredResponse {
   title?: string;
   caption?: string;
   hashtags?: string;
   description?: string;
 }
-
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
   const [captions, setCaptions] = useState<string[]>([]);
@@ -30,39 +27,43 @@ export default function HashtagsMitra() {
   const [isLoading, setIsLoading] = useState(false);
   const [webhookResponse, setWebhookResponse] = useState<any>(null);
   const [outputText, setOutputText] = useState(""); // <--- New state for displaying raw output
-  const { copy, copiedIdx } = useCopyToClipboard();
+  const {
+    copy,
+    copiedIdx
+  } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
-
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim()) {
       toast.error("Please enter your script first!");
       return;
     }
-    
     setIsLoading(true);
     setCaptions([]);
     setStructuredOutput(null);
     setWebhookResponse(null);
     setOutputText(""); // Reset output text
-  
+
     try {
       console.log("Sending script to webhook:", input);
-      
+
       // Send the script to the webhook
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ script: input, type: "captions" }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          script: input,
+          type: "captions"
+        })
       });
-      
       if (!res.ok) {
         throw new Error(`Webhook responded with status: ${res.status}`);
       }
-      
       const data = await res.json();
       console.log("Webhook response:", data);
-      
+
       // Store the full webhook response for debugging
       setWebhookResponse(data);
 
@@ -81,32 +82,20 @@ export default function HashtagsMitra() {
         if (data.hashtags) rawOut += `Hashtags: ${data.hashtags}\n\n`;
         if (data.description) rawOut += `Description: ${data.description}\n\n`;
         setOutputText(rawOut.trim());
-
         toast.success("Content generated successfully!");
       } else {
         // Fall back to original captions list format
         let finalCaptions: string[] = [];
-        
         if (data.output && typeof data.output === "string") {
-          finalCaptions = data.output
-            .split(/\n/)
-            .map(s => s.trim())
-            .filter(Boolean)
-            .filter(caption => caption.length > 10);
+          finalCaptions = data.output.split(/\n/).map(s => s.trim()).filter(Boolean).filter(caption => caption.length > 10);
         } else if (Array.isArray(data.captions)) {
           finalCaptions = data.captions;
         } else if (Array.isArray(data.text)) {
           finalCaptions = data.text;
         } else if (typeof data === "string") {
-          finalCaptions = data
-            .split(/\n/)
-            .map(s => s.trim())
-            .filter(Boolean)
-            .filter(caption => caption.length > 10);
+          finalCaptions = data.split(/\n/).map(s => s.trim()).filter(Boolean).filter(caption => caption.length > 10);
         }
-
         setCaptions(finalCaptions);
-
         if (finalCaptions.length > 0) {
           setOutputText(finalCaptions.join('\n\n'));
           toast.success(`Generated ${finalCaptions.length} captions!`);
@@ -123,29 +112,19 @@ export default function HashtagsMitra() {
       setOutputText(""); // Clear on error
       toast.error("Unable to generate captions. Please try again.");
     }
-    
     setIsLoading(false);
   }
-
-  return (
-    <>
+  return <>
       {/* Notion-style dark mode gradient + edge glow - dark mode only */}
       <div className="dark:block hidden">
         <NotionDarkBg />
       </div>
       {/* More visible Grid Background */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 w-full h-full -z-10 overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(circle, #38e0ff66 1.6px, transparent 1.8px), " +
-            "linear-gradient(to right, #fff0 1px, #44f0ffaa 1.1px), " +
-            "linear-gradient(to bottom, #fff0 1px, #44f0ffaa 1.1px)",
-          backgroundSize: "38px 38px",
-          opacity: 0.85,
-        }}
-      />
+      <div aria-hidden className="pointer-events-none fixed inset-0 w-full h-full -z-10 overflow-hidden" style={{
+      background: "radial-gradient(circle, #38e0ff66 1.6px, transparent 1.8px), " + "linear-gradient(to right, #fff0 1px, #44f0ffaa 1.1px), " + "linear-gradient(to bottom, #fff0 1px, #44f0ffaa 1.1px)",
+      backgroundSize: "38px 38px",
+      opacity: 0.85
+    }} />
       <MotionGridBg />
       <Header />
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-2 transition-colors duration-500 overflow-x-hidden">
@@ -161,48 +140,21 @@ export default function HashtagsMitra() {
               </h1>
             </div>
             
-            <ScriptForm
-              input={input}
-              setInput={setInput}
-              handleGenerate={handleGenerate}
-              isLoading={isLoading}
-              placeholder={placeholder}
-            />
+            <ScriptForm input={input} setInput={setInput} handleGenerate={handleGenerate} isLoading={isLoading} placeholder={placeholder} />
 
             {/* Always show the output box */}
-            <div className="mt-6 mb-2 w-full">
-              <label htmlFor="generated-output" className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">
-                Captions Generated Output
-              </label>
-              <textarea
-                id="generated-output"
-                className="w-full min-h-[120px] max-h-64 p-4 font-mono text-base text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900/80 border border-gray-300 dark:border-gray-700 rounded-lg shadow-inner transition resize-y"
-                value={outputText}
-                readOnly
-                placeholder="Generated captions or structured content will appear here..."
-                aria-label="Captions generated output"
-              />
-            </div>
+            
             
             <TipCarousel className="my-7" />
             
             {/* Display structured output if available */}
-            {structuredOutput && (
-              <StructuredOutput data={structuredOutput} copy={copy} copiedIdx={copiedIdx} />
-            )}
+            {structuredOutput && <StructuredOutput data={structuredOutput} copy={copy} copiedIdx={copiedIdx} />}
             
             {/* Fall back to caption list if no structured output */}
-            {!structuredOutput && captions.length > 0 && (
-              <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
-            )}
+            {!structuredOutput && captions.length > 0 && <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />}
             
             {/* Debug information (remove in production) */}
-            {webhookResponse && process.env.NODE_ENV === 'development' && (
-              <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                <h3 className="text-sm font-semibold mb-2">Webhook Response (Debug):</h3>
-                <pre className="text-xs overflow-x-auto">{JSON.stringify(webhookResponse, null, 2)}</pre>
-              </div>
-            )}
+            {webhookResponse && process.env.NODE_ENV === 'development'}
             
             <TipsSection />
           </GlowHoverCard>
@@ -226,6 +178,5 @@ export default function HashtagsMitra() {
           }
         `}
       </style>
-    </>
-  );
+    </>;
 }
