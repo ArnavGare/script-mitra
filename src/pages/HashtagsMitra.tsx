@@ -41,14 +41,24 @@ export default function HashtagsMitra() {
       const data = await res.json();
 
       let finalTags: string[] = [];
+      // --- New: Robust parsing logic ---
       if (data.output && typeof data.output === "string") {
+        // Split output by lines and hash symbols, filter out user/meta lines
         finalTags = data.output
-          .split(/[#]/)
+          .split(/\r?\n|#/g)
           .map(s => s.trim())
           .filter(Boolean)
+          .filter(
+            tag =>
+              tag.length > 0 &&
+              !/^user\s*:|^USER\s*:/i.test(tag) && // skip user line
+              !/^id\s*:|^userid\s*:|^user_id\s*:/i.test(tag) && // skip user/id
+              !/^[A-Z0-9_-]{36,}$/.test(tag) // skip likely UUIDs
+          )
           .map(tagStr => {
+            // Get only the first word if line includes punctuation
             const [firstWord] = tagStr.split(/\s|,|\./);
-            return firstWord ? firstWord.replace(/\s/g, '') : '';
+            return firstWord ? firstWord.replace(/\s/g, "") : "";
           })
           .filter(t => t.length > 0);
       } else if (Array.isArray(data.hashtags)) {
