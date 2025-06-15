@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -13,7 +12,6 @@ import TipsSection from "@/components/hashtags-mitra/TipsSection";
 import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
-import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950";
 
@@ -23,7 +21,6 @@ export default function HashtagsMitra() {
   const [isLoading, setIsLoading] = useState(false);
   const { copy, copiedIdx } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
-  const { user } = useSupabaseUser();
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
@@ -31,56 +28,21 @@ export default function HashtagsMitra() {
       toast.error("Paste your script first!");
       return;
     }
-    if (!user?.id) {
-      toast.error("Please log in to generate hashtags.");
-      return;
-    }
     setIsLoading(true);
     setHashtags([]);
-
-    // New explicit logic: only display result if user_id matches!
-    async function fetchUntilMatched(retries = 6): Promise<string | null> {
-      for (let i = 0; i < retries; ++i) {
-        const res = await fetch(WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ script: input, user_id: user.id }),
-        });
-        if (!res.ok) continue;
-        const data = await res.json();
-        let outStr = typeof data.output === "string" ? data.output : "";
-        if (outStr) {
-          const lines = outStr.split('\n');
-          // 1. Find first non-empty line to get user_id
-          const firstNonEmptyIdx = lines.findIndex(l => l.trim().length > 0);
-          const responseUid = lines[firstNonEmptyIdx]?.trim() || "";
-          // 2. If matches our user, grab lines after the first blank line (after uid)
-          if (responseUid === user.id) {
-            // Find next blank line AFTER the user_id line
-            let blankIdx = lines.findIndex((l, idx) => idx > firstNonEmptyIdx && l.trim() === "");
-            let contentLines = blankIdx >= 0 ? lines.slice(blankIdx + 1) : [];
-            const resultText = contentLines.join('\n').trim();
-            if (resultText.length > 0) {
-              return resultText;
-            } else {
-              // The match was present but no content found
-              toast.error("No hashtags found. Try revising your script!");
-              return null;
-            }
-          }
-          // If not matched, simply continue to next attempt
-        }
-        await new Promise(res => setTimeout(res, 700));
-      }
-      // No result found after retries
-      return null;
-    }
-
     try {
-      const result = await fetchUntilMatched();
-      if (result !== null) {
-        // Parse hashtags as before
-        const finalTags = result
+      // Send the script to the webhook as required
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ script: input }),
+      });
+      if (!res.ok) throw new Error("Could not generate hashtags");
+      const data = await res.json();
+
+      let finalTags: string[] = [];
+      if (data.output && typeof data.output === "string") {
+        finalTags = data.output
           .split(/[#]/)
           .map(s => s.trim())
           .filter(Boolean)
@@ -89,18 +51,19 @@ export default function HashtagsMitra() {
             return firstWord ? firstWord.replace(/\s/g, '') : '';
           })
           .filter(t => t.length > 0);
+      } else if (Array.isArray(data.hashtags)) {
+        finalTags = data.hashtags;
+      } else if (Array.isArray(data.tags)) {
+        finalTags = data.tags;
+      }
 
-        setHashtags(finalTags);
-        if (!finalTags.length) {
-          toast.error("No hashtags found. Try revising your script!");
-        }
-      } else {
-        // result is null: either no match or nothing in result (error already shown above)
-        setHashtags([]);
+      setHashtags(finalTags);
+
+      if (!finalTags.length) {
+        toast.error("No hashtags found. Try revising your script!");
       }
     } catch (err) {
       toast.error("Unable to generate hashtags. Please try again.");
-      setHashtags([]);
     }
     setIsLoading(false);
   }
@@ -172,4 +135,3 @@ export default function HashtagsMitra() {
     </>
   );
 }
-

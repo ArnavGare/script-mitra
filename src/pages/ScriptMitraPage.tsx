@@ -81,53 +81,25 @@ export default function ScriptMitraPage() {
       return;
     }
     setIsLoading(true);
-
-    // A polling wrapper to retry webhook fetch until user_id matches (max 6 times)
-    async function fetchUntilMatched(retries = 6): Promise<any> {
-      for (let i = 0; i < retries; ++i) {
-        const response = await fetch("https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            topic: finalTopic,
-            style: formData.style,
-            language: formData.language,
-            length: formData.length,
-            user_id: user.id
-          })
-        });
-        if (!response.ok) continue;
-        const result = await response.json();
-        // Pull result.output as string, extract user id, and check
-        let outStr = typeof result.output === "string" ? result.output : "";
-        if (outStr) {
-          const lines = outStr.split('\n');
-          const foundUid = lines.find(l => l.trim().length > 0)?.trim() || "";
-          if (foundUid === user.id) {
-            // Output lines after user_id and a following blank line
-            let firstBlankIdx = lines.findIndex((l, idx) => idx > 0 && l.trim() === "");
-            let outputLines = lines.slice(firstBlankIdx + 1);
-            return { ...result, output: outputLines.join('\n') };
-          }
-        }
-        await new Promise(res => setTimeout(res, 700));
-      }
-      return null;
-    }
-
     try {
-      const result = await fetchUntilMatched();
-      if (!result) {
-        toast({
-          title: "Timed out",
-          description: "Could not get a valid response, please try again.",
-          variant: "destructive"
-        });
-        setIsLoading(false);
-        return;
+      const response = await fetch("https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          topic: finalTopic,
+          style: formData.style,
+          language: formData.language,
+          length: formData.length
+        })
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Fetch failed. Status:", response.status, "Error body:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const result = await response.json();
       setScript(result.output || "");
       saveScriptMemory(result.output || "", formData);
       toast({
