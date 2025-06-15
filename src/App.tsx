@@ -13,6 +13,7 @@ import PrivateRoute from "@/components/PrivateRoute";
 import ForbiddenPage from "@/pages/ForbiddenPage";
 import ScriptMitraPage from "@/pages/ScriptMitraPage";
 import HashtagMitraPage from "@/pages/HashtagMitraPage";
+import AccountPage from "./pages/AccountPage";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,11 @@ const App = () => (
               </PrivateRoute>
             }
           />
+          <Route path="/account" element={
+            <PrivateRoute>
+              <AccountPage />
+            </PrivateRoute>
+          } />
           {/* Instead of NotFound, redirect all unknown routes to Home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

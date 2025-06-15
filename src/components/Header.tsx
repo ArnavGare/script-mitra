@@ -21,6 +21,10 @@ export default function Header() {
     }
   };
 
+  const handleAccountClick = () => {
+    navigate("/account");
+  };
+
   return (
     <>
       <header
@@ -46,26 +50,27 @@ export default function Header() {
           </nav>
           {/* Right section: Email (if logged in) or Login button */}
           <div className="flex items-center min-w-[110px] justify-end">
-            {/* Show spinner while loading user */}
             {isLoading ? (
               <span className="w-[110px] animate-pulse text-cyan-400">Loading...</span>
             ) : user ? (
-              <span
-                className="px-3 py-1 rounded-lg font-semibold text-base bg-gradient-to-tr from-[#1cf6c2]/10 via-[#7265ff]/10 to-[#7265ff]/20 text-white border border-cyan-300/10 shadow-inner transition-all duration-200"
+              <button
+                onClick={handleAccountClick}
+                className="
+                  px-3 py-1 rounded-lg font-semibold text-base bg-gradient-to-tr from-[#1cf6c2]/10 via-[#7265ff]/10 to-[#7265ff]/20 text-white border border-cyan-300/10 shadow-inner transition-all duration-200
+                  hover:border-cyan-300/40 hover:bg-gradient-to-tr hover:from-[#7265ff]/20 hover:to-[#1cf6c2]/20 hover:shadow-lg
+                  outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70
+                  max-w-[170px] overflow-hidden text-ellipsis whitespace-nowrap
+                "
                 title={user.email}
                 style={{
                   letterSpacing: "0.01em",
-                  maxWidth: 170,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
                   background: "linear-gradient(92deg,rgba(0,255,229,0.07),rgba(182,240,255,0.11) 70%,rgba(157,124,255,0.09) )",
                   boxShadow: "0 2px 14px 0 rgba(76,88,221,0.13)",
                 }}
-                aria-label={user.email}
+                aria-label="Account"
               >
                 {user.email}
-              </span>
+              </button>
             ) : (
               <button
                 onClick={handleCTA}
