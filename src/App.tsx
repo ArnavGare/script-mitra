@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,9 @@ import { AccessKeyProvider } from "@/context/AccessKeyContext";
 import AccessKeyGate from "@/components/AccessKeyGate";
 import GenerateScriptsPage from "./pages/GenerateScriptsPage";
 import StorePage from "./pages/StorePage";
+import LoginPage from "./pages/LoginPage";
+import PrivateRoute from "@/components/PrivateRoute";
+import ForbiddenPage from "./pages/ForbiddenPage";
 
 const queryClient = new QueryClient();
 
@@ -22,10 +26,40 @@ const App = () => (
         <AccessKeyGate>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/hashtags-mitra" element={<HashtagsMitra />} />
-              <Route path="/generate-scripts" element={<GenerateScriptsPage />} />
-              <Route path="/store" element={<StorePage />} />
+              <Route path="/auth/login" element={<LoginPage />} />
+              <Route path="/403" element={<ForbiddenPage />} />
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <Index />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/hashtags-mitra"
+                element={
+                  <PrivateRoute>
+                    <HashtagsMitra />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/generate-scripts"
+                element={
+                  <PrivateRoute>
+                    <GenerateScriptsPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/store"
+                element={
+                  <PrivateRoute>
+                    <StorePage />
+                  </PrivateRoute>
+                }
+              />
               {/* Instead of NotFound, redirect all unknown routes to Home */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
