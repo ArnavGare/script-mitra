@@ -35,6 +35,18 @@ function cleanText(text?: string) {
     .replace(/^[\s\r\n]+|[\s\r\n]+$/g, ""); // Trim leading/trailing space and newlines
 }
 
+// Add this new function below cleanText
+function getStructuredSections(data: StructuredResponse) {
+  // Only include non-empty sections, maintaining the reference order
+  const entries = [
+    { label: "Video Title", key: "title", content: data.title },
+    { label: "Video Caption", key: "caption", content: data.caption },
+    { label: "Hashtags", key: "hashtags", content: data.hashtags },
+    { label: "Video Description", key: "description", content: data.description }
+  ];
+  return entries.filter(e => e.content && String(e.content).trim() !== "");
+}
+
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
   const [captions, setCaptions] = useState<string[]>([]);
@@ -256,44 +268,54 @@ export default function HashtagsMitra() {
             
             <TipCarousel className="my-7" />
             
-            {/* Display structured output with attractive card style if available */}
+            {/* Attractive output layout: "Title: Content" card style, for structured output only */}
             {structuredOutput && (
-              <div className="w-full mt-9 grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
-                {[
-                  { key: "title", label: "Video Title", value: structuredOutput.title, bg: "bg-cyan-50", border: "border-cyan-200" },
-                  { key: "caption", label: "Video Caption", value: structuredOutput.caption, bg: "bg-purple-50", border: "border-purple-200" },
-                  { key: "hashtags", label: "Hashtags", value: structuredOutput.hashtags, bg: "bg-sky-50", border: "border-blue-200" },
-                  { key: "description", label: "Video Description", value: structuredOutput.description, bg: "bg-yellow-50", border: "border-yellow-200" }
-                ].filter(sec => sec.value).map((sec, idx) => (
+              <div className="w-full my-9 space-y-6 animate-fade-in">
+                {getStructuredSections(structuredOutput).map((section, idx) => (
                   <div
-                    key={sec.key}
-                    className={`${sec.bg} ${sec.border} border rounded-xl shadow-sm p-6 flex flex-col min-h-[130px]`}
+                    key={section.key}
+                    className={`
+                      rounded-xl border bg-gradient-to-br from-[#0ea5e975]/70 to-[#6d28d95d]/70 shadow-md p-4 sm:p-6
+                      flex flex-col gap-1
+                      transition-transform duration-300
+                      text-white
+                    `}
                     style={{
                       animation: `fadeInUp 0.85s cubic-bezier(.40,.8,.25,1.1) both`,
-                      animationDelay: `${idx * 0.10 + 0.1}s`
+                      animationDelay: `${idx * 0.10 + 0.15}s`,
+                      background: idx % 2 === 0
+                        ? "linear-gradient(90deg, #145888e7, #2557a4c7 80%)"
+                        : "linear-gradient(90deg, #7a39abdd, #394e99cc 90%)",
+                      borderColor: idx % 2 === 0 ? "#2dd4f4bb" : "#a78bfa88"
                     }}
                   >
-                    <h3 className="font-extrabold text-lg text-gray-700 mb-2" style={{
-                      color:
-                        sec.key === "title" ? "#009DC7" :
-                        sec.key === "caption" ? "#8839DB" :
-                        sec.key === "hashtags" ? "#1e40af" :
-                        sec.key === "description" ? "#D97706" :
-                        undefined
-                    }}>
-                      {sec.label}
-                    </h3>
-                    <p className={`text-[15px] text-gray-700 whitespace-pre-line font-sans leading-snug flex-1`}
-                      style={{ wordBreak: "break-word" }}
+                    <span className="font-semibold text-base sm:text-lg mb-1" style={{
+                      color: "#CFFAFE",
+                      letterSpacing: 0.1
+                    }}>{section.label}:</span>
+                    <div
+                      className={`
+                        whitespace-pre-line font-sans text-[15px] sm:text-base font-normal leading-snug
+                        ${section.key === "hashtags" ? "break-words" : ""}
+                        text-white
+                      `}
+                      style={{
+                        background:
+                          section.key === "hashtags"
+                            ? "rgba(24,24,26,0.10)"
+                            : "none",
+                        borderRadius: section.key === "hashtags" ? 6 : 0,
+                        padding: section.key === "hashtags" ? "7px 9px" : 0
+                      }}
                     >
-                      {sec.value}
-                    </p>
+                      {section.content}
+                    </div>
                   </div>
                 ))}
               </div>
             )}
             
-            {/* Fall back to caption list if no structured output */}
+            {/* Fallback to classic caption list if not structured */}
             {!structuredOutput && captions.length > 0 && (
               <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
             )}
