@@ -122,12 +122,4 @@
   .premium-glassbox .group-hover\:filter-bright:focus {
     filter: brightness(1.19) blur(1.2px);
   }
-  /* Soft neon brand accent for nav links */
-  .text-neon-mint {
-    color: #61ffe8 !important;
-    text-shadow:
-      0 2px 14px #00ffe575,
-      0 0.5px 2px #60f7ff70;
-    filter: brightness(1.10);
-  }
 }
