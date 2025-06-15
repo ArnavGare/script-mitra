@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
 import MotionGridBg from "@/components/MotionGridBg";
@@ -20,6 +20,8 @@ interface StructuredResponse {
   hashtags?: string;
   description?: string;
 }
+const STORAGE_KEY = 'captions_mitra_latest';
+
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
   const [captions, setCaptions] = useState<string[]>([]);
@@ -32,6 +34,39 @@ export default function HashtagsMitra() {
     copiedIdx
   } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
+
+  // Restore captions/structured output from localStorage on mount
+  useEffect(() => {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.input !== undefined) setInput(parsed.input);
+        if (parsed.captions) setCaptions(parsed.captions);
+        if (parsed.structuredOutput) setStructuredOutput(parsed.structuredOutput);
+        if (parsed.outputText !== undefined) setOutputText(parsed.outputText);
+      } catch (e) {
+        // Ignore invalid data
+      }
+    }
+  }, []);
+
+  // Save latest output to localStorage on each result change
+  useEffect(() => {
+    // Only persist if there is meaningful output
+    if (captions.length > 0 || structuredOutput || outputText) {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          input,
+          captions,
+          structuredOutput,
+          outputText,
+        })
+      );
+    }
+  }, [input, captions, structuredOutput, outputText]);
+
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim()) {
@@ -76,6 +111,7 @@ export default function HashtagsMitra() {
           hashtags: data.hashtags,
           description: data.description
         });
+        setCaptions([]); // clear captions when structuredOutput is set
         let rawOut = "";
         if (data.title) rawOut += `Title: ${data.title}\n\n`;
         if (data.caption) rawOut += `Caption: ${data.caption}\n\n`;
@@ -96,6 +132,7 @@ export default function HashtagsMitra() {
           finalCaptions = data.split(/\n/).map(s => s.trim()).filter(Boolean).filter(caption => caption.length > 10);
         }
         setCaptions(finalCaptions);
+        setStructuredOutput(null); // clear structured when captions are set
         if (finalCaptions.length > 0) {
           setOutputText(finalCaptions.join('\n\n'));
           toast.success(`Generated ${finalCaptions.length} captions!`);
