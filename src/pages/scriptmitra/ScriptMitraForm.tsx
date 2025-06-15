@@ -18,8 +18,6 @@ interface ScriptMitraFormProps {
   onShowCustomTopic: (show: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
   onReset: () => void;
-  buttonTextOverride?: string;
-  limitReached?: boolean;
 }
 const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
   topics,
@@ -32,9 +30,7 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
   onFormChange,
   onShowCustomTopic,
   onSubmit,
-  onReset,
-  buttonTextOverride,
-  limitReached
+  onReset
 }) => {
   function handleTopicChange(value: string) {
     onFormChange({
@@ -139,37 +135,19 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
           </div>
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="notion-button-primary flex-1 h-11 text-base font-semibold relative"
-              data-tooltip-id={limitReached ? "daily-limit-tooltip" : undefined}
-              data-tooltip-content={limitReached ? "You’ve reached today’s 10× scripts limit. Resets at midnight." : undefined}
-            >
-              {isLoading && buttonTextOverride ?
-                <div className="flex items-center gap-2">{buttonTextOverride}</div>
-                : isLoading ?
-                  <div className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                    Generating Script...
-                  </div>
-                : <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Generate Script
-                  </div>
-              }
+            <Button type="submit" disabled={isLoading} className="notion-button-primary flex-1 h-11 text-base font-semibold">
+              {isLoading ? <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  Generating Script...
+                </div> : <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  Generate Script
+                </div>}
             </Button>
             <Button type="button" variant="outline" onClick={onReset} className="notion-button-secondary h-11 px-6 text-base font-semibold bg-black text-white border-black hover:bg-black focus:bg-black hover:text-white focus:text-white dark:bg-gray-900 dark:text-white dark:border-blue-800">
               Reset
             </Button>
           </div>
-          {limitReached &&
-            <div
-              className="text-red-500 mt-2 rounded text-center text-base font-semibold bg-red-100 dark:bg-red-800/30 px-4 py-2"
-            >
-              You’ve reached today’s <b>10× scripts</b> limit. Resets at midnight.
-            </div>
-          }
         </form>
       </CardContent>
     </Card>;

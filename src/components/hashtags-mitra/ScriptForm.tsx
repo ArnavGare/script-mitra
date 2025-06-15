@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,6 @@ interface ScriptFormProps {
   handleGenerate: (e: React.FormEvent) => void;
   isLoading: boolean;
   placeholder: string;
-  buttonTextOverride?: string;
-  limitReached?: boolean;
 }
 
 export default function ScriptForm({
@@ -19,9 +18,7 @@ export default function ScriptForm({
   setInput,
   handleGenerate,
   isLoading,
-  placeholder, // not used
-  buttonTextOverride,
-  limitReached
+  placeholder // Keep this prop but don't use it
 }: ScriptFormProps) {
 
   const handlePaste = async (e: React.MouseEvent) => {
@@ -68,29 +65,20 @@ export default function ScriptForm({
         size="lg"
         type="submit"
         disabled={isLoading}
-        className="group w-full font-display bg-gradient-cyan-purple shadow-smooth text-white hover:scale-[1.03] hover:shadow-lg transition-all duration-200 ring-1 ring-blue-200/20 dark:ring-blue-900/40 font-medium text-left text-2xl mx-0 my-0 -bottom-1/3 py-[26px] rounded-2xl relative"
-        data-tooltip-id={limitReached ? "daily-limit-tooltip" : undefined}
-        data-tooltip-content={limitReached ? "You’ve reached today’s 10× captions limit. Resets at midnight." : undefined}
+        className="group w-full font-display bg-gradient-cyan-purple shadow-smooth text-white hover:scale-[1.03] hover:shadow-lg transition-all duration-200 ring-1 ring-blue-200/20 dark:ring-blue-900/40 font-medium text-left text-2xl mx-0 my-0 -bottom-1/3 py-[26px] rounded-2xl"
       >
-        {isLoading && buttonTextOverride ?
-          (<span className="flex items-center gap-2">
-            {buttonTextOverride}
-          </span>)
-          : (
-            <>
-              <Sparkles className="text-yellow-400" />
-              <span className="ml-1">Generate Captions</span>
-            </>
-          )
-        }
+        {isLoading ? (
+          <span className="flex items-center gap-2">
+            <Loader2 className="animate-spin" />
+            Generating Captions...
+          </span>
+        ) : (
+          <>
+            <Sparkles className="text-yellow-400" />
+            <span className="ml-1">Generate Captions</span>
+          </>
+        )}
       </Button>
-      {limitReached &&
-        <div
-          className="text-red-500 mt-2 rounded text-center text-base font-semibold bg-red-100 dark:bg-red-800/30 px-4 py-2"
-        >
-          You’ve reached today’s <b>10× captions</b> limit.<br />Resets at midnight.
-        </div>
-      }
     </form>
   );
 }
