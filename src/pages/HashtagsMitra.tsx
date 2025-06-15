@@ -38,8 +38,8 @@ export default function HashtagsMitra() {
     setIsLoading(true);
     setHashtags([]);
 
-    // Poll the webhook until we get an output with the correct user id, or time out
-    async function fetchUntilMatched(retries = 6): Promise<any> {
+    // EXPLICIT: Poll until the ID matches, then output ONLY lines after the first blank line
+    async function fetchUntilMatched(retries = 6): Promise<string | null> {
       for (let i = 0; i < retries; ++i) {
         const res = await fetch(WEBHOOK_URL, {
           method: "POST",
@@ -50,34 +50,32 @@ export default function HashtagsMitra() {
         const data = await res.json();
         let outStr = typeof data.output === "string" ? data.output : "";
         if (outStr) {
+          // 1. Get ALL lines
           const lines = outStr.split('\n');
-          // Find the first non-empty line (should be user_id)
-          const foundUid = lines.find(l => l.trim().length > 0)?.trim() || "";
+          // 2. Take the first non-empty line as the user_id
+          const firstNonEmptyIdx = lines.findIndex(l => l.trim().length > 0);
+          const foundUid = lines[firstNonEmptyIdx]?.trim() || "";
+          // 3. Only process if ID matches
           if (foundUid === user.id) {
-            // Output lines after user id and first following blank line
-            let firstBlankIdx = lines.findIndex((l, idx) => idx > 0 && l.trim() === "");
-            let outputLines = lines.slice(firstBlankIdx + 1);
-            return { ...data, output: outputLines.join('\n') };
+            // 4. Find the next blank line AFTER the user id
+            let nextBlank = lines.findIndex((l, idx) => idx > firstNonEmptyIdx && l.trim() === "");
+            // 5. The real content is after that blank line (skip over blank lines, show the rest)
+            let contentLines =
+              nextBlank >= 0 ? lines.slice(nextBlank + 1) : [];
+            // If all are blank no content, fallback to []
+            return contentLines.join('\n');
           }
         }
-        // Wait 700ms before next try
         await new Promise(res => setTimeout(res, 700));
       }
       return null;
     }
 
     try {
-      const data = await fetchUntilMatched();
-      if (!data) {
-        toast.error("Timed out, could not generate hashtags. Please try again.");
-        setIsLoading(false);
-        return;
-      }
-
+      const content = await fetchUntilMatched();
       let finalTags: string[] = [];
-      // Only use output that is after user id block, never show user id
-      if (data.output && typeof data.output === "string") {
-        finalTags = data.output
+      if (content && typeof content === "string" && content.trim().length > 0) {
+        finalTags = content
           .split(/[#]/)
           .map(s => s.trim())
           .filter(Boolean)
@@ -86,13 +84,8 @@ export default function HashtagsMitra() {
             return firstWord ? firstWord.replace(/\s/g, '') : '';
           })
           .filter(t => t.length > 0);
-      } else if (Array.isArray(data.hashtags)) {
-        finalTags = data.hashtags;
-      } else if (Array.isArray(data.tags)) {
-        finalTags = data.tags;
       }
       setHashtags(finalTags);
-
       if (!finalTags.length) {
         toast.error("No hashtags found. Try revising your script!");
       }
