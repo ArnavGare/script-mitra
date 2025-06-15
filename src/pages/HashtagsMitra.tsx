@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -12,6 +13,7 @@ import TipsSection from "@/components/hashtags-mitra/TipsSection";
 import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
+import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950";
 
@@ -21,6 +23,7 @@ export default function HashtagsMitra() {
   const [isLoading, setIsLoading] = useState(false);
   const { copy, copiedIdx } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
+  const { user } = useSupabaseUser();
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
@@ -28,14 +31,18 @@ export default function HashtagsMitra() {
       toast.error("Paste your script first!");
       return;
     }
+    if (!user?.id) {
+      toast.error("Please log in to generate hashtags.");
+      return;
+    }
     setIsLoading(true);
     setHashtags([]);
     try {
-      // Send the script to the webhook as required
+      // Send the script to the webhook as required, now with user_id
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ script: input }),
+        body: JSON.stringify({ script: input, user_id: user.id }),
       });
       if (!res.ok) throw new Error("Could not generate hashtags");
       const data = await res.json();
@@ -56,7 +63,6 @@ export default function HashtagsMitra() {
       } else if (Array.isArray(data.tags)) {
         finalTags = data.tags;
       }
-
       setHashtags(finalTags);
 
       if (!finalTags.length) {

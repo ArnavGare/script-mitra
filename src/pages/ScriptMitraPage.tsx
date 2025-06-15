@@ -91,7 +91,8 @@ export default function ScriptMitraPage() {
           topic: finalTopic,
           style: formData.style,
           language: formData.language,
-          length: formData.length
+          length: formData.length,
+          user_id: user.id
         })
       });
       if (!response.ok) {
