@@ -1,4 +1,3 @@
-
 @layer utilities {
   /* Animation Classes */
   .animate-fade-in {
@@ -88,5 +87,11 @@
                 0 0.5px 2px 0 #5eeeff55;
     filter: drop-shadow(0 0 8px #a78bfa55) drop-shadow(0 0 18px #7dd3fc33);
     z-index: 2;
+  }
+  /* 3D Fly-In + Blur (clear-to-crisp) Animation for Headlines */
+  .animate-3d-fly-in {
+    animation: flyInBlur 0.95s cubic-bezier(.36,.71,.36,1.2) forwards;
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
   }
 }

@@ -1,5 +1,6 @@
 
 import React from "react";
+import OGFlyInText from "../OGFlyInText";
 
 const HeroSection = () => (
   <section id="home" className="scroll-mt-20">
@@ -9,7 +10,7 @@ const HeroSection = () => (
           className="text-5xl md:text-6xl font-playfair font-extrabold headline-glow mb-2 relative text-transparent bg-clip-text bg-gradient-to-r from-[#1cf6c2] via-[#29aadd] to-[#7265ff]"
           style={{ lineHeight: "1.11" }}
         >
-          Automation Mitra
+          <OGFlyInText>Automation Mitra</OGFlyInText>
         </h1>
         <p className="mt-2 text-xl md:text-2xl font-sans text-[#0ca67c] dark:text-[#7efae2] font-semibold tracking-tight animate-fade-in-up">
           Your Growth Partner for Smart Automation &amp; Content Creation
