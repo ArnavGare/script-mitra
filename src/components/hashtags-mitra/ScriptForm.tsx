@@ -34,14 +34,11 @@ export default function ScriptForm({
 
   return (
     <form onSubmit={handleGenerate} className="w-full flex flex-col gap-7">
-      <label htmlFor="script-input" className="block text-left text-base font-semibold mb-2 text-gray-700 dark:text-gray-200 font-sans">
-        Paste your video script here
-      </label>
       <GlowHoverCard className="w-full">
         <div className="relative w-full">
           <Textarea
             id="script-input"
-            placeholder=""
+            placeholder="Paste your video script here"
             value={input}
             onChange={e => setInput(e.target.value)}
             rows={6}
