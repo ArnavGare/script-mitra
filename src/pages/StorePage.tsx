@@ -209,7 +209,7 @@ function ProductCard({
 
   // Download function: gets signed URL, logs download, triggers browser download
   const handleDownload = async () => {
-    // Special case for "30 Viral Script Hooks" product using direct public URL
+    // Special case for "30 Viral Script Hooks" product: use direct public link and force download via Blob
     if (
       item.title &&
       item.title.trim().toLowerCase() === "30 viral script hooks"
@@ -228,13 +228,18 @@ function ProductCard({
         }
         const directUrl =
           "https://ypqbygpqthtjtkhoztsi.supabase.co/storage/v1/object/public/product_files//30%20Viral%20Script%20Hooks.pdf";
+        // Fetch as blob then trigger actual download
+        const response = await fetch(directUrl);
+        if (!response.ok) throw new Error("Could not download file.");
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
-        a.href = directUrl;
+        a.href = url;
         a.download = "30 Viral Script Hooks.pdf";
-        a.target = "_blank";
         document.body.appendChild(a);
         a.click();
         a.remove();
+        setTimeout(() => window.URL.revokeObjectURL(url), 1000);
         toast({
           title: "Download started",
           description: item.title + " file is being downloaded.",
@@ -300,13 +305,19 @@ function ProductCard({
         console.warn("Logging download failed:", logError);
       }
 
-      // 3. Trigger the download
+      // 3. Trigger the download for all other files
+      const fileResponse = await fetch(data.signedUrl);
+      if (!fileResponse.ok) throw new Error("Could not download file.");
+      const fileBlob = await fileResponse.blob();
+      const url = window.URL.createObjectURL(fileBlob);
       const a = document.createElement("a");
-      a.href = data.signedUrl;
+      a.href = url;
       a.download = item.file_name || item.title;
       document.body.appendChild(a);
       a.click();
       a.remove();
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+
       toast({
         title: "Download started",
         description: item.title + " file is being downloaded.",
