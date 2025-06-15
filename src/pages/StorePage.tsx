@@ -20,7 +20,6 @@ function getCategoryFromTag(tag?: string | null) {
   if (tag.toLowerCase().includes("hook")) return "Hooks";
   return "";
 }
-
 export default function StorePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -74,11 +73,8 @@ export default function StorePage() {
   if (selectedCategory !== "All") {
     filteredProducts = filteredProducts.filter(p => p.category && p.category.toLowerCase() === selectedCategory.toLowerCase() || selectedCategory === "PDFs" && p.tag === "PDF");
   }
-
   if (error) return <div className="text-red-500">Error loading products</div>;
-
-  return (
-    <>
+  return <>
       <Header />
       <div className="min-h-screen transition-all duration-500 relative">
         {/* --- Scriptmitra-style Animated Background --- */}
@@ -88,27 +84,32 @@ export default function StorePage() {
             <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl animate-float-delayed"></div>
             <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-cyan-400/10 rounded-full blur-xl animate-float"></div>
-            <div
-              className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift"
-              style={{ animationDelay: "0s", animationDuration: "25s" }}
-            ></div>
-            <div
-              className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift"
-              style={{ animationDelay: "5s", animationDuration: "30s" }}
-            ></div>
-            <div
-              className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift"
-              style={{ animationDelay: "10s", animationDuration: "20s" }}
-            ></div>
-            <div
-              className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift"
-              style={{ animationDelay: "15s", animationDuration: "35s" }}
-            ></div>
+            <div className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift" style={{
+            animationDelay: "0s",
+            animationDuration: "25s"
+          }}></div>
+            <div className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift" style={{
+            animationDelay: "5s",
+            animationDuration: "30s"
+          }}></div>
+            <div className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift" style={{
+            animationDelay: "10s",
+            animationDuration: "20s"
+          }}></div>
+            <div className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift" style={{
+            animationDelay: "15s",
+            animationDuration: "35s"
+          }}></div>
             <div className="absolute top-1/5 left-1/5">
-              <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{ animationDelay: "0s" }}></div>
+              <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{
+              animationDelay: "0s"
+            }}></div>
             </div>
             <div className="absolute bottom-1/5 right-1/5">
-              <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{ animationDelay: "12s", animationDuration: "20s" }}></div>
+              <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{
+              animationDelay: "12s",
+              animationDuration: "20s"
+            }}></div>
             </div>
             {/* Subtle grid overlay */}
             <div className="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse"></div>
@@ -117,7 +118,7 @@ export default function StorePage() {
 
         <div className="relative z-10">
           {/* Hero Section */}
-          <div className="relative pt-12 pb-2 min-h-[225px] flex items-center justify-center w-full mx-0 my-0 px-[173px] rounded-sm py-[25px]">
+          <div className="relative pt-12 pb-2 min-h-[225px] flex items-center justify-center w-full mx-0 my-0 px-[173px] rounded-sm py-[25px] bg-slate-950">
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
               <div className="absolute top-0 left-1/3 bg-gradient-to-tr from-blue-500/60 via-purple-500/50 to-cyan-400/30 blur-3xl w-72 h-36 rounded-full opacity-60" />
               <div className="absolute bottom-0 right-[-60px] bg-purple-400/30 blur-2xl w-60 h-20 rounded-full opacity-70" />
@@ -139,23 +140,19 @@ export default function StorePage() {
             {/* Category controls can go here */}
           </section>
 
-          {!isLoading && (
-            <>
+          {!isLoading && <>
               {/* Digital Product Library – All Products */}
               <section className="max-w-6xl mx-auto w-full px-4">
                 <h2 className="text-lg md:text-2xl font-bold text-gray-900 dark:text-white font-playfair mb-2 ml-1">
                   Digital Library
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
-                  {filteredProducts.map((prod: any, i: number) => (
-                    <GlowHoverCard key={prod.id}>
+                  {filteredProducts.map((prod: any, i: number) => <GlowHoverCard key={prod.id}>
                       <ProductCard item={prod} delay={i * 0.03} downloadCount={downloadsData?.[prod.id] || 0} />
-                    </GlowHoverCard>
-                  ))}
+                    </GlowHoverCard>)}
                 </div>
               </section>
-            </>
-          )}
+            </>}
 
           {isLoading && <div className="px-8 py-20 text-center text-xl">Loading products…</div>}
 
@@ -169,6 +166,5 @@ export default function StorePage() {
           </footer>
         </div>
       </div>
-    </>
-  );
+    </>;
 }
