@@ -209,16 +209,65 @@ function ProductCard({
 
   // Download function: gets signed URL, logs download, triggers browser download
   const handleDownload = async () => {
-    if (!item.file_path) {
-      toast({ title: "Download not available", description: "No file path set for resource." });
-      console.warn("No file_path for item:", item);
+    // Special case for "30 Viral Script Hooks" product using direct public URL
+    if (
+      item.title &&
+      item.title.trim().toLowerCase() === "30 viral script hooks"
+    ) {
+      setDownloading(true);
+      try {
+        // Log in downloads table (anonymous is allowed)
+        const { error: logError } = await supabase
+          .from("product_downloads")
+          .insert({
+            product_id: item.id,
+            user_id: null,
+          });
+        if (logError) {
+          console.warn("Logging download failed:", logError);
+        }
+        const directUrl =
+          "https://ypqbygpqthtjtkhoztsi.supabase.co/storage/v1/object/public/product_files//30%20Viral%20Script%20Hooks.pdf";
+        const a = document.createElement("a");
+        a.href = directUrl;
+        a.download = "30 Viral Script Hooks.pdf";
+        a.target = "_blank";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        toast({
+          title: "Download started",
+          description: item.title + " file is being downloaded.",
+        });
+      } catch (e: any) {
+        toast({
+          title: "Download failed",
+          description: e.message || "Download error.",
+          variant: "destructive",
+        });
+        console.error("Download exception:", e);
+      } finally {
+        setDownloading(false);
+      }
       return;
     }
 
+    // Normal logic for all other products
+    if (!item.file_path) {
+      toast({
+        title: "Download not available",
+        description: "No file path set for resource.",
+      });
+      console.warn("No file_path for item:", item);
+      return;
+    }
     setDownloading(true);
     try {
-      console.log("Attempting signedURL for", item.file_path, "in bucket: product_files");
-
+      console.log(
+        "Attempting signedURL for",
+        item.file_path,
+        "in bucket: product_files"
+      );
       // 1. Get signed download URL
       const { data, error } = await supabase.storage
         .from("product_files")
@@ -231,7 +280,14 @@ function ProductCard({
             "Couldn't get file download URL from storage. The file may not exist in the storage bucket, or the path is incorrect.",
           variant: "destructive",
         });
-        console.error("Storage signedUrl error:", error, "path:", item.file_path, "data:", data);
+        console.error(
+          "Storage signedUrl error:",
+          error,
+          "path:",
+          item.file_path,
+          "data:",
+          data
+        );
         return;
       }
 
@@ -251,7 +307,10 @@ function ProductCard({
       document.body.appendChild(a);
       a.click();
       a.remove();
-      toast({ title: "Download started", description: item.title + " file is being downloaded." });
+      toast({
+        title: "Download started",
+        description: item.title + " file is being downloaded.",
+      });
     } catch (e: any) {
       toast({
         title: "Download failed",
