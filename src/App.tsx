@@ -6,13 +6,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import HashtagsMitra from "./pages/HashtagsMitra";
-import GenerateScriptsPage from "./pages/GenerateScriptsPage";
 import StorePage from "./pages/StorePage";
 import LoginPage from "./pages/LoginPage";
 import PrivateRoute from "@/components/PrivateRoute";
 import ForbiddenPage from "@/pages/ForbiddenPage";
 import ScriptMitraPage from "@/pages/ScriptMitraPage";
-import HashtagMitraPage from "@/pages/HashtagMitraPage";
 import AccountPage from "./pages/AccountPage";
 
 const queryClient = new QueryClient();
