@@ -1,8 +1,7 @@
 
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import { Book, Brain, Film, Repeat } from "lucide-react";
-import { lightning, mobile } from "lucide-react";
+import { Book, Film, Repeat, Brain } from "lucide-react";
 
 export default function ScriptMitraInfoBoxes() {
   return (
@@ -50,7 +49,7 @@ export default function ScriptMitraInfoBoxes() {
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
             <span className="text-blue-600 dark:text-blue-400 text-2xl">
-              {/* Use inline SVG since only 'lightning' and 'mobile' are valid from lucide-react */}
+              {/* Lightning bolt as inline SVG */}
               <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="2" className="inline"><path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z"/></svg>
             </span>
             Why Financial Creators Love Script Mitra
@@ -94,7 +93,6 @@ export default function ScriptMitraInfoBoxes() {
           </ul>
         </CardContent>
       </Card>
-
     </div>
   );
 }
