@@ -1,4 +1,3 @@
-
 import React from "react";
 import clsx from "clsx";
 
@@ -34,8 +33,8 @@ const GlowHoverCard: React.FC<React.PropsWithChildren<{ className?: string; styl
             "0 0 18px 5px #38bdf822, 0 0 32px 12px #a78bfa44, 0 0 24px 10px #7dd3fc33",
         }}
       />
-      {/* Floating animation */}
-      <div className="relative z-20 animate-float">
+      {/* Removed animate-float to keep box in one position */}
+      <div className="relative z-20">
         {children}
       </div>
     </div>
