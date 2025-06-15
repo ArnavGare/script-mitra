@@ -13,6 +13,7 @@ import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
 import StructuredOutput from "@/components/hashtags-mitra/StructuredOutput";
+import useDailyQuotaCooldown from "@/hooks/useDailyQuotaCooldown";
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/97113ca3-e1f0-4004-930c-add542e8b8c5";
 interface StructuredResponse {
   title?: string;
@@ -92,8 +93,21 @@ export default function HashtagsMitra() {
     }
   }, [input, captions, structuredOutput, outputText]);
 
+  // === NEW: Cooldown/Quota Logic ===
+  const {
+    isBlocked,
+    isChecking,
+    cooldownSecs,
+    limitReached,
+    logsToday,
+    refresh,
+    logGeneration,
+    buttonText
+  } = useDailyQuotaCooldown("captions");
+
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
+    if (isBlocked) return; // respect cooldown/limit
     if (!input.trim()) {
       toast.error("Please enter your script first!");
       return;
@@ -261,7 +275,15 @@ export default function HashtagsMitra() {
               </div>
             </div>
             
-            <ScriptForm input={input} setInput={setInput} handleGenerate={handleGenerate} isLoading={isLoading} placeholder={placeholder} />
+            <ScriptForm
+              input={input}
+              setInput={setInput}
+              handleGenerate={handleGenerate}
+              isLoading={isBlocked || isChecking || isLoading}
+              placeholder={placeholder}
+              buttonTextOverride={buttonText}
+              limitReached={limitReached}
+            />
 
             {/* Always show the output box */}
             

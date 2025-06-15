@@ -9,6 +9,7 @@ import ScriptMitraScriptBox from "./scriptmitra/ScriptMitraScriptBox";
 import ScriptMitraInfoBoxes from "./scriptmitra/ScriptMitraInfoBoxes";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
 import { Button } from "@/components/ui/button";
+import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
 const topics = ["Mutual Fund Basics", "SIP Ka Magic", "Retirement Planning", "Term Insurance Facts", "ULIP vs SIP", "Loan ka Gyaan", "Tax Saving Tips", "Custom Topic"];
 const styles = ["Educational", "Story/Narrative", "Conversational", "Funny/Reel Style", "Dramatic/Emotional", "Latest Financial News"];
 const languages = ["English", "Hindi", "Hinglish", "Marathi"];
@@ -50,9 +51,22 @@ export default function ScriptMitraPage() {
   }, []);
   const handleFormChange = (data: any) => setFormData(data);
 
+  // === NEW: Cooldown/Quota Logic ===
+  const {
+    isBlocked,
+    isChecking,
+    cooldownSecs,
+    limitReached,
+    logsToday,
+    refresh,
+    logGeneration,
+    buttonText
+  } = useDailyQuotaCooldown("script");
+
   // Submit logic
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isBlocked) return; // respect cooldown/limit
     if (userLoading) return;
     if (!user?.id) {
       toast({
@@ -106,6 +120,8 @@ export default function ScriptMitraPage() {
         title: "Script Generated!",
         description: "Your personalized video script is ready to use."
       });
+      // === NEW, log usage ===
+      await logGeneration();
     } catch (error) {
       console.error("Error generating script:", error);
       toast({
@@ -244,7 +260,21 @@ export default function ScriptMitraPage() {
 
           {/* FORM + SCRIPT BOX COMPONENTS */}
           <section id="scriptmitra-form" className="max-w-3xl mx-auto px-4 py-6 mb-6">
-            <ScriptMitraForm topics={topics} styles={styles} languages={languages} lengths={lengths} formData={formData} showCustomTopic={showCustomTopic} isLoading={isLoading} onFormChange={handleFormChange} onShowCustomTopic={setShowCustomTopic} onSubmit={handleSubmit} onReset={handleReset} />
+            <ScriptMitraForm
+              topics={topics}
+              styles={styles}
+              languages={languages}
+              lengths={lengths}
+              formData={formData}
+              showCustomTopic={showCustomTopic}
+              isLoading={isBlocked || isChecking || isLoading}
+              onFormChange={handleFormChange}
+              onShowCustomTopic={setShowCustomTopic}
+              onSubmit={handleSubmit}
+              onReset={handleReset}
+              buttonTextOverride={buttonText}
+              limitReached={limitReached}
+            />
             <ScriptMitraScriptBox script={script} formData={formData} onCopy={handleCopy} onDownload={handleDownload} formatScriptWithColors={formatScriptWithColors} />
           </section>
 
