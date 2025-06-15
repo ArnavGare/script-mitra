@@ -1,7 +1,8 @@
 
 import React from "react";
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
-import { Book, Brain, Film, Lightning, Mobile, Repeat } from "lucide-react";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Book, Brain, Film, Repeat } from "lucide-react";
+import { lightning, mobile } from "lucide-react";
 
 export default function ScriptMitraInfoBoxes() {
   return (
@@ -11,7 +12,9 @@ export default function ScriptMitraInfoBoxes() {
       <Card className="bg-white/70 dark:bg-slate-900/70 border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
-            <span className="text-purple-600 dark:text-purple-400 text-2xl"><Film /></span>
+            <span className="text-purple-600 dark:text-purple-400 text-2xl">
+              <Film />
+            </span>
             How Script Mitra Works
           </CardTitle>
         </CardHeader>
@@ -46,7 +49,10 @@ export default function ScriptMitraInfoBoxes() {
       <Card className="bg-white/70 dark:bg-slate-900/70 border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
-            <span className="text-blue-600 dark:text-blue-400 text-2xl"><Lightning /></span>
+            <span className="text-blue-600 dark:text-blue-400 text-2xl">
+              {/* Use inline SVG since only 'lightning' and 'mobile' are valid from lucide-react */}
+              <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="2" className="inline"><path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z"/></svg>
+            </span>
             Why Financial Creators Love Script Mitra
           </CardTitle>
         </CardHeader>
