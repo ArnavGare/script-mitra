@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { FileText, BookOpen, ClipboardList, Tags, Image as ImageIcon, ArrowRight, Download, File as FileIcon } from "lucide-react";
@@ -210,21 +209,40 @@ function ProductCard({
 
   // Download function: gets signed URL, logs download, triggers browser download
   const handleDownload = async () => {
-    if (!item.file_path) return toast({ title: "Download not available", description: "File path missing." });
-    setDownloading(true);
+    if (!item.file_path) {
+      toast({ title: "Download not available", description: "No file path set for resource." });
+      console.warn("No file_path for item:", item);
+      return;
+    }
 
+    setDownloading(true);
     try {
+      console.log("Attempting signedURL for", item.file_path, "in bucket: product_files");
+
       // 1. Get signed download URL
       const { data, error } = await supabase.storage
         .from("product_files")
         .createSignedUrl(item.file_path, 60);
-      if (error || !data?.signedUrl) throw new Error("Could not get signed download URL.");
+
+      if (error || !data?.signedUrl) {
+        toast({
+          title: "Download failed",
+          description:
+            "Couldn't get file download URL from storage. The file may not exist in the storage bucket, or the path is incorrect.",
+          variant: "destructive",
+        });
+        console.error("Storage signedUrl error:", error, "path:", item.file_path, "data:", data);
+        return;
+      }
 
       // 2. Log in downloads table (anonymous is allowed)
-      await supabase.from("product_downloads").insert({
+      const { error: logError } = await supabase.from("product_downloads").insert({
         product_id: item.id,
         user_id: null, // Set actual user id if you have auth context
       });
+      if (logError) {
+        console.warn("Logging download failed:", logError);
+      }
 
       // 3. Trigger the download
       const a = document.createElement("a");
@@ -240,6 +258,7 @@ function ProductCard({
         description: e.message || "Download error.",
         variant: "destructive",
       });
+      console.error("Download exception:", e);
     } finally {
       setDownloading(false);
     }

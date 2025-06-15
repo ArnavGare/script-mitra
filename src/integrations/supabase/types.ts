@@ -152,18 +152,6 @@ export type Database = {
         }
         Relationships: []
       }
-      Products: {
-        Row: {
-          created_at: string
-        }
-        Insert: {
-          created_at: string
-        }
-        Update: {
-          created_at?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
