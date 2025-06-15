@@ -185,7 +185,6 @@ export default function HashtagsMitra() {
                     px-2
                     py-4
                     rounded-2xl
-                    bg-gradient-to-br from-[#52e7fa]/80 via-[#7f53fa]/80 to-[#eeaeca]/60
                     border border-white/30 dark:border-blue-300/20
                     transition-all duration-300
                     ring-[3px] ring-cyan-200/40 dark:ring-cyan-300/30
@@ -198,9 +197,10 @@ export default function HashtagsMitra() {
                       0 8px 48px #4f95ff33,
                       0 0px 28px #009fea23
                     `,
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    // Remove gradient background and text clipping to make text solid white
+                    // backgroundClip: "text",
+                    // WebkitBackgroundClip: "text",
+                    // WebkitTextFillColor: "transparent",
                     filter: "drop-shadow(0 3px 30px #38e0ff60)"
                   }}
                 >
