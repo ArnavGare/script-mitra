@@ -32,8 +32,8 @@ export function useDailyQuotaCooldown(type: "script" | "captions") {
     const todayISO = todayMidnight.toISOString();
 
     // 1. Count logs for today
-    const { count, error } = await supabase
-      .from("usage_logs")
+    // @ts-expect-error usage_logs is missing from generated types
+    const { count, error } = await (supabase.from("usage_logs") as any)
       .select("id", { count: "exact", head: true })
       .eq("user_id", user.id)
       .eq("type", type)
@@ -50,16 +50,18 @@ export function useDailyQuotaCooldown(type: "script" | "captions") {
     }
 
     // 2. Fetch most recent log for this user & type
-    const { data: [lastLog] = [] } = await supabase
-      .from("usage_logs")
+    // @ts-expect-error usage_logs is missing from generated types
+    const { data: logsData } = await (supabase.from("usage_logs") as any)
       .select("created_at")
       .eq("user_id", user.id)
       .eq("type", type)
       .order("created_at", { ascending: false })
       .limit(1);
 
+    const lastLog = logsData && logsData[0];
+
     let cooldown = 0;
-    if (lastLog?.created_at) {
+    if (lastLog && lastLog.created_at) {
       const lastTS = new Date(lastLog.created_at).getTime();
       const now = Date.now();
       const delta = Math.floor((now - lastTS) / 1000);
@@ -107,8 +109,8 @@ export function useDailyQuotaCooldown(type: "script" | "captions") {
     // Get user
     const { data: { user } } = await supabase.auth.getUser();
     if (!user?.id) return;
-    await supabase
-      .from("usage_logs")
+    // @ts-expect-error usage_logs is missing from generated types
+    await (supabase.from("usage_logs") as any)
       .insert([{ user_id: user.id, type }]);
     // Immediate cooldown after logging
     setCooldownSecs(60);
