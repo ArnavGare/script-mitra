@@ -51,8 +51,6 @@ export default function Header() {
           <NavLinks onNavigate={handleNavClick} />
         </nav>
         <div className="hidden md:flex items-center gap-3">
-          {/* Removed: <UserCreditsBadge /> */}
-          {/* Removed: <HeaderAuthButtons /> */}
           {hasAccess && (
             <button
               onClick={logout}
@@ -69,7 +67,6 @@ export default function Header() {
           )}
         </div>
         <div className="md:hidden flex items-center">
-          {/* Removed: <UserCreditsBadge /> */}
           <HeaderMobileMenu onNavClick={handleNavClick} />
         </div>
       </div>
