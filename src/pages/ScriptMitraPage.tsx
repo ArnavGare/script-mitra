@@ -282,102 +282,10 @@ export default function ScriptMitraPage() {
             />
           </section>
 
-          {/* INFO BOXES - All details are now below the generation box */}
+          {/* INFO BOXES (Keep Only These) */}
           <div className="max-w-3xl mx-auto px-4">
             <ScriptMitraInfoBoxes />
           </div>
-
-          {/* HOW IT WORKS */}
-          <section className="max-w-2xl mx-auto px-4 py-8">
-            <h2 className="text-2xl md:text-3xl font-bold font-playfair text-center mb-7 animate-3d-fly-in">
-              <OGFlyInText>How Script Mitra Works</OGFlyInText>
-            </h2>
-            <div className="grid gap-8 md:grid-cols-3 text-center">
-              <div>
-                <div className="text-3xl mb-2">📚</div>
-                <p className="font-semibold text-base mb-1">Select Your Topic</p>
-                <p className="text-sm text-white/80 dark:text-gray-300 min-h-[60px]">
-                  Choose from ready-made financial categories like SIPs, Insurance, Tax Planning, Market Trends, and more.
-                </p>
-              </div>
-              <div>
-                <div className="text-3xl mb-2">🎭</div>
-                <p className="font-semibold text-base mb-1">Pick Style &amp; Language</p>
-                <p className="text-sm text-white/80 dark:text-gray-300 min-h-[60px]">
-                  Whether you want it to be Informative, Storytelling, or Conversational — just pick and go. Also supports multiple Indian languages.
-                </p>
-              </div>
-              <div>
-                <div className="text-3xl mb-2">⚡</div>
-                <p className="font-semibold text-base mb-1">Get Script Instantly</p>
-                <p className="text-sm text-white/80 dark:text-gray-300 min-h-[60px]">
-                  AI generates your complete script with hooks, body, and CTA — optimized for Reels, Shorts &amp; YouTube.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* BENEFITS */}
-          <section className="max-w-2xl mx-auto px-4 py-8 rounded-xl">
-            <h2 className="text-2xl md:text-3xl font-bold font-playfair text-center mb-6 animate-3d-fly-in">
-              <OGFlyInText>Why Financial Creators Love Script Mitra</OGFlyInText>
-            </h2>
-            <ul className="space-y-3">
-              <li className="flex gap-3 items-start">
-                <span className="text-2xl mt-0.5">⚡</span>
-                <span>
-                  <span className="font-semibold">Instant Results:</span> No more writer’s block — get powerful scripts in seconds.
-                </span>
-              </li>
-              <li className="flex gap-3 items-start">
-                <span className="text-2xl mt-0.5">🧠</span>
-                <span>
-                  <span className="font-semibold">Tailored for Finance:</span> Content made by AI trained on finance best practices.
-                </span>
-              </li>
-              <li className="flex gap-3 items-start">
-                <span className="text-2xl mt-0.5">📱</span>
-                <span>
-                  <span className="font-semibold">Platform Ready:</span> Optimized for Instagram, YouTube, WhatsApp &amp; more.
-                </span>
-              </li>
-              <li className="flex gap-3 items-start">
-                <span className="text-2xl mt-0.5">🔄</span>
-                <span>
-                  <span className="font-semibold">Reusable Structure:</span> Edit, remix, or expand for multiple use cases.
-                </span>
-              </li>
-            </ul>
-          </section>
-
-          {/* PRO TIPS */}
-          <section className="max-w-2xl mx-auto px-4 py-6">
-            <h3 className="text-xl md:text-2xl font-bold font-playfair text-center mb-5 animate-3d-fly-in">
-              <OGFlyInText>Tips to Make the Most of Your Scripts</OGFlyInText>
-            </h3>
-            <ul className="space-y-2 text-sm text-white/90 dark:text-gray-200 text-center">
-              <li>Use a strong visual hook in the first 3 seconds.</li>
-              <li>Add personal stories to enhance relatability.</li>
-              <li>Pair your scripts with trending sounds &amp; transitions.</li>
-            </ul>
-          </section>
-
-          {/* FINAL CTA */}
-          <section className="max-w-2xl mx-auto text-center px-4 pb-12 pt-4">
-            <h2 className="text-2xl md:text-3xl font-bold font-playfair headline-glow mb-4 animate-3d-fly-in">
-              <OGFlyInText>Ready to Create Magnetic Financial Videos?</OGFlyInText>
-            </h2>
-            <Button
-              size="lg"
-              className="notion-button-primary shadow-xl px-7 font-semibold animate-fade-in-up"
-              onClick={() => {
-                const el = document.getElementById("scriptmitra-form");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <span role="img" aria-label="">🔹</span> Start Generating Scripts Now →
-            </Button>
-          </section>
         </div>
       </div>
     </>
