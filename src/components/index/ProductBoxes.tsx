@@ -1,5 +1,5 @@
-
 import React from "react";
+import { Link } from "react-router-dom";
 
 // Only style change: icon and text remain same.
 const PRODUCTS = [
@@ -30,9 +30,9 @@ const ProductBoxes = () => (
   <section className="max-w-4xl mx-auto px-4 pb-8">
     <div className="flex flex-col sm:flex-row justify-center gap-6 mt-8">
       {PRODUCTS.map((product, idx) => (
-        <a
+        <Link
           key={product.name}
-          href={product.url}
+          to={product.url}
           className={`
             relative premium-glassbox transition-transform duration-300 ease-[cubic-bezier(.44,.12,.48,1.07)]
             px-8 py-7 min-w-[210px] rounded-[2rem]
@@ -74,11 +74,10 @@ const ProductBoxes = () => (
             <span className="font-semibold text-lg tracking-wide text-slate-800 dark:text-white/90 drop-shadow-slate-100">{product.name}</span>
             <span className="mt-1 text-xs font-normal text-slate-700 dark:text-white/70 opacity-80">{product.desc}</span>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   </section>
 );
 
 export default ProductBoxes;
-
