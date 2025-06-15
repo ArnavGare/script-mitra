@@ -30,6 +30,57 @@ export type Database = {
         }
         Relationships: []
       }
+      generations: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      login_activity: {
+        Row: {
+          device: string | null
+          id: string
+          ip_address: string | null
+          logged_in_at: string
+          user_id: string
+        }
+        Insert: {
+          device?: string | null
+          id?: string
+          ip_address?: string | null
+          logged_in_at?: string
+          user_id: string
+        }
+        Update: {
+          device?: string | null
+          id?: string
+          ip_address?: string | null
+          logged_in_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

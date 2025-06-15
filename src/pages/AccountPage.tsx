@@ -4,26 +4,16 @@ import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useNavigate } from "react-router-dom";
-
-// Placeholder for last login timestamps (in production, this must be fetched from server/logs)
-const mockLogins = [
-  { date: "2025-06-15 11:01:43", device: "MacBook Chrome" },
-  { date: "2025-06-14 10:12:23", device: "iPhone Safari" },
-  { date: "2025-06-13 17:05:08", device: "Windows Edge" },
-];
-
-// Placeholder for "generations" (replace with real data if available)
-const mockGenerations = [
-  { title: "Sales Pitch Script", date: "2025-06-14" },
-  { title: "Instagram Reel Content", date: "2025-06-13" },
-  { title: "Monthly Content Plan", date: "2025-06-12" },
-  { title: "Objection Handling Guide", date: "2025-06-11" },
-  { title: "Lead Magnet Prompt", date: "2025-06-10" },
-];
+import { useLastGenerations } from "@/hooks/useLastGenerations";
+import { useLoginActivity } from "@/hooks/useLoginActivity";
 
 export default function AccountPage() {
   const { user, isLoading } = useSupabaseUser();
   const navigate = useNavigate();
+
+  // fetch real login activity and generations
+  const { data: generations, isLoading: gensLoading } = useLastGenerations(user?.id);
+  const { data: logins, isLoading: loginsLoading } = useLoginActivity(user?.id);
 
   React.useEffect(() => {
     if (!isLoading && !user) {
@@ -48,7 +38,6 @@ export default function AccountPage() {
             ) : user ? (
               <div>
                 <div className="mt-2 text-base"><span className="font-medium">Email:</span> {user.email}</div>
-                <div className="mt-1 text-base"><span className="font-medium">User ID:</span> {user.id}</div>
               </div>
             ) : (
               <div className="text-red-600">Not logged in</div>
@@ -60,14 +49,20 @@ export default function AccountPage() {
             <div className="mb-2 flex items-center gap-3">
               <span className="font-semibold text-lg text-gray-900 dark:text-white">Recent Login Activity</span>
             </div>
-            <ul className="mt-2 text-base">
-              {mockLogins.map((l, idx) => (
-                <li key={idx} className="flex justify-between py-1 border-b last:border-none border-gray-200 dark:border-cyan-900/40">
-                  <span>{l.date}</span>
-                  <span className="text-gray-500 dark:text-gray-400">{l.device}</span>
-                </li>
-              ))}
-            </ul>
+            {loginsLoading ? (
+              <div className="text-cyan-600">Loading...</div>
+            ) : logins && logins.length > 0 ? (
+              <ul className="mt-2 text-base">
+                {logins.map((l) => (
+                  <li key={l.id} className="flex gap-2 justify-between py-1 border-b last:border-none border-gray-200 dark:border-cyan-900/40">
+                    <span>{new Date(l.logged_in_at).toLocaleString()}</span>
+                    <span className="text-gray-500 dark:text-gray-400">{l.device || l.ip_address || "Unknown device"}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="text-gray-500">No login activity found.</div>
+            )}
           </Card>
 
           {/* Last 5 Generations */}
@@ -75,14 +70,27 @@ export default function AccountPage() {
             <div className="mb-2 flex items-center gap-3">
               <span className="font-semibold text-lg text-gray-900 dark:text-white">Last 5 Generations</span>
             </div>
-            <ul className="mt-2 text-base">
-              {mockGenerations.map((gen, idx) => (
-                <li key={idx} className="flex justify-between py-1 border-b last:border-none border-gray-200 dark:border-cyan-900/40">
-                  <span>{gen.title}</span>
-                  <span className="text-gray-500 dark:text-gray-400">{gen.date}</span>
-                </li>
-              ))}
-            </ul>
+            {gensLoading ? (
+              <div className="text-cyan-600">Loading...</div>
+            ) : generations && generations.length > 0 ? (
+              <ul className="mt-2 text-base">
+                {generations.map((gen) => (
+                  <li key={gen.id} className="flex flex-col sm:flex-row justify-between py-1 border-b last:border-none border-gray-200 dark:border-cyan-900/40">
+                    <span>
+                      <span className="inline-block rounded px-2 py-0.5 text-xs font-medium bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 mr-2">
+                        {gen.type === "script" ? "Script" : "Hashtag"}
+                      </span>
+                      {gen.title}
+                    </span>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      {new Date(gen.created_at).toLocaleDateString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="text-gray-500">No recent generations.</div>
+            )}
           </Card>
         </div>
       </main>
