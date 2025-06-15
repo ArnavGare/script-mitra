@@ -9,13 +9,10 @@ import ScriptMitraScriptBox from "./scriptmitra/ScriptMitraScriptBox";
 import ScriptMitraInfoBoxes from "./scriptmitra/ScriptMitraInfoBoxes";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
 import { Button } from "@/components/ui/button";
-import GlowHoverCard from "@/components/GlowHoverCard";
-
 const topics = ["Mutual Fund Basics", "SIP Ka Magic", "Retirement Planning", "Term Insurance Facts", "ULIP vs SIP", "Loan ka Gyaan", "Tax Saving Tips", "Custom Topic"];
 const styles = ["Educational", "Story/Narrative", "Conversational", "Funny/Reel Style", "Dramatic/Emotional", "Latest Financial News"];
 const languages = ["English", "Hindi", "Hinglish", "Marathi"];
 const lengths = ["60 sec", "120 sec", "180 sec"];
-
 export default function ScriptMitraPage() {
   const [formData, setFormData] = useState({
     topic: "",
@@ -234,33 +231,28 @@ export default function ScriptMitraPage() {
         </div>
         <div className="relative z-10">
           {/* HERO SECTION */}
-          <GlowHoverCard className="max-w-3xl mx-auto px-4 pb-10 mt-12 text-center bg-transparent shadow-none border-0">
-            <section>
-              <h1 className="text-4xl md:text-5xl font-bold font-playfair headline-glow mb-3">
-                <OGFlyInText>
-                  Script Mitra
-                </OGFlyInText>
-              </h1>
-              <p className="text-lg font-semibold mb-5 animate-fade-in-up md:text-lg text-slate-400 my-0">
-                Craft high-converting, attention-grabbing video scripts in seconds — tailored for financial creators, advisors, and educators.
-              </p>
-            </section>
-          </GlowHoverCard>
+          <section className="max-w-3xl mx-auto px-4 pb-10 mt-12 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold font-playfair headline-glow mb-3">
+              <OGFlyInText>
+                Script Mitra
+              </OGFlyInText>
+            </h1>
+            <p className="text-lg font-semibold mb-5 animate-fade-in-up md:text-lg text-slate-400 my-0">
+              Craft high-converting, attention-grabbing video scripts in seconds — tailored for financial creators, advisors, and educators.
+            </p>
+            
+          </section>
 
           {/* FORM + SCRIPT BOX COMPONENTS */}
-          <GlowHoverCard className="max-w-3xl mx-auto px-4 py-6 mb-6">
-            <section id="scriptmitra-form">
-              <ScriptMitraForm topics={topics} styles={styles} languages={languages} lengths={lengths} formData={formData} showCustomTopic={showCustomTopic} isLoading={isLoading} onFormChange={handleFormChange} onShowCustomTopic={setShowCustomTopic} onSubmit={handleSubmit} onReset={handleReset} />
-              <ScriptMitraScriptBox script={script} formData={formData} onCopy={handleCopy} onDownload={handleDownload} formatScriptWithColors={formatScriptWithColors} />
-            </section>
-          </GlowHoverCard>
+          <section id="scriptmitra-form" className="max-w-3xl mx-auto px-4 py-6 mb-6">
+            <ScriptMitraForm topics={topics} styles={styles} languages={languages} lengths={lengths} formData={formData} showCustomTopic={showCustomTopic} isLoading={isLoading} onFormChange={handleFormChange} onShowCustomTopic={setShowCustomTopic} onSubmit={handleSubmit} onReset={handleReset} />
+            <ScriptMitraScriptBox script={script} formData={formData} onCopy={handleCopy} onDownload={handleDownload} formatScriptWithColors={formatScriptWithColors} />
+          </section>
 
           {/* INFO BOXES (Keep Only These) */}
-          <GlowHoverCard className="max-w-3xl mx-auto px-4 my-12">
-            <div>
-              <ScriptMitraInfoBoxes />
-            </div>
-          </GlowHoverCard>
+          <div className="max-w-3xl mx-auto px-4">
+            <ScriptMitraInfoBoxes />
+          </div>
         </div>
       </div>
     </>;
