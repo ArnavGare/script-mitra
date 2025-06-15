@@ -73,12 +73,12 @@ export default function ScriptForm({
         {isLoading ? (
           <span className="flex items-center gap-2">
             <Loader2 className="animate-spin" />
-            Generating Hashtags...
+            Generating Captions...
           </span>
         ) : (
           <>
             <Sparkles className="text-yellow-400" />
-            <span className="ml-1">Generate Hashtags</span>
+            <span className="ml-1">Generate Captions</span>
           </>
         )}
       </Button>

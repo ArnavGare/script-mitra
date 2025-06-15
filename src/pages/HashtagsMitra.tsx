@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -7,7 +8,7 @@ import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 import { useRotatingPlaceholder } from "@/hooks/useRotatingPlaceholder";
 import Hero from "@/components/hashtags-mitra/Hero";
 import ScriptForm from "@/components/hashtags-mitra/ScriptForm";
-import HashtagList from "@/components/hashtags-mitra/HashtagList";
+import CaptionList from "@/components/hashtags-mitra/CaptionList";
 import TipsSection from "@/components/hashtags-mitra/TipsSection";
 import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
@@ -17,7 +18,7 @@ const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73c
 
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
-  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [captions, setCaptions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { copy, copiedIdx } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
@@ -29,41 +30,37 @@ export default function HashtagsMitra() {
       return;
     }
     setIsLoading(true);
-    setHashtags([]);
+    setCaptions([]);
     try {
       // Send the script to the webhook as required
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ script: input }),
+        body: JSON.stringify({ script: input, type: "captions" }),
       });
-      if (!res.ok) throw new Error("Could not generate hashtags");
+      if (!res.ok) throw new Error("Could not generate captions");
       const data = await res.json();
 
-      let finalTags: string[] = [];
+      let finalCaptions: string[] = [];
       if (data.output && typeof data.output === "string") {
-        finalTags = data.output
-          .split(/[#]/)
+        finalCaptions = data.output
+          .split(/\n/)
           .map(s => s.trim())
           .filter(Boolean)
-          .map(tagStr => {
-            const [firstWord] = tagStr.split(/\s|,|\./);
-            return firstWord ? firstWord.replace(/\s/g, '') : '';
-          })
-          .filter(t => t.length > 0);
-      } else if (Array.isArray(data.hashtags)) {
-        finalTags = data.hashtags;
-      } else if (Array.isArray(data.tags)) {
-        finalTags = data.tags;
+          .filter(caption => caption.length > 10); // Filter out very short text
+      } else if (Array.isArray(data.captions)) {
+        finalCaptions = data.captions;
+      } else if (Array.isArray(data.text)) {
+        finalCaptions = data.text;
       }
 
-      setHashtags(finalTags);
+      setCaptions(finalCaptions);
 
-      if (!finalTags.length) {
-        toast.error("No hashtags found. Try revising your script!");
+      if (!finalCaptions.length) {
+        toast.error("No captions found. Try revising your script!");
       }
     } catch (err) {
-      toast.error("Unable to generate hashtags. Please try again.");
+      toast.error("Unable to generate captions. Please try again.");
     }
     setIsLoading(false);
   }
@@ -96,8 +93,8 @@ export default function HashtagsMitra() {
             <div className="flex justify-center mb-3">
               <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow font-playfair relative">
                 <OGFlyInText>
-                  <span role="img" aria-label="hashtags-mitra">#️⃣</span>
-                  Hashtags Mitra – Discover Trending, High-Performing Hashtags
+                  <span role="img" aria-label="captions-mitra">📝</span>
+                  Captions Mitra – Generate Engaging Captions for Your Content
                 </OGFlyInText>
               </h1>
             </div>
@@ -109,7 +106,7 @@ export default function HashtagsMitra() {
               placeholder={placeholder}
             />
             <TipCarousel className="my-7" />
-            <HashtagList hashtags={hashtags} copy={copy} copiedIdx={copiedIdx} />
+            <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
             <TipsSection />
           </GlowHoverCard>
         </div>

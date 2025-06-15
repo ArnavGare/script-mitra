@@ -1,10 +1,11 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 
 const navLinks = [
   { name: "Home", to: "/" },
   { name: "Scripts Mitra", to: "/scriptmitra" },
-  { name: "Hashtags Mitra", to: "/hashtagmitra" },
+  { name: "Captions Mitra", to: "/hashtagmitra" },
   { name: "Store", to: "/store" },
 ];
 

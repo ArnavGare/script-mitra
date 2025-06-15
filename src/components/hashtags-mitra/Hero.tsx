@@ -1,3 +1,4 @@
+
 import React from "react";
 export default function Hero() {
   return <div className="text-center mb-7 select-none">
@@ -10,7 +11,7 @@ export default function Hero() {
             0 4px 48px #4f95ff33
           `
     }} className="inline-block text-[2.6rem] sm:text-5xl md:text-6xl font-bold tracking-tight font-playfair text-left mx-0 lg:text-6xl">
-        Hashtags Mitra
+        Captions Mitra
       </h1>
     </div>;
 }

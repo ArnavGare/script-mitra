@@ -5,7 +5,7 @@ export default function useCopyToClipboard() {
   const [copiedIdx, setCopiedIdx] = useState<number|null>(null);
 
   function copy(text: string, idx: number) {
-    navigator.clipboard.writeText(`#${text}`).then(() => {
+    navigator.clipboard.writeText(text).then(() => {
       setCopiedIdx(idx);
       setTimeout(() => setCopiedIdx(null), 1200);
     });
