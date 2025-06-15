@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -13,12 +12,21 @@ import TipsSection from "@/components/hashtags-mitra/TipsSection";
 import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
+import StructuredOutput from "@/components/hashtags-mitra/StructuredOutput";
 
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950";
+
+interface StructuredResponse {
+  title?: string;
+  caption?: string;
+  hashtags?: string;
+  description?: string;
+}
 
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
   const [captions, setCaptions] = useState<string[]>([]);
+  const [structuredOutput, setStructuredOutput] = useState<StructuredResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { copy, copiedIdx } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
@@ -31,6 +39,7 @@ export default function HashtagsMitra() {
     }
     setIsLoading(true);
     setCaptions([]);
+    setStructuredOutput(null);
     try {
       // Send the script to the webhook as required
       const res = await fetch(WEBHOOK_URL, {
@@ -41,23 +50,34 @@ export default function HashtagsMitra() {
       if (!res.ok) throw new Error("Could not generate captions");
       const data = await res.json();
 
-      let finalCaptions: string[] = [];
-      if (data.output && typeof data.output === "string") {
-        finalCaptions = data.output
-          .split(/\n/)
-          .map(s => s.trim())
-          .filter(Boolean)
-          .filter(caption => caption.length > 10); // Filter out very short text
-      } else if (Array.isArray(data.captions)) {
-        finalCaptions = data.captions;
-      } else if (Array.isArray(data.text)) {
-        finalCaptions = data.text;
-      }
+      // Check if we have structured output (title, caption, hashtags, description)
+      if (data.title || data.caption || data.hashtags || data.description) {
+        setStructuredOutput({
+          title: data.title,
+          caption: data.caption,
+          hashtags: data.hashtags,
+          description: data.description
+        });
+      } else {
+        // Fall back to original captions list format
+        let finalCaptions: string[] = [];
+        if (data.output && typeof data.output === "string") {
+          finalCaptions = data.output
+            .split(/\n/)
+            .map(s => s.trim())
+            .filter(Boolean)
+            .filter(caption => caption.length > 10);
+        } else if (Array.isArray(data.captions)) {
+          finalCaptions = data.captions;
+        } else if (Array.isArray(data.text)) {
+          finalCaptions = data.text;
+        }
 
-      setCaptions(finalCaptions);
+        setCaptions(finalCaptions);
 
-      if (!finalCaptions.length) {
-        toast.error("No captions found. Try revising your script!");
+        if (!finalCaptions.length) {
+          toast.error("No captions found. Try revising your script!");
+        }
       }
     } catch (err) {
       toast.error("Unable to generate captions. Please try again.");
@@ -106,7 +126,17 @@ export default function HashtagsMitra() {
               placeholder={placeholder}
             />
             <TipCarousel className="my-7" />
-            <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
+            
+            {/* Display structured output if available */}
+            {structuredOutput && (
+              <StructuredOutput data={structuredOutput} copy={copy} copiedIdx={copiedIdx} />
+            )}
+            
+            {/* Fall back to caption list if no structured output */}
+            {!structuredOutput && (
+              <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
+            )}
+            
             <TipsSection />
           </GlowHoverCard>
         </div>
