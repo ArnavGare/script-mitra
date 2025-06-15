@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/index/HeroSection";
@@ -14,6 +13,7 @@ import { useAccessKey } from "@/context/AccessKeyContext";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import FloatingLogoutButton from "@/components/FloatingLogoutButton";
 
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -29,25 +29,8 @@ const Index = () => {
   return (
     <>
       <Header />
-      {/* Floating Logout Button (always visible on all pages if logged in) */}
-      {hasAccess && (
-        <div className="fixed top-4 right-4 z-[99999]">
-          <Button
-            onClick={handleLogout}
-            variant="secondary"
-            size="sm"
-            aria-label="Logout"
-            className="!bg-gradient-to-br !from-rose-600 !to-cyan-500 !text-white border border-cyan-300 font-bold shadow glow-on-hover hover:scale-105 px-4 py-2"
-            style={{
-              minWidth: 90,
-              boxShadow: "0 4px 24px 0 #7de7fd99, 0 2px 8px 0 #4442ff18",
-            }}
-          >
-            <LogOut className="w-4 h-4 text-white" />
-            <span>Logout</span>
-          </Button>
-        </div>
-      )}
+      {/* SUPER PROMINENT FLOATING LOGOUT BUTTON, BOTTOM RIGHT */}
+      <FloatingLogoutButton />
       <div className={`min-h-screen transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
         {/* Sophisticated Moving Background */}
         <div className="fixed inset-0 bg-gradient-to-br from-[#131832] via-[#121728] to-[#312d4e] dark:from-[#080818] dark:via-[#111235] dark:to-[#24245a] overflow-hidden">
