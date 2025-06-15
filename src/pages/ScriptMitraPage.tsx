@@ -237,7 +237,7 @@ export default function ScriptMitraPage() {
                 Script Mitra
               </OGFlyInText>
             </h1>
-            <p className="text-lg md:text-2xl text-[#0ca67c] dark:text-[#7efae2] font-semibold mb-5 animate-fade-in-up">
+            <p className="text-lg font-semibold mb-5 animate-fade-in-up md:text-lg text-slate-400 my-0">
               Craft high-converting, attention-grabbing video scripts in seconds — tailored for financial creators, advisors, and educators.
             </p>
             
