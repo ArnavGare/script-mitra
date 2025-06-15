@@ -4,12 +4,19 @@ import React from "react";
 export default function Logo() {
   return (
     <span
-      className="font-extrabold text-white text-[1.6rem] sm:text-[2rem] tracking-wide select-none font-playfair drop-shadow-md headline-glow-animation"
+      className={`
+        font-display font-extrabold 
+        text-[1.6rem] sm:text-[2rem] tracking-wide select-none
+        bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400
+        bg-clip-text text-transparent 
+        drop-shadow-md headline-glow-animation
+      `}
       style={{
         letterSpacing: "0.085em",
-        textShadow: "0 0 18px #7dd3fc88, 0 0 5px #8b5cf688, 0 0 1.5px #fff, 0 0 0.5px #fff",
-        filter: "brightness(1.10)",
-        transition: "filter 0.25s, text-shadow 0.25s",
+        textShadow:
+          "0 0 14px #84e0fe4e, 0 0 3px #b993fe50, 0 0 1.2px #fff, 0 0 0.8px #fff",
+        filter: "brightness(1.11)",
+        transition: "filter 0.22s, text-shadow 0.22s",
       }}
       aria-label="Automation Mitra"
     >
@@ -17,19 +24,19 @@ export default function Logo() {
       <style>
         {`
           .headline-glow-animation {
-            animation: am-glow-pulse 2.6s ease-in-out infinite alternate;
+            animation: am-glow-pulse 2.7s ease-in-out infinite alternate;
           }
           @keyframes am-glow-pulse {
             0% {
-              text-shadow: 0 0 8px #93c5fd50, 0 0 1.5px #fff, 0 0 0px #fff;
-              filter: brightness(1.07);
+              text-shadow: 0 0 4px #93c5fd38, 0 0 1.2px #fff, 0 0 0px #fff;
+              filter: brightness(1.06);
             }
             70% {
-              text-shadow: 0 0 22px #9333ea80, 0 0 8px #7dd3fc80, 0 0 0.5px #fff, 0 0 2px #fff;
-              filter: brightness(1.13);
+              text-shadow: 0 0 15px #9333ea50, 0 0 6px #7dd3fc48, 0 0 1.5px #fff, 0 0 2px #fff;
+              filter: brightness(1.15);
             }
             100% {
-              text-shadow: 0 0 10px #7dd3fc60, 0 0 2px #a78bfa40, 0 0 1.5px #fff, 0 0 0.5px #fff;
+              text-shadow: 0 0 6px #7dd3fc32, 0 0 2px #a78bfa28, 0 0 1.2px #fff, 0 0 0.4px #fff;
               filter: brightness(1.10);
             }
           }
