@@ -13,7 +13,7 @@ import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
 import StructuredOutput from "@/components/hashtags-mitra/StructuredOutput";
-import useDailyQuotaCooldown from "@/hooks/useDailyQuotaCooldown";
+import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/97113ca3-e1f0-4004-930c-add542e8b8c5";
 interface StructuredResponse {
   title?: string;
