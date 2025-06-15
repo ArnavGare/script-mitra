@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
@@ -258,6 +257,30 @@ export default function ScriptMitraPage() {
             </Button>
           </section>
 
+          {/* FORM + SCRIPT BOX COMPONENTS */}
+          <section id="scriptmitra-form" className="max-w-3xl mx-auto px-4 py-6 mb-6">
+            <ScriptMitraForm
+              topics={topics}
+              styles={styles}
+              languages={languages}
+              lengths={lengths}
+              formData={formData}
+              showCustomTopic={showCustomTopic}
+              isLoading={isLoading}
+              onFormChange={handleFormChange}
+              onShowCustomTopic={setShowCustomTopic}
+              onSubmit={handleSubmit}
+              onReset={handleReset}
+            />
+            <ScriptMitraScriptBox
+              script={script}
+              formData={formData}
+              onCopy={handleCopy}
+              onDownload={handleDownload}
+              formatScriptWithColors={formatScriptWithColors}
+            />
+          </section>
+
           {/* HOW IT WORKS */}
           <section className="max-w-2xl mx-auto px-4 py-8">
             <h2 className="text-2xl md:text-3xl font-bold font-playfair text-center mb-7 animate-3d-fly-in">
@@ -286,30 +309,6 @@ export default function ScriptMitraPage() {
                 </p>
               </div>
             </div>
-          </section>
-
-          {/* FORM + SCRIPT BOX COMPONENTS */}
-          <section id="scriptmitra-form" className="max-w-3xl mx-auto px-4 py-6 mb-6">
-            <ScriptMitraForm
-              topics={topics}
-              styles={styles}
-              languages={languages}
-              lengths={lengths}
-              formData={formData}
-              showCustomTopic={showCustomTopic}
-              isLoading={isLoading}
-              onFormChange={handleFormChange}
-              onShowCustomTopic={setShowCustomTopic}
-              onSubmit={handleSubmit}
-              onReset={handleReset}
-            />
-            <ScriptMitraScriptBox
-              script={script}
-              formData={formData}
-              onCopy={handleCopy}
-              onDownload={handleDownload}
-              formatScriptWithColors={formatScriptWithColors}
-            />
           </section>
 
           {/* BENEFITS */}
