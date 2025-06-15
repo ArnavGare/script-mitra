@@ -5,11 +5,13 @@ import NavLinks from "./NavLinks";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAccessKey } from "@/context/AccessKeyContext";
 import MotionGridBg from "./MotionGridBg";
+import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 
 export default function Header() {
   const { hasAccess } = useAccessKey();
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isLoading } = useSupabaseUser();
 
   const handleCTA = () => {
     if (hasAccess) {
@@ -42,35 +44,51 @@ export default function Header() {
           <nav className="flex items-center flex-1 justify-center gap-3">
             <NavLinks />
           </nav>
-          {/* CTA Button (right) */}
-          <div className="flex items-center">
-            <button
-              onClick={handleCTA}
-              className={`
-                px-4 py-2 rounded-lg font-semibold text-base
-                bg-gradient-to-tr from-blue-600 via-cyan-500 to-purple-600
-                hover:from-blue-500 hover:to-purple-500
-                shadow-lg border-0
-                text-white transition-all duration-200
-                focus-visible:outline-none outline-none
-                focus-visible:ring-2 focus-visible:ring-cyan-400/70
-                relative
-                ${
-                  hasAccess
-                    ? "glow-pulse"
-                    : "outline outline-2 outline-cyan-300/70"
-                }
-              `}
-              style={{
-                boxShadow:
-                  "0 8px 24px 0 rgba(63, 189, 255, 0.07), 0 1.5px 6px rgba(87, 96, 210, 0.22)",
-                minWidth: 110,
-                letterSpacing: "0.02em",
-              }}
-              aria-label={hasAccess ? "Dashboard" : "Login"}
-            >
-              {hasAccess ? "Dashboard" : "Login"}
-            </button>
+          {/* Right section: Email (if logged in) or Login button */}
+          <div className="flex items-center min-w-[110px] justify-end">
+            {/* Show spinner while loading user */}
+            {isLoading ? (
+              <span className="w-[110px] animate-pulse text-cyan-400">Loading...</span>
+            ) : user ? (
+              <span
+                className="px-3 py-1 rounded-lg font-semibold text-base bg-gradient-to-tr from-[#1cf6c2]/10 via-[#7265ff]/10 to-[#7265ff]/20 text-white border border-cyan-300/10 shadow-inner transition-all duration-200"
+                title={user.email}
+                style={{
+                  letterSpacing: "0.01em",
+                  maxWidth: 170,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  background: "linear-gradient(92deg,rgba(0,255,229,0.07),rgba(182,240,255,0.11) 70%,rgba(157,124,255,0.09) )",
+                  boxShadow: "0 2px 14px 0 rgba(76,88,221,0.13)",
+                }}
+                aria-label={user.email}
+              >
+                {user.email}
+              </span>
+            ) : (
+              <button
+                onClick={handleCTA}
+                className={`
+                  px-4 py-2 rounded-lg font-semibold text-base
+                  bg-gradient-to-tr from-blue-600 via-cyan-500 to-purple-600
+                  hover:from-blue-500 hover:to-purple-500
+                  shadow-lg border-0
+                  text-white transition-all duration-200
+                  focus-visible:outline-none outline-none
+                  focus-visible:ring-2 focus-visible:ring-cyan-400/70
+                  relative
+                  outline outline-2 outline-cyan-300/70
+                `}
+                style={{
+                  minWidth: 110,
+                  letterSpacing: "0.02em",
+                }}
+                aria-label="Login"
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
         <style>{`
