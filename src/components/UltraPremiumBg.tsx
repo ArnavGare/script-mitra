@@ -1,3 +1,4 @@
+
 import React from "react";
 
 /**
@@ -45,8 +46,6 @@ export default function UltraPremiumBg() {
         minWidth: "100vw",
       }}
     >
-      {/* NOISE OVERLAY: sits atop all BGs within this layer */}
-      <div className="noise-overlay" />
       {/* Moving animated diagonal gridlines behind everything */}
       <svg
         className="absolute inset-0 w-full h-full opacity-30"
@@ -210,3 +209,4 @@ export default function UltraPremiumBg() {
     </div>
   );
 }
+

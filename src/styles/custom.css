@@ -1,3 +1,4 @@
+
 /* Glassmorphism effect for cards */
 .backdrop-blur-sm {
   backdrop-filter: blur(16px);
@@ -102,21 +103,4 @@ body {
 /* Hide scrollbar for glass mobile menu */
 ::-webkit-scrollbar-thumb:horizontal {
   background: rgba(30,71,158,0.08);
-}
-
-/* --- Noise overlay for backgrounds & glows --- */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1; /* Place above background, below content */
-  pointer-events: none;
-  mix-blend-mode: overlay;
-  opacity: 0.38; /* Tune per visual need */
-  background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.84" numOctaves="2" stitchTiles="stitch" /></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.36"/></svg>');
-  background-size: 300px 300px;
-  pointer-events: none;
-  transition: opacity 0.4s;
-}
-@media (max-width: 800px) {
-  .noise-overlay { background-size: 120px 120px; }
 }
