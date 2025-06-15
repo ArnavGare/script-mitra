@@ -59,7 +59,7 @@ export default function StorePage() {
   return <>
       <Header />
       {/* Hero Section */}
-      <div className="relative pt-12 pb-2 min-h-[225px] flex items-center justify-center w-full bg-gradient-to-br from-[#181d2b] via-[#221f32] to-[#22184a] mx-0 my-0 px-[173px] rounded-sm py-[31px]">
+      <div className="relative pt-12 pb-2 min-h-[225px] flex items-center justify-center w-full bg-gradient-to-br from-[#181d2b] via-[#221f32] to-[#22184a] mx-0 my-0 px-[173px] rounded-sm py-[23px]">
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           {/* Blurry accent gradients */}
           <div className="absolute top-0 left-1/3 bg-gradient-to-tr from-blue-500/60 via-purple-500/50 to-cyan-400/30 blur-3xl w-72 h-36 rounded-full opacity-60" />
