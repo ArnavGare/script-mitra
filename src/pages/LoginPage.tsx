@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
@@ -67,7 +66,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-900">
       <div className="max-w-md w-full px-8 py-10 bg-white/90 dark:bg-gray-900/90 rounded-xl shadow-lg border border-blue-900/20">
-        <h2 className="text-3xl font-bold mb-7 text-center text-blue-800 dark:text-blue-300">
+        <h2 className="text-3xl font-bold mb-7 text-center text-blue-800 dark:text-blue-300 headline-glow font-playfair relative">
           {isLogin ? "Sign In" : "Sign Up"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">

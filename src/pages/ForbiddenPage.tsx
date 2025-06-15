@@ -6,7 +6,7 @@ export default function ForbiddenPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-indigo-900">
       <div className="max-w-md w-full px-8 py-10 bg-white/95 dark:bg-gray-900/90 rounded-xl shadow-lg border border-indigo-900/40 text-center">
-        <h1 className="text-5xl font-bold text-red-600 mb-4 headline-glow">
+        <h1 className="text-5xl font-bold text-red-600 mb-4 headline-glow font-playfair relative">
           <OGFlyInText>
             403
           </OGFlyInText>

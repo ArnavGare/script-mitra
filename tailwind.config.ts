@@ -21,7 +21,7 @@ export default {
 			fontFamily: {
 				sans: ['Inter', 'ui-sans-serif', 'system-ui'],
 				display: ['Space Grotesk', 'Inter', 'ui-sans-serif'],
-				playfair: ['Playfair Display', 'serif'],
+				playfair: ['Playfair Display', 'serif'], // ADDED FOR HEADLINES
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

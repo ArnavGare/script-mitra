@@ -221,7 +221,7 @@ export default function ScriptMitraPage() {
         <div className="relative z-10">
           <section className="max-w-3xl mx-auto px-4 pb-8 mt-12">
             <div className="mb-4 flex items-center justify-center">
-              <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow">
+              <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow font-playfair relative">
                 <OGFlyInText>
                   <span role="img" aria-label="script-mitra">🎬</span>
                   Script Mitra – Generate AI-Powered Video Scripts Instantly

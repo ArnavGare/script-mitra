@@ -1,4 +1,3 @@
-
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -47,7 +46,7 @@ const NotFound = () => {
 
       {/* 404 Content */}
       <div className="relative z-10 text-center backdrop-blur-sm bg-white/10 rounded-2xl p-8 border border-white/20 shadow-2xl">
-        <h1 className="text-6xl font-bold mb-4 text-white">404</h1>
+        <h1 className="text-6xl font-bold mb-4 text-white headline-glow font-playfair relative">404</h1>
         <p className="text-xl text-white/90 mb-6">Oops! Page not found</p>
         <a 
           href="/" 

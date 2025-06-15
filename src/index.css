@@ -422,32 +422,42 @@ body {
 
 /* Premium minimal clean headline (plain white inside, soft outer shadow only) */
 .headline-glow {
+  font-family: 'Playfair Display', 'Inter', 'Satoshi', 'Poppins', 'Space Grotesk', serif !important;
   color: #fff !important;
   text-shadow:
     0 3px 22px #4f46e528,   /* gentle blue/purple shadow for soft lift */
     0 0.5px 12px #93c5fd14,
-    0 1.5px 4px #7dd3fc12;
+    0 1.5px 4px #7dd3fc12,
+    0 0px 24px 3px #9747ff28;
   filter: brightness(1.09);
-  letter-spacing: 0.016em;
+  letter-spacing: 0.018em;
   animation: headline-in 0.69s cubic-bezier(.33,.65,.51,.98);
+  /* pull in a subtle noise overlay effect */
+  position: relative;
+  z-index: 2;
+}
+.headline-glow::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  /* sampled SVG noise data uri for premium look */
+  background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noiseFilter)" opacity="0.40"/></svg>');
+  border-radius: 1rem;
 }
 
-/* Soft pop animation */
-@keyframes headline-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.93) translateY(22px) skewY(1deg);
-    filter: blur(4px) brightness(0.6);
-  }
-  78% {
-    filter: blur(0.5px) brightness(1.04);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0) skewY(0deg);
-    filter: blur(0) brightness(1.13);
-  }
+/* Apply font to Playfair utility */
+// Optional, for global override with Tailwind:
+.font-playfair {
+  font-family: 'Playfair Display', serif !important;
 }
+
+/* If you want to be specific, you can layer this over .headline-glow in your TSX */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 
 /* OG Fly In Text Animation */
 @keyframes og-fly-in {
