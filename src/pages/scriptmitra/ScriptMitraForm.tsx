@@ -14,6 +14,7 @@ interface ScriptMitraFormProps {
   formData: any;
   showCustomTopic: boolean;
   isLoading: boolean;
+  quotaTooltip?: string;
   onFormChange: (data: any) => void;
   onShowCustomTopic: (show: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -27,6 +28,7 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
   formData,
   showCustomTopic,
   isLoading,
+  quotaTooltip = "",
   onFormChange,
   onShowCustomTopic,
   onSubmit,
@@ -44,7 +46,8 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
       onShowCustomTopic(false);
     }
   }
-  return <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 transition-all duration-500 glow-hover-card">
+  return (
+    <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 transition-all duration-500 glow-hover-card">
       <CardContent className="p-6 my-0 px-[37px] py-[29px]">
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -133,12 +136,18 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
               </Select>
             </div>
           </div>
+          {/* Tooltip for quota/cooldown */}
+          <div className="mb-1 min-h-[1.7em] text-center">
+            {!!quotaTooltip && (
+              <span className="text-red-500 dark:text-yellow-300 text-base font-medium transition">{quotaTooltip}</span>
+            )}
+          </div>
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button type="submit" disabled={isLoading} className="notion-button-primary flex-1 h-11 text-base font-semibold">
               {isLoading ? <div className="flex items-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                  Generating Script...
+                  {quotaTooltip ? quotaTooltip : "Generating Script..."}
                 </div> : <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4" />
                   Generate Script
@@ -150,6 +159,7 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
           </div>
         </form>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
 export default ScriptMitraForm;

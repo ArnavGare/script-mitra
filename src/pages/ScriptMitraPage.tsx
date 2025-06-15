@@ -9,6 +9,7 @@ import ScriptMitraScriptBox from "./scriptmitra/ScriptMitraScriptBox";
 import ScriptMitraInfoBoxes from "./scriptmitra/ScriptMitraInfoBoxes";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
 import { Button } from "@/components/ui/button";
+import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
 const topics = ["Mutual Fund Basics", "SIP Ka Magic", "Retirement Planning", "Term Insurance Facts", "ULIP vs SIP", "Loan ka Gyaan", "Tax Saving Tips", "Custom Topic"];
 const styles = ["Educational", "Story/Narrative", "Conversational", "Funny/Reel Style", "Dramatic/Emotional", "Latest Financial News"];
 const languages = ["English", "Hindi", "Hinglish", "Marathi"];
@@ -50,9 +51,21 @@ export default function ScriptMitraPage() {
   }, []);
   const handleFormChange = (data: any) => setFormData(data);
 
-  // Submit logic
+  const {
+    loading: quotaLoading,
+    script,
+    caption,
+    cooldownActive,
+    cooldownSeconds,
+    logGeneration,
+    refresh,
+    error: quotaError,
+  } = useDailyQuotaCooldown();
+
+  // Submit logic for script generation — use script quota
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (script.disabled) return; // enforce quota/cooldown
     if (userLoading) return;
     if (!user?.id) {
       toast({
@@ -106,6 +119,8 @@ export default function ScriptMitraPage() {
         title: "Script Generated!",
         description: "Your personalized video script is ready to use."
       });
+      // Log usage and trigger cooldown
+      await logGeneration("script");
     } catch (error) {
       console.error("Error generating script:", error);
       toast({
@@ -188,7 +203,8 @@ export default function ScriptMitraPage() {
   };
 
   // ---- PAGE RENDER ----
-  return <>
+  return (
+    <>
       <Header />
       <div className="min-h-screen transition-all duration-500 relative">
         {/* Animated Background */}
@@ -244,7 +260,20 @@ export default function ScriptMitraPage() {
 
           {/* FORM + SCRIPT BOX COMPONENTS */}
           <section id="scriptmitra-form" className="max-w-3xl mx-auto px-4 py-6 mb-6">
-            <ScriptMitraForm topics={topics} styles={styles} languages={languages} lengths={lengths} formData={formData} showCustomTopic={showCustomTopic} isLoading={isLoading} onFormChange={handleFormChange} onShowCustomTopic={setShowCustomTopic} onSubmit={handleSubmit} onReset={handleReset} />
+            <ScriptMitraForm
+              topics={topics}
+              styles={styles}
+              languages={languages}
+              lengths={lengths}
+              formData={formData}
+              showCustomTopic={showCustomTopic}
+              isLoading={script.disabled || isLoading}
+              quotaTooltip={script.tooltip}
+              onFormChange={handleFormChange}
+              onShowCustomTopic={setShowCustomTopic}
+              onSubmit={handleSubmit}
+              onReset={handleReset}
+            />
             <ScriptMitraScriptBox script={script} formData={formData} onCopy={handleCopy} onDownload={handleDownload} formatScriptWithColors={formatScriptWithColors} />
           </section>
 
@@ -254,5 +283,6 @@ export default function ScriptMitraPage() {
           </div>
         </div>
       </div>
-    </>;
+    </>
+  );
 }

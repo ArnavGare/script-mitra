@@ -13,6 +13,7 @@ import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
 import StructuredOutput from "@/components/hashtags-mitra/StructuredOutput";
+import useDailyQuotaCooldown from "@/hooks/useDailyQuotaCooldown";
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook-test/97113ca3-e1f0-4004-930c-add542e8b8c5";
 interface StructuredResponse {
   title?: string;
@@ -59,6 +60,16 @@ export default function HashtagsMitra() {
     copiedIdx
   } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
+  const {
+    loading,
+    caption,
+    script,
+    cooldownActive,
+    cooldownSeconds,
+    logGeneration,
+    refresh,
+    error,
+  } = useDailyQuotaCooldown();
 
   // Restore captions/structured output from localStorage on mount
   useEffect(() => {
@@ -92,8 +103,11 @@ export default function HashtagsMitra() {
     }
   }, [input, captions, structuredOutput, outputText]);
 
+  // Modified handleGenerate to check quota/cooldown, show tooltips/disable as needed, and log usage after success
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
+    if (caption.disabled) return; // prevent if over quota or in cooldown
+
     if (!input.trim()) {
       toast.error("Please enter your script first!");
       return;
@@ -170,6 +184,8 @@ export default function HashtagsMitra() {
           console.log("Full webhook response for debugging:", data);
         }
       }
+      // On success, log the generation and refresh (triggers cooldown)
+      await logGeneration("caption");
     } catch (err) {
       console.error("Error generating captions:", err);
       setOutputText(""); // Clear on error
@@ -261,7 +277,14 @@ export default function HashtagsMitra() {
               </div>
             </div>
             
-            <ScriptForm input={input} setInput={setInput} handleGenerate={handleGenerate} isLoading={isLoading} placeholder={placeholder} />
+            <ScriptForm
+              input={input}
+              setInput={setInput}
+              handleGenerate={handleGenerate}
+              isLoading={caption.disabled || isLoading}
+              placeholder={placeholder}
+              tooltip={caption.tooltip}
+            />
 
             {/* Always show the output box */}
             

@@ -11,6 +11,7 @@ interface ScriptFormProps {
   handleGenerate: (e: React.FormEvent) => void;
   isLoading: boolean;
   placeholder: string;
+  tooltip?: string; // NEW prop for button tooltip (for quota/cooldown)
 }
 
 export default function ScriptForm({
@@ -18,7 +19,8 @@ export default function ScriptForm({
   setInput,
   handleGenerate,
   isLoading,
-  placeholder // Keep this prop but don't use it
+  placeholder, // Keep but don't use
+  tooltip = "",
 }: ScriptFormProps) {
 
   const handlePaste = async (e: React.MouseEvent) => {
@@ -61,6 +63,12 @@ export default function ScriptForm({
           </Button>
         </div>
       </GlowHoverCard>
+      {/* Tooltip for cooldown/quota */}
+      <div className="mb-1 min-h-[1.7em] text-center">
+        {!!tooltip && (
+          <span className="text-red-500 dark:text-yellow-300 text-base font-medium transition">{tooltip}</span>
+        )}
+      </div>
       <Button
         size="lg"
         type="submit"
@@ -70,7 +78,7 @@ export default function ScriptForm({
         {isLoading ? (
           <span className="flex items-center gap-2">
             <Loader2 className="animate-spin" />
-            Generating Captions...
+            {tooltip ? tooltip : "Generating Captions..."}
           </span>
         ) : (
           <>
