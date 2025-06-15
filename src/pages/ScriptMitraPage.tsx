@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import OGFlyInText from "@/components/OGFlyInText";
 import ScriptMitraForm from "./scriptmitra/ScriptMitraForm";
 import ScriptMitraScriptBox from "./scriptmitra/ScriptMitraScriptBox";
+import ScriptMitraInfoBoxes from "./scriptmitra/ScriptMitraInfoBoxes";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
 import { Button } from "@/components/ui/button";
 
@@ -280,6 +281,11 @@ export default function ScriptMitraPage() {
               formatScriptWithColors={formatScriptWithColors}
             />
           </section>
+
+          {/* INFO BOXES - All details are now below the generation box */}
+          <div className="max-w-3xl mx-auto px-4">
+            <ScriptMitraInfoBoxes />
+          </div>
 
           {/* HOW IT WORKS */}
           <section className="max-w-2xl mx-auto px-4 py-8">
