@@ -55,23 +55,21 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Logo />
         </div>
-        <nav className="hidden md:flex items-center flex-1 justify-center">
+        <nav className="hidden md:flex items-center flex-1 justify-center gap-3">
           <NavLinks />
-        </nav>
-        <div className="hidden md:flex items-center gap-3">
           {hasAccess && (
             <Button
               onClick={handleLogout}
               variant="secondary"
               size="sm"
               aria-label="Logout"
-              className="ml-2 px-4 flex items-center gap-1 border border-cyan-400/60 shadow glow-on-hover"
+              className="ml-4 px-4 flex items-center gap-1 border border-cyan-400/60 shadow glow-on-hover"
             >
               <LogOut className="w-4 h-4 text-cyan-400" />
               <span className="text-cyan-50 font-semibold">Logout</span>
             </Button>
           )}
-        </div>
+        </nav>
         <div className="md:hidden flex items-center">
           <HeaderMobileMenu onNavClick={handleNavClick} onLogout={handleLogout} hasAccess={hasAccess} />
         </div>
