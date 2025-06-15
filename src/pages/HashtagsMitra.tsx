@@ -38,7 +38,7 @@ export default function HashtagsMitra() {
     setIsLoading(true);
     setHashtags([]);
 
-    // EXPLICIT: Poll until the ID matches, then output ONLY lines after the first blank line
+    // New explicit logic: only display result if user_id matches!
     async function fetchUntilMatched(retries = 6): Promise<string | null> {
       for (let i = 0; i < retries; ++i) {
         const res = await fetch(WEBHOOK_URL, {
@@ -50,32 +50,37 @@ export default function HashtagsMitra() {
         const data = await res.json();
         let outStr = typeof data.output === "string" ? data.output : "";
         if (outStr) {
-          // 1. Get ALL lines
           const lines = outStr.split('\n');
-          // 2. Take the first non-empty line as the user_id
+          // 1. Find first non-empty line to get user_id
           const firstNonEmptyIdx = lines.findIndex(l => l.trim().length > 0);
-          const foundUid = lines[firstNonEmptyIdx]?.trim() || "";
-          // 3. Only process if ID matches
-          if (foundUid === user.id) {
-            // 4. Find the next blank line AFTER the user id
-            let nextBlank = lines.findIndex((l, idx) => idx > firstNonEmptyIdx && l.trim() === "");
-            // 5. The real content is after that blank line (skip over blank lines, show the rest)
-            let contentLines =
-              nextBlank >= 0 ? lines.slice(nextBlank + 1) : [];
-            // If all are blank no content, fallback to []
-            return contentLines.join('\n');
+          const responseUid = lines[firstNonEmptyIdx]?.trim() || "";
+          // 2. If matches our user, grab lines after the first blank line (after uid)
+          if (responseUid === user.id) {
+            // Find next blank line AFTER the user_id line
+            let blankIdx = lines.findIndex((l, idx) => idx > firstNonEmptyIdx && l.trim() === "");
+            let contentLines = blankIdx >= 0 ? lines.slice(blankIdx + 1) : [];
+            const resultText = contentLines.join('\n').trim();
+            if (resultText.length > 0) {
+              return resultText;
+            } else {
+              // The match was present but no content found
+              toast.error("No hashtags found. Try revising your script!");
+              return null;
+            }
           }
+          // If not matched, simply continue to next attempt
         }
         await new Promise(res => setTimeout(res, 700));
       }
+      // No result found after retries
       return null;
     }
 
     try {
-      const content = await fetchUntilMatched();
-      let finalTags: string[] = [];
-      if (content && typeof content === "string" && content.trim().length > 0) {
-        finalTags = content
+      const result = await fetchUntilMatched();
+      if (result !== null) {
+        // Parse hashtags as before
+        const finalTags = result
           .split(/[#]/)
           .map(s => s.trim())
           .filter(Boolean)
@@ -84,13 +89,18 @@ export default function HashtagsMitra() {
             return firstWord ? firstWord.replace(/\s/g, '') : '';
           })
           .filter(t => t.length > 0);
-      }
-      setHashtags(finalTags);
-      if (!finalTags.length) {
-        toast.error("No hashtags found. Try revising your script!");
+
+        setHashtags(finalTags);
+        if (!finalTags.length) {
+          toast.error("No hashtags found. Try revising your script!");
+        }
+      } else {
+        // result is null: either no match or nothing in result (error already shown above)
+        setHashtags([]);
       }
     } catch (err) {
       toast.error("Unable to generate hashtags. Please try again.");
+      setHashtags([]);
     }
     setIsLoading(false);
   }
@@ -162,3 +172,4 @@ export default function HashtagsMitra() {
     </>
   );
 }
+
