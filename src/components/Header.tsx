@@ -5,7 +5,6 @@ import NavLinks from "./NavLinks";
 import HeaderMobileMenu from "./HeaderMobileMenu";
 import { useAccessKey } from "@/context/AccessKeyContext";
 
-// Smooth scroll to section helper
 const scrollToSection = (id: string) => {
   const el = document.getElementById(id);
   if (el) {
@@ -14,11 +13,12 @@ const scrollToSection = (id: string) => {
 };
 
 export default function Header() {
-  // Maps nav anchors to section IDs in the page
+  // Add about, home, products in anchor navigation if needed later
   const navAnchorToId: Record<string, string> = {
     home: "home",
     "generate-scripts": "generate-scripts",
     store: "store",
+    "about": "about-automation-mitra"
   };
 
   const handleNavClick = (anchor: string) => {
@@ -32,15 +32,15 @@ export default function Header() {
     <header
       className="
         sticky top-0 z-[100] w-full
-        bg-[#0D0D2B]/80 backdrop-blur-xl
-        h-[64px] shadow
-        border-b border-cyan-900/[0.13]
+        bg-[#0C1827]/85 backdrop-blur-xl
+        h-[66px] shadow
+        border-b border-cyan-900/[0.10]
         transition-all duration-300
         flex items-center
       "
       style={{
-        boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-        minHeight: 64,
+        boxShadow: "0 2px 16px rgba(0,32,64,0.11)",
+        minHeight: 66,
       }}
     >
       <div className="w-full flex items-center justify-between px-5 sm:px-8 mx-auto max-w-7xl">
@@ -58,7 +58,7 @@ export default function Header() {
               style={{
                 outline: "none",
                 border: "none",
-                background: "rgba(62,45,160,0.12)",
+                background: "rgba(88,65,176,0.15)",
                 color: "#ffe",
               }}
             >
@@ -70,15 +70,14 @@ export default function Header() {
           <HeaderMobileMenu onNavClick={handleNavClick} />
         </div>
       </div>
-
       <style>{`
         .neon-pill-btn {
-          box-shadow: 0 2px 16px #33fdf855, 0 2px 10px #a06fff48;
-          background: linear-gradient(92deg,#00cfff 18%,#a06fff 92%);
+          box-shadow: 0 2px 16px #1cf6c233, 0 2px 10px #7265ff88;
+          background: linear-gradient(92deg,#1cf6c2 18%,#7265ff 92%);
         }
         .neon-pill-btn:hover, .neon-pill-btn:focus-visible {
-          filter: brightness(1.18) drop-shadow(0 0 11px #c2c6ffcc);
-          transform: scale(1.06);
+          filter: brightness(1.15) drop-shadow(0 0 12px #b5fafdcc);
+          transform: scale(1.05);
         }
         nav button > span:last-child {
           transition: width .36s cubic-bezier(.45,.12,.62,.74);
