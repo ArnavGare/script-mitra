@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -225,181 +224,206 @@ export default function ScriptMitraPage() {
   return (
     <>
       <Header />
-      <div className="min-h-screen transition-all duration-500">
-        <section className="max-w-3xl mx-auto px-4 pb-8 mt-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 flex items-center gap-2">
-            <span role="img" aria-label="script-mitra">🎬</span>
-            Script Mitra – Generate AI-Powered Video Scripts Instantly
-          </h1>
-          <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 transition-all duration-500 glow-hover-card">
-            <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Topic Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Choose a Topic
-                    </Label>
-                    <Select value={formData.topic} onValueChange={handleTopicChange}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select your topic..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {topics.map((topic) => (
-                          <SelectItem key={topic} value={topic} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 flex items-center gap-2 text-gray-800 dark:text-gray-200">
-                            {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
-                            {topic}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    
-                    {/* Custom Topic Input */}
-                    {showCustomTopic && (
-                      <div className="mt-2">
-                        <Input
-                          placeholder="Enter your custom topic..."
-                          value={formData.customTopic}
-                          onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
-                          className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200"
-                        />
-                      </div>
-                    )}
-                  </div>
+      <div className="min-h-screen transition-all duration-500 relative">
+        {/* ----- Animated Premium Background (matches landing page) ----- */}
+        <div className="fixed inset-0 bg-gradient-to-br from-[#131832] via-[#121728] to-[#312d4e] dark:from-[#080818] dark:via-[#111235] dark:to-[#24245a] overflow-hidden z-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x"></div>
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl animate-float-delayed"></div>
+            <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-cyan-400/10 rounded-full blur-xl animate-float"></div>
+            <div className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift" style={{ animationDelay: '0s', animationDuration: '25s' }}></div>
+            <div className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift" style={{ animationDelay: '5s', animationDuration: '30s' }}></div>
+            <div className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift" style={{ animationDelay: '10s', animationDuration: '20s' }}></div>
+            <div className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift" style={{ animationDelay: '15s', animationDuration: '35s' }}></div>
+            <div className="absolute top-1/5 left-1/5">
+              <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{ animationDelay: '0s' }}></div>
+            </div>
+            <div className="absolute bottom-1/5 right-1/5">
+              <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{ animationDelay: '12s', animationDuration: '20s' }}></div>
+            </div>
+            <div className="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse"></div>
+          </div>
+        </div>
+        {/* -------------------------------------------------------- */}
 
-                  {/* Style Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Brain className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Script Style
-                    </Label>
-                    <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select your style..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {styles.map((style) => (
-                          <SelectItem key={style} value={style} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
-                            {style}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Language Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Users className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Language
-                    </Label>
-                    <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select language..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {languages.map((language) => (
-                          <SelectItem key={language} value={language} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
-                            {language}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Length Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-blue-600 dark:text-blue-500" />
-                      Duration
-                    </Label>
-                    <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
-                      <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
-                        <SelectValue placeholder="Select duration..." />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
-                        {lengths.map((length) => (
-                          <SelectItem key={length} value={length} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
-                            {length}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Submit and Reset Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <Button 
-                    type="submit" 
-                    disabled={isLoading}
-                    className="notion-button-primary flex-1 h-11 text-base font-semibold"
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                        Generating Script...
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        Generate Script
-                      </div>
-                    )}
-                  </Button>
-                  
-                  <Button 
-                    type="button"
-                    variant="outline"
-                    onClick={handleReset}
-                    className="notion-button-secondary h-11 px-6 text-base font-semibold bg-black text-white border-black hover:bg-black focus:bg-black hover:text-white focus:text-white dark:bg-gray-900 dark:text-white dark:border-blue-800"
-                  >
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Reset
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Script Output Area */}
-          {script && (
-            <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl transition-all duration-500 glow-hover-card">
+        {/* Main Content */}
+        <div className="relative z-10">
+          <section className="max-w-3xl mx-auto px-4 pb-8 mt-12">
+            <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 flex items-center gap-2">
+              <span role="img" aria-label="script-mitra">🎬</span>
+              Script Mitra – Generate AI-Powered Video Scripts Instantly
+            </h1>
+            <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl mb-6 transition-all duration-500 glow-hover-card">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
-                  Your Generated Script
-                </h3>
-                <ScriptGenerationTips />
-                <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-xl p-6 mb-4 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
-                  <ScrollArea className="h-80 w-full pr-4">
-                    <div className="text-gray-800 dark:text-gray-300 font-medium text-sm leading-relaxed">
-                      {formatScriptWithColors(script)}
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Topic Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Choose a Topic
+                      </Label>
+                      <Select value={formData.topic} onValueChange={handleTopicChange}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select your topic..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {topics.map((topic) => (
+                            <SelectItem key={topic} value={topic} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 flex items-center gap-2 text-gray-800 dark:text-gray-200">
+                              {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
+                              {topic}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      
+                      {/* Custom Topic Input */}
+                      {showCustomTopic && (
+                        <div className="mt-2">
+                          <Input
+                            placeholder="Enter your custom topic..."
+                            value={formData.customTopic}
+                            onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
+                            className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200"
+                          />
+                        </div>
+                      )}
                     </div>
-                  </ScrollArea>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button 
-                    onClick={handleCopy}
-                    className="notion-button-primary flex-1 h-10 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
-                  >
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Script
-                  </Button>
-                  <Button 
-                    onClick={handleDownload}
-                    variant="outline"
-                    className="notion-button-secondary flex-1 h-10 bg-white border border-blue-300 text-blue-700 hover:bg-blue-50 dark:bg-gray-900 dark:border-blue-800 dark:text-blue-100 dark:hover:bg-blue-800/70"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download as .txt
-                  </Button>
-                </div>
+
+                    {/* Style Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Brain className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Script Style
+                      </Label>
+                      <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select your style..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {styles.map((style) => (
+                            <SelectItem key={style} value={style} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                              {style}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Language Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Users className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Language
+                      </Label>
+                      <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select language..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {languages.map((language) => (
+                            <SelectItem key={language} value={language} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                              {language}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Length Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-base font-semibold text-gray-800 dark:text-gray-300 flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-blue-600 dark:text-blue-500" />
+                        Duration
+                      </Label>
+                      <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
+                        <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
+                          <SelectValue placeholder="Select duration..." />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
+                          {lengths.map((length) => (
+                            <SelectItem key={length} value={length} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 text-gray-800 dark:text-gray-200">
+                              {length}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {/* Submit and Reset Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                    <Button 
+                      type="submit" 
+                      disabled={isLoading}
+                      className="notion-button-primary flex-1 h-11 text-base font-semibold"
+                    >
+                      {isLoading ? (
+                        <div className="flex items-center gap-2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                          Generating Script...
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4" />
+                          Generate Script
+                        </div>
+                      )}
+                    </Button>
+                    
+                    <Button 
+                      type="button"
+                      variant="outline"
+                      onClick={handleReset}
+                      className="notion-button-secondary h-11 px-6 text-base font-semibold bg-black text-white border-black hover:bg-black focus:bg-black hover:text-white focus:text-white dark:bg-gray-900 dark:text-white dark:border-blue-800"
+                    >
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                      Reset
+                    </Button>
+                  </div>
+                </form>
               </CardContent>
             </Card>
-          )}
-        </section>
+
+            {/* Script Output Area */}
+            {script && (
+              <Card className="backdrop-blur-sm bg-white/95 dark:bg-gray-900/80 border-0 shadow-xl rounded-xl transition-all duration-500 glow-hover-card">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+                    Your Generated Script
+                  </h3>
+                  <ScriptGenerationTips />
+                  <div className="bg-gradient-to-br from-gray-50 to-blue-50/60 dark:from-gray-800 dark:to-blue-900/20 rounded-xl p-6 mb-4 border border-blue-200/60 dark:border-blue-800/50 shadow-inner">
+                    <ScrollArea className="h-80 w-full pr-4">
+                      <div className="text-gray-800 dark:text-gray-300 font-medium text-sm leading-relaxed">
+                        {formatScriptWithColors(script)}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      onClick={handleCopy}
+                      className="notion-button-primary flex-1 h-10 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+                    >
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Script
+                    </Button>
+                    <Button 
+                      onClick={handleDownload}
+                      variant="outline"
+                      className="notion-button-secondary flex-1 h-10 bg-white border border-blue-300 text-blue-700 hover:bg-blue-50 dark:bg-gray-900 dark:border-blue-800 dark:text-blue-100 dark:hover:bg-blue-800/70"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download as .txt
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </section>
+        </div>
       </div>
     </>
   );
