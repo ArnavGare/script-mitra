@@ -9,41 +9,28 @@ import ScriptMitraScriptBox from "./scriptmitra/ScriptMitraScriptBox";
 import ScriptMitraInfoBoxes from "./scriptmitra/ScriptMitraInfoBoxes";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
 import { Button } from "@/components/ui/button";
-
-const topics = [
-  "Mutual Fund Basics",
-  "SIP Ka Magic",
-  "Retirement Planning",
-  "Term Insurance Facts",
-  "ULIP vs SIP",
-  "Loan ka Gyaan",
-  "Tax Saving Tips",
-  "Custom Topic",
-];
-const styles = [
-  "Educational",
-  "Story/Narrative",
-  "Conversational",
-  "Funny/Reel Style",
-  "Dramatic/Emotional",
-  "Latest Financial News",
-];
+const topics = ["Mutual Fund Basics", "SIP Ka Magic", "Retirement Planning", "Term Insurance Facts", "ULIP vs SIP", "Loan ka Gyaan", "Tax Saving Tips", "Custom Topic"];
+const styles = ["Educational", "Story/Narrative", "Conversational", "Funny/Reel Style", "Dramatic/Emotional", "Latest Financial News"];
 const languages = ["English", "Hindi", "Hinglish", "Marathi"];
 const lengths = ["60 sec", "120 sec", "180 sec"];
-
 export default function ScriptMitraPage() {
   const [formData, setFormData] = useState({
     topic: "",
     customTopic: "",
     style: "",
     language: "",
-    length: "",
+    length: ""
   });
   const [script, setScript] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showCustomTopic, setShowCustomTopic] = useState(false);
-  const { toast } = useToast();
-  const { user, isLoading: userLoading } = useSupabaseUser();
+  const {
+    toast
+  } = useToast();
+  const {
+    user,
+    isLoading: userLoading
+  } = useSupabaseUser();
   const navigate = useNavigate();
 
   // Restore script/form from localStorage on load
@@ -56,12 +43,11 @@ export default function ScriptMitraPage() {
         customTopic: "",
         style: "",
         language: "",
-        length: "",
+        length: ""
       });
       setShowCustomTopic((mem.formData && mem.formData.topic === "Custom Topic") ?? false);
     }
   }, []);
-
   const handleFormChange = (data: any) => setFormData(data);
 
   // Submit logic
@@ -72,18 +58,17 @@ export default function ScriptMitraPage() {
       toast({
         title: "Please Login",
         description: "Sign in to generate scripts and manage credits.",
-        variant: "destructive",
+        variant: "destructive"
       });
       navigate("/auth/login");
       return;
     }
-    const finalTopic =
-      formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
+    const finalTopic = formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
     if (!finalTopic || !formData.style || !formData.language || !formData.length) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields before generating your script.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -91,25 +76,24 @@ export default function ScriptMitraPage() {
       toast({
         title: "Custom Topic Required",
         description: "Please enter your custom topic.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
     setIsLoading(true);
     try {
-      const response = await fetch(
-        "https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topic: finalTopic,
-            style: formData.style,
-            language: formData.language,
-            length: formData.length,
-          }),
-        }
-      );
+      const response = await fetch("https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          topic: finalTopic,
+          style: formData.style,
+          language: formData.language,
+          length: formData.length
+        })
+      });
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Fetch failed. Status:", response.status, "Error body:", errorText);
@@ -120,46 +104,50 @@ export default function ScriptMitraPage() {
       saveScriptMemory(result.output || "", formData);
       toast({
         title: "Script Generated!",
-        description: "Your personalized video script is ready to use.",
+        description: "Your personalized video script is ready to use."
       });
     } catch (error) {
       console.error("Error generating script:", error);
       toast({
         title: "Generation Failed",
-        description:
-          "Unable to generate script. Please check your connection and try again.",
-        variant: "destructive",
+        description: "Unable to generate script. Please check your connection and try again.",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
   };
-
   const handleReset = () => {
-    setFormData({ topic: "", customTopic: "", style: "", language: "", length: "" });
+    setFormData({
+      topic: "",
+      customTopic: "",
+      style: "",
+      language: "",
+      length: ""
+    });
     setScript("");
     setShowCustomTopic(false);
     clearScriptMemory();
     toast({
       title: "Reset Complete",
-      description: "Form cleared and ready for new script generation.",
+      description: "Form cleared and ready for new script generation."
     });
   };
-
   const handleCopy = () => {
     if (!script) return;
     navigator.clipboard.writeText(script);
     clearScriptMemory();
     toast({
       title: "Copied!",
-      description: "Script copied to clipboard successfully.",
+      description: "Script copied to clipboard successfully."
     });
     setScript("");
   };
-
   const handleDownload = () => {
     const element = document.createElement("a");
-    const file = new Blob([script], { type: "text/plain" });
+    const file = new Blob([script], {
+      type: "text/plain"
+    });
     element.href = URL.createObjectURL(file);
     element.download = `scriptmitra-${formData.topic.toLowerCase().replace(/\s+/g, "-")}.txt`;
     document.body.appendChild(element);
@@ -167,42 +155,33 @@ export default function ScriptMitraPage() {
     document.body.removeChild(element);
     toast({
       title: "Downloaded!",
-      description: "Script downloaded as text file.",
+      description: "Script downloaded as text file."
     });
   };
-
   const formatScriptWithColors = (scriptText: string) => {
     return scriptText.split('\n').map((line, index) => {
       if (line.trim().startsWith('Hook:')) {
-        return (
-          <div key={index} className="mb-3">
+        return <div key={index} className="mb-3">
             <span className="text-orange-600 dark:text-orange-400 font-bold text-base">
               {line.replace('Hook:', 'Hook:')}
             </span>
-          </div>
-        );
+          </div>;
       } else if (line.trim().startsWith('Body:')) {
-        return (
-          <div key={index} className="mb-3">
+        return <div key={index} className="mb-3">
             <span className="text-blue-600 dark:text-blue-400 font-bold text-base">
               {line.replace('Body:', 'Body:')}
             </span>
-          </div>
-        );
+          </div>;
       } else if (line.trim().startsWith('CTA:')) {
-        return (
-          <div key={index} className="mb-3">
+        return <div key={index} className="mb-3">
             <span className="text-green-600 dark:text-green-400 font-bold text-base">
               {line.replace('CTA:', 'CTA:')}
             </span>
-          </div>
-        );
+          </div>;
       } else if (line.trim()) {
-        return (
-          <div key={index} className="mb-2 leading-relaxed text-sm">
+        return <div key={index} className="mb-2 leading-relaxed text-sm">
             {line}
-          </div>
-        );
+          </div>;
       } else {
         return <div key={index} className="mb-2"></div>;
       }
@@ -210,8 +189,7 @@ export default function ScriptMitraPage() {
   };
 
   // ---- PAGE RENDER ----
-  return (
-    <>
+  return <>
       <Header />
       <div className="min-h-screen transition-all duration-500 relative">
         {/* Animated Background */}
@@ -221,15 +199,32 @@ export default function ScriptMitraPage() {
             <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
             <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl animate-float-delayed"></div>
             <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-cyan-400/10 rounded-full blur-xl animate-float"></div>
-            <div className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift" style={{ animationDelay: '0s', animationDuration: '25s' }}></div>
-            <div className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift" style={{ animationDelay: '5s', animationDuration: '30s' }}></div>
-            <div className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift" style={{ animationDelay: '10s', animationDuration: '20s' }}></div>
-            <div className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift" style={{ animationDelay: '15s', animationDuration: '35s' }}></div>
+            <div className="absolute top-1/6 w-2 h-2 bg-white/20 rounded-full animate-drift" style={{
+            animationDelay: '0s',
+            animationDuration: '25s'
+          }}></div>
+            <div className="absolute top-1/3 w-1 h-1 bg-blue-300/30 rounded-full animate-drift" style={{
+            animationDelay: '5s',
+            animationDuration: '30s'
+          }}></div>
+            <div className="absolute top-1/2 w-1.5 h-1.5 bg-purple-300/25 rounded-full animate-drift" style={{
+            animationDelay: '10s',
+            animationDuration: '20s'
+          }}></div>
+            <div className="absolute top-2/3 w-1 h-1 bg-cyan-300/30 rounded-full animate-drift" style={{
+            animationDelay: '15s',
+            animationDuration: '35s'
+          }}></div>
             <div className="absolute top-1/5 left-1/5">
-              <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{ animationDelay: '0s' }}></div>
+              <div className="w-1 h-1 bg-white/30 rounded-full animate-orbit" style={{
+              animationDelay: '0s'
+            }}></div>
             </div>
             <div className="absolute bottom-1/5 right-1/5">
-              <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{ animationDelay: '12s', animationDuration: '20s' }}></div>
+              <div className="w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-orbit" style={{
+              animationDelay: '12s',
+              animationDuration: '20s'
+            }}></div>
             </div>
             <div className="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse"></div>
           </div>
@@ -246,40 +241,13 @@ export default function ScriptMitraPage() {
             <p className="text-lg md:text-2xl text-[#0ca67c] dark:text-[#7efae2] font-semibold mb-5 animate-fade-in-up">
               Craft high-converting, attention-grabbing video scripts in seconds — tailored for financial creators, advisors, and educators.
             </p>
-            <Button
-              size="lg"
-              className="mx-auto font-semibold notion-button-primary shadow-xl px-7 mb-3 animate-fade-in-up"
-              onClick={() => {
-                const el = document.getElementById("scriptmitra-form");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <span role="img" aria-label="">🔹</span> Generate My Script Now →
-            </Button>
+            
           </section>
 
           {/* FORM + SCRIPT BOX COMPONENTS */}
           <section id="scriptmitra-form" className="max-w-3xl mx-auto px-4 py-6 mb-6">
-            <ScriptMitraForm
-              topics={topics}
-              styles={styles}
-              languages={languages}
-              lengths={lengths}
-              formData={formData}
-              showCustomTopic={showCustomTopic}
-              isLoading={isLoading}
-              onFormChange={handleFormChange}
-              onShowCustomTopic={setShowCustomTopic}
-              onSubmit={handleSubmit}
-              onReset={handleReset}
-            />
-            <ScriptMitraScriptBox
-              script={script}
-              formData={formData}
-              onCopy={handleCopy}
-              onDownload={handleDownload}
-              formatScriptWithColors={formatScriptWithColors}
-            />
+            <ScriptMitraForm topics={topics} styles={styles} languages={languages} lengths={lengths} formData={formData} showCustomTopic={showCustomTopic} isLoading={isLoading} onFormChange={handleFormChange} onShowCustomTopic={setShowCustomTopic} onSubmit={handleSubmit} onReset={handleReset} />
+            <ScriptMitraScriptBox script={script} formData={formData} onCopy={handleCopy} onDownload={handleDownload} formatScriptWithColors={formatScriptWithColors} />
           </section>
 
           {/* INFO BOXES (Keep Only These) */}
@@ -288,6 +256,5 @@ export default function ScriptMitraPage() {
           </div>
         </div>
       </div>
-    </>
-  );
+    </>;
 }
