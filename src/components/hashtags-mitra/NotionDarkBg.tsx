@@ -1,4 +1,3 @@
-
 import React from "react";
 
 /**
@@ -16,6 +15,8 @@ export default function NotionDarkBg() {
           "linear-gradient(120deg, #1c1927 0%, #211e31 60%, #0f1124 100%)",
       }}
     >
+      {/* NOISE OVERLAY so edge glows look more organic */}
+      <div className="noise-overlay" />
       {/* Top edge glow */}
       <div
         className="absolute left-1/2 -translate-x-1/2 top-0 w-[92vw] h-[140px] md:h-[180px] blur-2xl opacity-70"

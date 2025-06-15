@@ -37,6 +37,8 @@ const Index = () => {
       <MotionGridBg />
       {/* --- ULTRA-PREMIUM ANIMATED BACKGROUND, below all content (z-index ordering important) --- */}
       <UltraPremiumBg />
+      {/* NOISE OVERLAY: covers all backgrounds/glows but not the main content */}
+      <div className="noise-overlay" />
       <div className={`min-h-screen transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
         {/* Main Content */}
         <div className="relative z-10">
