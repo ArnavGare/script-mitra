@@ -6,7 +6,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAccessKey } from "@/context/AccessKeyContext";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useIsMobile } from "@/hooks/use-mobile";
-import DailyQuotaBox from "@/components/DailyQuotaBox";
 
 export default function Header() {
   const { hasAccess } = useAccessKey();
@@ -44,10 +43,7 @@ export default function Header() {
         }}
       >
         <div className="w-full flex items-center justify-between px-5 sm:px-8 mx-auto max-w-7xl">
-          {/* Add quota box left of logo on desktop */}
-          <div className="hidden lg:flex items-center mr-4">
-            <DailyQuotaBox />
-          </div>
+          {/* Remove quota box left of logo on desktop */}
           <div className="flex items-center gap-4">
             <Logo />
           </div>
