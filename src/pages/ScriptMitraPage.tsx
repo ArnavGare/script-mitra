@@ -22,7 +22,7 @@ export default function ScriptMitraPage() {
     language: "",
     length: ""
   });
-  const [script, setScript] = useState("");
+  const [script, setScript] = useState("");  // Keeps generated script content
   const [isLoading, setIsLoading] = useState(false);
   const [showCustomTopic, setShowCustomTopic] = useState(false);
   const {
@@ -53,8 +53,8 @@ export default function ScriptMitraPage() {
 
   const {
     loading: quotaLoading,
-    script,
-    caption,
+    script: quotaScript,
+    caption: quotaCaption,
     cooldownActive,
     cooldownSeconds,
     logGeneration,
@@ -65,7 +65,7 @@ export default function ScriptMitraPage() {
   // Submit logic for script generation — use script quota
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (script.disabled) return; // enforce quota/cooldown
+    if (quotaScript.disabled) return; // enforce quota/cooldown
     if (userLoading) return;
     if (!user?.id) {
       toast({
@@ -267,14 +267,20 @@ export default function ScriptMitraPage() {
               lengths={lengths}
               formData={formData}
               showCustomTopic={showCustomTopic}
-              isLoading={script.disabled || isLoading}
-              quotaTooltip={script.tooltip}
+              isLoading={quotaScript.disabled || isLoading}
+              quotaTooltip={quotaScript.tooltip}
               onFormChange={handleFormChange}
               onShowCustomTopic={setShowCustomTopic}
               onSubmit={handleSubmit}
               onReset={handleReset}
             />
-            <ScriptMitraScriptBox script={script} formData={formData} onCopy={handleCopy} onDownload={handleDownload} formatScriptWithColors={formatScriptWithColors} />
+            <ScriptMitraScriptBox
+              script={script}
+              formData={formData}
+              onCopy={handleCopy}
+              onDownload={handleDownload}
+              formatScriptWithColors={formatScriptWithColors}
+            />
           </section>
 
           {/* INFO BOXES (Keep Only These) */}
