@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const navLinks = [
   { name: "Home", to: "/" },
-  { name: "Generate Scripts", to: "/scriptmitra" },
+  { name: "Scripts Mitra", to: "/scriptmitra" },
   { name: "Hashtags Mitra", to: "/hashtagmitra" },
   { name: "Store", to: "/store" },
 ];
