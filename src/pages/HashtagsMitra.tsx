@@ -37,17 +37,46 @@ export default function HashtagsMitra() {
     }
     setIsLoading(true);
     setHashtags([]);
+
+    // A polling wrapper to retry webhook fetch until user_id matches (max 6 times)
+    async function fetchUntilMatched(retries = 6): Promise<any> {
+      for (let i = 0; i < retries; ++i) {
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ script: input, user_id: user.id }),
+        });
+        if (!res.ok) continue;
+        const data = await res.json();
+        // If output exists and is string: process and check user id.
+        let outStr = typeof data.output === "string" ? data.output : "";
+        if (outStr) {
+          // Find user_id on the first non-empty line, then extract the rest
+          const lines = outStr.split('\n');
+          const foundUid = lines.find(l => l.trim().length > 0)?.trim() || "";
+          if (foundUid === user.id) {
+            // Output lines after user_id and the following blank line
+            let firstBlankIdx = lines.findIndex((l, idx) => idx > 0 && l.trim() === "");
+            let outputLines = lines.slice(firstBlankIdx + 1);
+            return { ...data, output: outputLines.join('\n') };
+          }
+        }
+        // Try again after waiting a moment.
+        await new Promise(res => setTimeout(res, 700));
+      }
+      return null;
+    }
+
     try {
-      // Send the script to the webhook as required, now with user_id
-      const res = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ script: input, user_id: user.id }),
-      });
-      if (!res.ok) throw new Error("Could not generate hashtags");
-      const data = await res.json();
+      const data = await fetchUntilMatched();
+      if (!data) {
+        toast.error("Timed out, could not generate hashtags. Please try again.");
+        setIsLoading(false);
+        return;
+      }
 
       let finalTags: string[] = [];
+      // output will now ONLY be the output text, not the user id or blank lines above.
       if (data.output && typeof data.output === "string") {
         finalTags = data.output
           .split(/[#]/)
