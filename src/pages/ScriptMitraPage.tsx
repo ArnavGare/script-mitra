@@ -141,7 +141,6 @@ export default function ScriptMitraPage() {
       title: "Copied!",
       description: "Script copied to clipboard successfully."
     });
-    setScript("");
   };
   const handleDownload = () => {
     const element = document.createElement("a");
