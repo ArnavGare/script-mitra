@@ -38,7 +38,7 @@ export default function HashtagsMitra() {
     setIsLoading(true);
     setHashtags([]);
 
-    // A polling wrapper to retry webhook fetch until user_id matches (max 6 times)
+    // Helper to poll webhook until user_id matches current user or timeout
     async function fetchUntilMatched(retries = 6): Promise<any> {
       for (let i = 0; i < retries; ++i) {
         const res = await fetch(WEBHOOK_URL, {
@@ -48,20 +48,19 @@ export default function HashtagsMitra() {
         });
         if (!res.ok) continue;
         const data = await res.json();
-        // If output exists and is string: process and check user id.
         let outStr = typeof data.output === "string" ? data.output : "";
         if (outStr) {
-          // Find user_id on the first non-empty line, then extract the rest
+          // Safely identify user id in first non-empty line, then check
           const lines = outStr.split('\n');
           const foundUid = lines.find(l => l.trim().length > 0)?.trim() || "";
           if (foundUid === user.id) {
-            // Output lines after user_id and the following blank line
+            // Output lines after user_id and first following blank line
             let firstBlankIdx = lines.findIndex((l, idx) => idx > 0 && l.trim() === "");
             let outputLines = lines.slice(firstBlankIdx + 1);
             return { ...data, output: outputLines.join('\n') };
           }
         }
-        // Try again after waiting a moment.
+        // Wait 700ms before next try
         await new Promise(res => setTimeout(res, 700));
       }
       return null;
@@ -76,7 +75,7 @@ export default function HashtagsMitra() {
       }
 
       let finalTags: string[] = [];
-      // output will now ONLY be the output text, not the user id or blank lines above.
+      // Only use output that is after user id block, never show user id
       if (data.output && typeof data.output === "string") {
         finalTags = data.output
           .split(/[#]/)
