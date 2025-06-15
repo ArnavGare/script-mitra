@@ -1,8 +1,11 @@
+
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 import HeaderMobileMenu from "./HeaderMobileMenu";
 import { useAccessKey } from "@/context/AccessKeyContext";
+import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 
 const scrollToSection = (id: string) => {
   const el = document.getElementById(id);
@@ -26,6 +29,12 @@ export default function Header() {
   };
 
   const { hasAccess, logout } = useAccessKey();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/auth/login');
+  };
 
   return (
     <header
@@ -52,8 +61,8 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-3">
           {hasAccess && (
             <button
-              onClick={logout}
-              className="notion-button-secondary px-4 py-2 rounded font-medium ml-4 transition-colors duration-150"
+              onClick={handleLogout}
+              className="notion-button-secondary px-4 py-2 rounded font-medium ml-4 transition-colors duration-150 flex items-center gap-2"
               style={{
                 outline: "none",
                 border: "none",
@@ -61,12 +70,12 @@ export default function Header() {
                 color: "#ffe",
               }}
             >
-              Logout
+              <LogOut className="mr-1 w-5 h-5" /> Logout
             </button>
           )}
         </div>
         <div className="md:hidden flex items-center">
-          <HeaderMobileMenu onNavClick={handleNavClick} />
+          <HeaderMobileMenu onNavClick={handleNavClick} onLogout={handleLogout} hasAccess={hasAccess} />
         </div>
       </div>
       <style>{`

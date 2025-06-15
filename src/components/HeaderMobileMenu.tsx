@@ -1,19 +1,29 @@
+
 import React, { useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, LogOut } from "lucide-react";
 import NavLinks from "./NavLinks";
 import Logo from "./Logo";
 
 type Props = {
   onNavClick?: (anchor: string) => void;
+  onLogout?: () => void;
+  hasAccess?: boolean;
 };
 
-export default function HeaderMobileMenu({ onNavClick }: Props) {
+export default function HeaderMobileMenu({ onNavClick, onLogout, hasAccess }: Props) {
   const [open, setOpen] = useState(false);
 
   // Wrap the nav click to also close the menu
   const handleNavigate = (anchor: string) => {
     if (onNavClick) {
       onNavClick(anchor);
+    }
+    setOpen(false);
+  };
+
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
     }
     setOpen(false);
   };
@@ -50,6 +60,21 @@ export default function HeaderMobileMenu({ onNavClick }: Props) {
             </nav>
             <div className="h-px bg-cyan-900/25 w-11/12 mx-auto mb-3 rounded" />
             <div className="flex justify-center items-center px-4">
+              {/* Logout button if user is logged in */}
+              {hasAccess && (
+                <button
+                  onClick={handleLogout}
+                  className="notion-button-secondary w-full flex items-center justify-center py-2 mt-1 rounded font-medium transition-colors duration-150 gap-2"
+                  style={{
+                    outline: "none",
+                    border: "none",
+                    background: "rgba(88,65,176,0.15)",
+                    color: "#ffe",
+                  }}
+                >
+                  <LogOut className="mr-1 w-5 h-5" /> Logout
+                </button>
+              )}
             </div>
             {/* Decorative bottom glow */}
             <div className="absolute left-1/2 -translate-x-1/2 bottom-0 pointer-events-none opacity-80">
