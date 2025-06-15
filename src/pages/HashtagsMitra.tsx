@@ -22,6 +22,19 @@ interface StructuredResponse {
 }
 const STORAGE_KEY = 'captions_mitra_latest';
 
+// Add this cleanText utility at the top of the file (after imports)
+function cleanText(text?: string) {
+  if (!text) return "";
+  // Remove leading/trailing asterisks, numbered list marks, any markdown bold/italic, leading whitespace/newlines
+  return text
+    .replace(/\*\*/g, "")         // Remove all double asterisks
+    .replace(/\*/g, "")           // Remove single asterisks
+    .replace(/^(\d+\.)\s*/gm, "") // Remove numbered list prefixes
+    .replace(/^#+\s*/gm, "")      // Remove Markdown headers
+    .replace(/[`_]/g, "")         // Remove backticks and underscores
+    .replace(/^[\s\r\n]+|[\s\r\n]+$/g, ""); // Trim leading/trailing space and newlines
+}
+
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
   const [captions, setCaptions] = useState<string[]>([]);
@@ -102,34 +115,35 @@ export default function HashtagsMitra() {
       // Store the full webhook response for debugging
       setWebhookResponse(data);
 
+      // --- MODIFIED SECTION FOR ATTRACTIVE, CLEAN OUTPUT ---
       // Check if we have structured output (title, caption, hashtags, description)
       if (data.title || data.caption || data.hashtags || data.description) {
-        console.log("Setting structured output:", data);
         setStructuredOutput({
-          title: data.title,
-          caption: data.caption,
-          hashtags: data.hashtags,
-          description: data.description
+          // Clean markdown from all fields
+          title: cleanText(data.title),
+          caption: cleanText(data.caption),
+          hashtags: cleanText(data.hashtags),
+          description: cleanText(data.description)
         });
         setCaptions([]); // clear captions when structuredOutput is set
         let rawOut = "";
-        if (data.title) rawOut += `Title: ${data.title}\n\n`;
-        if (data.caption) rawOut += `Caption: ${data.caption}\n\n`;
-        if (data.hashtags) rawOut += `Hashtags: ${data.hashtags}\n\n`;
-        if (data.description) rawOut += `Description: ${data.description}\n\n`;
+        if (data.title) rawOut += `Title: ${cleanText(data.title)}\n\n`;
+        if (data.caption) rawOut += `Caption: ${cleanText(data.caption)}\n\n`;
+        if (data.hashtags) rawOut += `Hashtags: ${cleanText(data.hashtags)}\n\n`;
+        if (data.description) rawOut += `Description: ${cleanText(data.description)}\n\n`;
         setOutputText(rawOut.trim());
         toast.success("Content generated successfully!");
       } else {
         // Fall back to original captions list format
         let finalCaptions: string[] = [];
         if (data.output && typeof data.output === "string") {
-          finalCaptions = data.output.split(/\n/).map(s => s.trim()).filter(Boolean).filter(caption => caption.length > 10);
+          finalCaptions = data.output.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
         } else if (Array.isArray(data.captions)) {
-          finalCaptions = data.captions;
+          finalCaptions = data.captions.map(cleanText);
         } else if (Array.isArray(data.text)) {
-          finalCaptions = data.text;
+          finalCaptions = data.text.map(cleanText);
         } else if (typeof data === "string") {
-          finalCaptions = data.split(/\n/).map(s => s.trim()).filter(Boolean).filter(caption => caption.length > 10);
+          finalCaptions = data.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
         }
         setCaptions(finalCaptions);
         setStructuredOutput(null); // clear structured when captions are set
@@ -137,7 +151,7 @@ export default function HashtagsMitra() {
           setOutputText(finalCaptions.join('\n\n'));
           toast.success(`Generated ${finalCaptions.length} captions!`);
         } else if (typeof data === "string" && data.trim() !== "") {
-          setOutputText(data);
+          setOutputText(cleanText(data));
         } else {
           setOutputText(""); // nothing to show
           toast.error("No captions found in response. Please check your script and try again.");
@@ -242,11 +256,47 @@ export default function HashtagsMitra() {
             
             <TipCarousel className="my-7" />
             
-            {/* Display structured output if available */}
-            {structuredOutput && <StructuredOutput data={structuredOutput} copy={copy} copiedIdx={copiedIdx} />}
+            {/* Display structured output with attractive card style if available */}
+            {structuredOutput && (
+              <div className="w-full mt-9 grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+                {[
+                  { key: "title", label: "Video Title", value: structuredOutput.title, bg: "bg-cyan-50", border: "border-cyan-200" },
+                  { key: "caption", label: "Video Caption", value: structuredOutput.caption, bg: "bg-purple-50", border: "border-purple-200" },
+                  { key: "hashtags", label: "Hashtags", value: structuredOutput.hashtags, bg: "bg-sky-50", border: "border-blue-200" },
+                  { key: "description", label: "Video Description", value: structuredOutput.description, bg: "bg-yellow-50", border: "border-yellow-200" }
+                ].filter(sec => sec.value).map((sec, idx) => (
+                  <div
+                    key={sec.key}
+                    className={`${sec.bg} ${sec.border} border rounded-xl shadow-sm p-6 flex flex-col min-h-[130px]`}
+                    style={{
+                      animation: `fadeInUp 0.85s cubic-bezier(.40,.8,.25,1.1) both`,
+                      animationDelay: `${idx * 0.10 + 0.1}s`
+                    }}
+                  >
+                    <h3 className="font-extrabold text-lg text-gray-700 mb-2" style={{
+                      color:
+                        sec.key === "title" ? "#009DC7" :
+                        sec.key === "caption" ? "#8839DB" :
+                        sec.key === "hashtags" ? "#1e40af" :
+                        sec.key === "description" ? "#D97706" :
+                        undefined
+                    }}>
+                      {sec.label}
+                    </h3>
+                    <p className={`text-[15px] text-gray-700 whitespace-pre-line font-sans leading-snug flex-1`}
+                      style={{ wordBreak: "break-word" }}
+                    >
+                      {sec.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
             
             {/* Fall back to caption list if no structured output */}
-            {!structuredOutput && captions.length > 0 && <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />}
+            {!structuredOutput && captions.length > 0 && (
+              <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
+            )}
             
             {/* Debug information (remove in production) */}
             {webhookResponse && process.env.NODE_ENV === 'development'}
