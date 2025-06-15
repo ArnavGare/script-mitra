@@ -10,9 +10,21 @@ import Testimonials from "@/components/index/Testimonials";
 import ContactSection from "@/components/index/ContactSection";
 import FooterSection from "@/components/index/FooterSection";
 import OGFlyInText from "@/components/OGFlyInText";
+import { useAccessKey } from "@/context/AccessKeyContext";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const { hasAccess, logout } = useAccessKey();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/auth/login');
+  };
 
   return (
     <>
@@ -40,7 +52,21 @@ const Index = () => {
         </div>
         {/* Main Content */}
         <div className="relative z-10">
-          {/* Removed the fly-in headline section as requested */}
+          {/* Logout at top of main page if logged in */}
+          {hasAccess && (
+            <div className="fixed top-[82px] right-4 z-[110] md:hidden">
+              <Button
+                onClick={handleLogout}
+                variant="secondary"
+                size="sm"
+                aria-label="Logout"
+                className="!bg-gradient-to-br !from-rose-600 !to-cyan-500 !text-white border border-cyan-300 font-bold shadow glow-on-hover"
+              >
+                <LogOut className="w-4 h-4 text-white" />
+                <span>Logout</span>
+              </Button>
+            </div>
+          )}
           <HeroSection />
           <ProductBoxes />
           <VideoMakingTips />
@@ -56,4 +82,3 @@ const Index = () => {
 };
 
 export default Index;
-

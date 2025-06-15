@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -11,9 +10,10 @@ const navLinks = [
 
 type Props = {
   compact?: boolean;
+  extraElement?: React.ReactNode; // <-- Add this prop
 };
 
-export default function NavLinks({ compact }: Props) {
+export default function NavLinks({ compact, extraElement }: Props) {
   return (
     <ul className="flex items-center gap-3 sm:gap-5">
       {navLinks.map((link) => (
@@ -31,6 +31,10 @@ export default function NavLinks({ compact }: Props) {
               className="absolute left-0 bottom-1 w-0 h-[2px] bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full transition-all duration-300 group-hover:w-full"
             />
           </Link>
+          {/* Render Logout right after the Store link */}
+          {link.name === "Store" && extraElement && (
+            <span className="ml-2">{extraElement}</span>
+          )}
         </li>
       ))}
     </ul>

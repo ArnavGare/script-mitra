@@ -1,3 +1,4 @@
+
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
@@ -15,7 +16,6 @@ const scrollToSection = (id: string) => {
 };
 
 export default function Header() {
-  // Add about, home, products in anchor navigation if needed later
   const navAnchorToId: Record<string, string> = {
     home: "home",
     "generate-scripts": "generate-scripts",
@@ -35,6 +35,21 @@ export default function Header() {
     await logout();
     navigate('/auth/login');
   };
+
+  // Prominent button style for Header Logout
+  const logoutBtn = hasAccess ? (
+      <Button
+        onClick={handleLogout}
+        variant="secondary"
+        size="sm"
+        aria-label="Logout"
+        className="!bg-gradient-to-br !from-rose-600 !to-cyan-500 border border-cyan-300 !text-white font-bold relative z-50 shadow glow-on-hover hover:scale-105"
+        style={{ minWidth: 90 }}
+      >
+        <LogOut className="w-4 h-4 text-white" />
+        <span>Logout</span>
+      </Button>
+  ) : null;
 
   return (
     <header
@@ -56,19 +71,8 @@ export default function Header() {
           <Logo />
         </div>
         <nav className="hidden md:flex items-center flex-1 justify-center gap-3">
-          <NavLinks />
-          {hasAccess && (
-            <Button
-              onClick={handleLogout}
-              variant="secondary"
-              size="sm"
-              aria-label="Logout"
-              className="ml-4 px-4 flex items-center gap-1 border border-cyan-400/60 shadow glow-on-hover"
-            >
-              <LogOut className="w-4 h-4 text-cyan-400" />
-              <span className="text-cyan-50 font-semibold">Logout</span>
-            </Button>
-          )}
+          {/* Insert Logout next to Store via extraElement prop */}
+          <NavLinks extraElement={logoutBtn} />
         </nav>
         <div className="md:hidden flex items-center">
           <HeaderMobileMenu onNavClick={handleNavClick} onLogout={handleLogout} hasAccess={hasAccess} />
