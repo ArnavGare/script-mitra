@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,13 +14,17 @@ import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useNavigate } from "react-router-dom";
 import OGFlyInText from "@/components/OGFlyInText";
 
+// Storage keys for localStorage
+const SCRIPT_STORAGE_KEY = "mitra_script_data";
+const EXPIRY_MINUTES = 45; // How long script stays in memory
+
 export default function ScriptMitraPage() {
   const [formData, setFormData] = useState({
     topic: "",
     customTopic: "",
     style: "",
     language: "",
-    length: ""
+    length: "",
   });
   const [script, setScript] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,75 +34,115 @@ export default function ScriptMitraPage() {
   const { user, isLoading: userLoading } = useSupabaseUser();
   const navigate = useNavigate();
 
+  // Restore script/form from localStorage on load
+  useEffect(() => {
+    try {
+      const dataRaw = localStorage.getItem(SCRIPT_STORAGE_KEY);
+      if (dataRaw) {
+        const { script, formData, savedAt } = JSON.parse(dataRaw);
+        // Check expiry (default ~45 min)
+        if (
+          typeof savedAt === "number" &&
+          Date.now() - savedAt < EXPIRY_MINUTES * 60 * 1000 &&
+          script
+        ) {
+          setScript(script);
+          setFormData(formData || {
+            topic: "",
+            customTopic: "",
+            style: "",
+            language: "",
+            length: "",
+          });
+          setShowCustomTopic((formData && formData.topic === "Custom Topic") ?? false);
+        } else {
+          localStorage.removeItem(SCRIPT_STORAGE_KEY);
+        }
+      }
+    } catch {}
+    // eslint-disable-next-line
+  }, []);
+
   const topics = [
     "Mutual Fund Basics",
-    "SIP Ka Magic", 
+    "SIP Ka Magic",
     "Retirement Planning",
     "Term Insurance Facts",
     "ULIP vs SIP",
     "Loan ka Gyaan",
     "Tax Saving Tips",
-    "Custom Topic"
+    "Custom Topic",
   ];
 
   const styles = [
     "Educational",
     "Story/Narrative",
-    "Conversational", 
+    "Conversational",
     "Funny/Reel Style",
     "Dramatic/Emotional",
-    "Latest Financial News"
+    "Latest Financial News",
   ];
 
-  const languages = [
-    "English",
-    "Hindi",
-    "Hinglish",
-    "Marathi"
-  ];
+  const languages = ["English", "Hindi", "Hinglish", "Marathi"];
 
-  const lengths = [
-    "60 sec",
-    "120 sec", 
-    "180 sec"
-  ];
+  const lengths = ["60 sec", "120 sec", "180 sec"];
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+    document.documentElement.classList.toggle("dark");
   };
 
   const handleTopicChange = (value: string) => {
-    setFormData({...formData, topic: value});
+    setFormData({ ...formData, topic: value });
     if (value === "Custom Topic") {
       setShowCustomTopic(true);
     } else {
       setShowCustomTopic(false);
-      setFormData({...formData, topic: value, customTopic: ""});
+      setFormData({ ...formData, topic: value, customTopic: "" });
     }
   };
 
+  // Save script and form in localStorage
+  function persistScriptMemory(scriptStr: string, formDataObj: typeof formData) {
+    try {
+      localStorage.setItem(
+        SCRIPT_STORAGE_KEY,
+        JSON.stringify({
+          script: scriptStr,
+          formData: formDataObj,
+          savedAt: Date.now(),
+        })
+      );
+    } catch {}
+  }
+
+  // Remove script from memory
+  function clearScriptMemory() {
+    localStorage.removeItem(SCRIPT_STORAGE_KEY);
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (userLoading) return;
     if (!user?.id) {
       toast({
         title: "Please Login",
         description: "Sign in to generate scripts and manage credits.",
-        variant: "destructive"
+        variant: "destructive",
       });
       navigate("/auth/login");
       return;
     }
 
-    const finalTopic = formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
+    const finalTopic =
+      formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
 
     if (!finalTopic || !formData.style || !formData.language || !formData.length) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields before generating your script.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -106,7 +151,7 @@ export default function ScriptMitraPage() {
       toast({
         title: "Custom Topic Required",
         description: "Please enter your custom topic.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -114,16 +159,19 @@ export default function ScriptMitraPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          topic: finalTopic,
-          style: formData.style,
-          language: formData.language,
-          length: formData.length,
-        }),
-      });
+      const response = await fetch(
+        "https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic: finalTopic,
+            style: formData.style,
+            language: formData.language,
+            length: formData.length,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -132,19 +180,22 @@ export default function ScriptMitraPage() {
       }
 
       const result = await response.json();
-      setScript(result.output || '');
+      setScript(result.output || "");
+      // Save in localStorage
+      persistScriptMemory(result.output || "", formData);
 
       toast({
         title: "Script Generated!",
         description: "Your personalized video script is ready to use.",
       });
     } catch (error) {
-      console.error('Error generating script:', error);
+      console.error("Error generating script:", error);
 
       toast({
         title: "Generation Failed",
-        description: "Unable to generate script. Please check your connection and try again.",
-        variant: "destructive"
+        description:
+          "Unable to generate script. Please check your connection and try again.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -152,22 +203,26 @@ export default function ScriptMitraPage() {
   };
 
   const handleCopy = () => {
+    if (!script) return;
     navigator.clipboard.writeText(script);
+    // Remove script from memory when copied
+    clearScriptMemory();
     toast({
       title: "Copied!",
       description: "Script copied to clipboard successfully.",
     });
+    setScript("");
   };
 
   const handleDownload = () => {
     const element = document.createElement("a");
-    const file = new Blob([script], { type: 'text/plain' });
+    const file = new Blob([script], { type: "text/plain" });
     element.href = URL.createObjectURL(file);
-    element.download = `scriptmitra-${formData.topic.toLowerCase().replace(/\s+/g, '-')}.txt`;
+    element.download = `scriptmitra-${formData.topic.toLowerCase().replace(/\s+/g, "-")}.txt`;
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
-    
+
     toast({
       title: "Downloaded!",
       description: "Script downloaded as text file.",
@@ -178,6 +233,7 @@ export default function ScriptMitraPage() {
     setFormData({ topic: "", customTopic: "", style: "", language: "", length: "" });
     setScript("");
     setShowCustomTopic(false);
+    clearScriptMemory();
     toast({
       title: "Reset Complete",
       description: "Form cleared and ready for new script generation.",
@@ -289,7 +345,7 @@ export default function ScriptMitraPage() {
                           <Input
                             placeholder="Enter your custom topic..."
                             value={formData.customTopic}
-                            onChange={(e) => setFormData({...formData, customTopic: e.target.value})}
+                            onChange={(e) => setFormData({ ...formData, customTopic: e.target.value })}
                             className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200"
                           />
                         </div>
@@ -302,7 +358,7 @@ export default function ScriptMitraPage() {
                         <Brain className="w-4 h-4 text-blue-600 dark:text-blue-500" />
                         Script Style
                       </Label>
-                      <Select value={formData.style} onValueChange={(value) => setFormData({...formData, style: value})}>
+                      <Select value={formData.style} onValueChange={(value) => setFormData({ ...formData, style: value })}>
                         <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
                           <SelectValue placeholder="Select your style..." />
                         </SelectTrigger>
@@ -322,7 +378,7 @@ export default function ScriptMitraPage() {
                         <Users className="w-4 h-4 text-blue-600 dark:text-blue-500" />
                         Language
                       </Label>
-                      <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
+                      <Select value={formData.language} onValueChange={(value) => setFormData({ ...formData, language: value })}>
                         <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
                           <SelectValue placeholder="Select language..." />
                         </SelectTrigger>
@@ -342,7 +398,7 @@ export default function ScriptMitraPage() {
                         <Clock className="w-4 h-4 text-blue-600 dark:text-blue-500" />
                         Duration
                       </Label>
-                      <Select value={formData.length} onValueChange={(value) => setFormData({...formData, length: value})}>
+                      <Select value={formData.length} onValueChange={(value) => setFormData({ ...formData, length: value })}>
                         <SelectTrigger className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200">
                           <SelectValue placeholder="Select duration..." />
                         </SelectTrigger>
@@ -359,8 +415,8 @@ export default function ScriptMitraPage() {
 
                   {/* Submit and Reset Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={isLoading}
                       className="notion-button-primary flex-1 h-11 text-base font-semibold"
                     >
@@ -376,8 +432,8 @@ export default function ScriptMitraPage() {
                         </div>
                       )}
                     </Button>
-                    
-                    <Button 
+
+                    <Button
                       type="button"
                       variant="outline"
                       onClick={handleReset}
@@ -408,14 +464,14 @@ export default function ScriptMitraPage() {
                     </ScrollArea>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Button 
+                    <Button
                       onClick={handleCopy}
                       className="notion-button-primary flex-1 h-10 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
                     >
                       <Copy className="w-4 h-4 mr-2" />
                       Copy Script
                     </Button>
-                    <Button 
+                    <Button
                       onClick={handleDownload}
                       variant="outline"
                       className="notion-button-secondary flex-1 h-10 bg-white border border-blue-300 text-blue-700 hover:bg-blue-50 dark:bg-gray-900 dark:border-blue-800 dark:text-blue-100 dark:hover:bg-blue-800/70"
