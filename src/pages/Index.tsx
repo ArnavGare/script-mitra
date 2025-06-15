@@ -15,6 +15,7 @@ import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import FloatingLogoutButton from "@/components/FloatingLogoutButton";
 import UltraPremiumBg from "@/components/UltraPremiumBg";
+import MotionGridBg from "@/components/MotionGridBg";
 
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -32,11 +33,14 @@ const Index = () => {
       <Header />
       {/* SUPER PROMINENT FLOATING LOGOUT BUTTON, BOTTOM RIGHT */}
       <FloatingLogoutButton />
+      {/* --- GRID ANIMATED BACKGROUND (premium grid, above ultra-premium video/bg, below content) --- */}
+      <MotionGridBg />
       {/* --- ULTRA-PREMIUM ANIMATED BACKGROUND, below all content (z-index ordering important) --- */}
       <UltraPremiumBg />
       <div className={`min-h-screen transition-all duration-500 ${isDarkMode ? 'dark' : ''}`}>
         {/* Main Content */}
         <div className="relative z-10">
+          {/* Main Content */}
           <HeroSection />
           <ProductBoxes />
           <VideoMakingTips />
