@@ -168,12 +168,71 @@ export default function HashtagsMitra() {
         <div className="w-full max-w-[900px] mx-auto p-px rounded-2xl bg-gradient-to-b from-white/20 to-transparent">
           <GlowHoverCard className="w-full h-full px-5 sm:px-9 pt-10 pb-8 rounded-[15px] shadow-smooth relative z-10 border-white/10 dark:border-white/10 backdrop-blur-xl saturate-150">
             {/* Fly-in headline */}
-            <div className="flex justify-center mb-3">
-              <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow font-playfair relative">
-                <OGFlyInText>
+            <div className="flex justify-center mb-7 select-none">
+              <div className="relative inline-block w-full max-w-2xl">
+                <h1
+                  className="
+                    text-[2.8rem]
+                    sm:text-6xl
+                    md:text-7xl
+                    font-extrabold
+                    font-playfair
+                    tracking-tight
+                    text-white
+                    headline-glow
+                    shadow-lg
+                    text-center
+                    px-2
+                    py-4
+                    rounded-2xl
+                    bg-gradient-to-br from-[#52e7fa]/80 via-[#7f53fa]/80 to-[#eeaeca]/60
+                    border border-white/30 dark:border-blue-300/20
+                    transition-all duration-300
+                    ring-[3px] ring-cyan-200/40 dark:ring-cyan-300/30
+                    mb-1
+                    drop-shadow-[0_8px_28px_rgba(120,130,255,0.20)]
+                    animate-fade-in
+                  "
+                  style={{
+                    textShadow: `
+                      0 8px 48px #4f95ff33,
+                      0 0px 28px #009fea23
+                    `,
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    filter: "drop-shadow(0 3px 30px #38e0ff60)"
+                  }}
+                >
                   Captions Mitra
-                </OGFlyInText>
-              </h1>
+                </h1>
+                <div className="w-full flex justify-center">
+                  <span
+                    className="
+                      text-lg
+                      sm:text-2xl
+                      font-medium
+                      font-sans
+                      text-white/95
+                      dark:text-cyan-100/90
+                      mt-2
+                      tracking-tight
+                      px-3
+                      rounded-full
+                      bg-gradient-to-r from-cyan-400/30 via-white/10 to-purple-300/15
+                      shadow
+                      animate-fade-in
+                    "
+                  >Generate shareworthy captions & content instantly</span>
+                </div>
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-2 z-[-1] rounded-2xl blur-2xl opacity-60"
+                  style={{
+                    background: "radial-gradient(ellipse at 46% 59%,#1189e899 45%,#a855f780 65%,#f1f5fd00 90%)"
+                  }}
+                />
+              </div>
             </div>
             
             <ScriptForm input={input} setInput={setInput} handleGenerate={handleGenerate} isLoading={isLoading} placeholder={placeholder} />
