@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { ProductCard } from "@/components/ProductCard";
+import GlowHoverCard from "@/components/GlowHoverCard";
 
 // CATEGORY MAPPING for filter usability
 const categories = ["All", "Templates", "Hooks", "Scripts", "Workflows", "PDFs"];
@@ -19,6 +21,7 @@ function getCategoryFromTag(tag?: string | null) {
   if (tag.toLowerCase().includes("hook")) return "Hooks";
   return "";
 }
+
 export default function StorePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -74,9 +77,11 @@ export default function StorePage() {
   }
 
   // 4. Find popular picks
-  const popularResources = (products || []).filter((p: any) => !!p.popular);
+  // REMOVED: const popularResources = (products || []).filter((p: any) => !!p.popular);
+
   if (error) return <div className="text-red-500">Error loading products</div>;
-  return <>
+  return (
+    <>
       <Header />
       {/* Hero Section */}
       <div className="relative pt-12 pb-2 min-h-[225px] flex items-center justify-center w-full bg-gradient-to-br from-[#181d2b] via-[#221f32] to-[#22184a] mx-0 my-0 px-[173px] rounded-sm py-[25px]">
@@ -99,19 +104,9 @@ export default function StorePage() {
         
       </section>
 
-      {!isLoading && <>
-          {/* Popular Picks */}
-          <section className="max-w-5xl mx-auto w-full px-4">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl">🌟</span>
-              <h2 className="text-lg md:text-2xl font-bold text-gray-900 dark:text-white font-playfair">
-                Popular Picks
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-              {popularResources.map((prod: any, i: number) => <ProductCard key={prod.id} item={prod} delay={i * 0.04} downloadCount={downloadsData?.[prod.id] || 0} />)}
-            </div>
-          </section>
+      {!isLoading && (
+        <>
+          {/* REMOVED: Popular Picks Section */}
 
           {/* Digital Product Library – All Products */}
           <section className="max-w-6xl mx-auto w-full px-4">
@@ -119,10 +114,15 @@ export default function StorePage() {
               Digital Library
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
-              {filteredProducts.map((prod: any, i: number) => <ProductCard key={prod.id} item={prod} delay={i * 0.03} downloadCount={downloadsData?.[prod.id] || 0} />)}
+              {filteredProducts.map((prod: any, i: number) => (
+                <GlowHoverCard key={prod.id}>
+                  <ProductCard item={prod} delay={i * 0.03} downloadCount={downloadsData?.[prod.id] || 0} />
+                </GlowHoverCard>
+              ))}
             </div>
           </section>
-        </>}
+        </>
+      )}
 
       {isLoading && <div className="px-8 py-20 text-center text-xl">Loading products…</div>}
 
@@ -134,5 +134,6 @@ export default function StorePage() {
           </span>
         </div>
       </footer>
-    </>;
+    </>
+  );
 }
