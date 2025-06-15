@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useLastGenerations } from "@/hooks/useLastGenerations";
 import { useLoginActivity } from "@/hooks/useLoginActivity";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
+import DailyQuotaBox from "@/components/DailyQuotaBox";
 
 export default function AccountPage() {
   const { user, isLoading } = useSupabaseUser();
@@ -64,6 +64,11 @@ export default function AccountPage() {
               <UserCircle2 className="text-cyan-400 size-10 animate-float" /> My Account
             </h1>
             <p className="text-base text-gray-500 dark:text-gray-300 max-w-xl mx-auto">All your user info, quota usage, and account activity — all in one beautiful place!</p>
+          </div>
+
+          {/* Daily Quota Box */}
+          <div className="flex justify-center">
+            <DailyQuotaBox />
           </div>
 
           {/* Authentication Details */}
@@ -186,4 +191,3 @@ export default function AccountPage() {
     </>
   );
 }
-
