@@ -29,6 +29,7 @@ export default function HashtagsMitra() {
   const [structuredOutput, setStructuredOutput] = useState<StructuredResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [webhookResponse, setWebhookResponse] = useState<any>(null);
+  const [outputText, setOutputText] = useState(""); // <--- New state for displaying raw output
   const { copy, copiedIdx } = useCopyToClipboard();
   const placeholder = useRotatingPlaceholder();
 
@@ -43,7 +44,8 @@ export default function HashtagsMitra() {
     setCaptions([]);
     setStructuredOutput(null);
     setWebhookResponse(null);
-    
+    setOutputText(""); // Reset output text
+  
     try {
       console.log("Sending script to webhook:", input);
       
@@ -73,6 +75,13 @@ export default function HashtagsMitra() {
           hashtags: data.hashtags,
           description: data.description
         });
+        let rawOut = "";
+        if (data.title) rawOut += `Title: ${data.title}\n\n`;
+        if (data.caption) rawOut += `Caption: ${data.caption}\n\n`;
+        if (data.hashtags) rawOut += `Hashtags: ${data.hashtags}\n\n`;
+        if (data.description) rawOut += `Description: ${data.description}\n\n`;
+        setOutputText(rawOut.trim());
+
         toast.success("Content generated successfully!");
       } else {
         // Fall back to original captions list format
@@ -99,14 +108,19 @@ export default function HashtagsMitra() {
         setCaptions(finalCaptions);
 
         if (finalCaptions.length > 0) {
+          setOutputText(finalCaptions.join('\n\n'));
           toast.success(`Generated ${finalCaptions.length} captions!`);
+        } else if (typeof data === "string" && data.trim() !== "") {
+          setOutputText(data);
         } else {
+          setOutputText(""); // nothing to show
           toast.error("No captions found in response. Please check your script and try again.");
           console.log("Full webhook response for debugging:", data);
         }
       }
     } catch (err) {
       console.error("Error generating captions:", err);
+      setOutputText(""); // Clear on error
       toast.error("Unable to generate captions. Please try again.");
     }
     
@@ -154,6 +168,21 @@ export default function HashtagsMitra() {
               isLoading={isLoading}
               placeholder={placeholder}
             />
+
+            {/* Always show the output box */}
+            <div className="mt-6 mb-2 w-full">
+              <label htmlFor="generated-output" className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">
+                Captions Generated Output
+              </label>
+              <textarea
+                id="generated-output"
+                className="w-full min-h-[120px] max-h-64 p-4 font-mono text-base text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900/80 border border-gray-300 dark:border-gray-700 rounded-lg shadow-inner transition resize-y"
+                value={outputText}
+                readOnly
+                placeholder="Generated captions or structured content will appear here..."
+                aria-label="Captions generated output"
+              />
+            </div>
             
             <TipCarousel className="my-7" />
             
