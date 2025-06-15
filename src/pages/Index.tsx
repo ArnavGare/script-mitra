@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/index/HeroSection";
@@ -40,14 +39,14 @@ const Index = () => {
         </div>
         {/* Main Content */}
         <div className="relative z-10">
-          {/* REMOVE DUPLICATE HERO HEADING HERE */}
-          {/* <div className="pt-10 pb-4 flex justify-center">
-            <h1 className="text-4xl md:text-5xl font-bold font-playfair text-center max-w-2xl mx-auto headline-glow">
+          {/* Fly-in animation on main hero section title */}
+          <div className="pt-10 pb-4 flex justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-center max-w-2xl mx-auto headline-glow">
               <OGFlyInText>
-                Automation Mitra
+                Script Mitra: The Ultimate AI Toolkit for Finance Creators
               </OGFlyInText>
             </h1>
-          </div> */}
+          </div>
           <HeroSection />
           <ProductBoxes />
           <VideoMakingTips />
@@ -63,4 +62,3 @@ const Index = () => {
 };
 
 export default Index;
-
