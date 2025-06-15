@@ -1,4 +1,3 @@
-
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
@@ -6,6 +5,7 @@ import HeaderMobileMenu from "./HeaderMobileMenu";
 import { useAccessKey } from "@/context/AccessKeyContext";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const scrollToSection = (id: string) => {
   const el = document.getElementById(id);
@@ -60,18 +60,16 @@ export default function Header() {
         </nav>
         <div className="hidden md:flex items-center gap-3">
           {hasAccess && (
-            <button
+            <Button
               onClick={handleLogout}
-              className="notion-button-secondary px-4 py-2 rounded font-medium ml-4 transition-colors duration-150 flex items-center gap-2"
-              style={{
-                outline: "none",
-                border: "none",
-                background: "rgba(88,65,176,0.15)",
-                color: "#ffe",
-              }}
+              variant="secondary"
+              size="sm"
+              aria-label="Logout"
+              className="ml-2 px-4 flex items-center gap-1 border border-cyan-400/60 shadow glow-on-hover"
             >
-              <LogOut className="mr-1 w-5 h-5" /> Logout
-            </button>
+              <LogOut className="w-4 h-4 text-cyan-400" />
+              <span className="text-cyan-50 font-semibold">Logout</span>
+            </Button>
           )}
         </div>
         <div className="md:hidden flex items-center">
@@ -79,6 +77,11 @@ export default function Header() {
         </div>
       </div>
       <style>{`
+        .glow-on-hover:hover, .glow-on-hover:focus-visible {
+          box-shadow: 0 2px 12px 0 #4fdbff66, 0 0px 8px #26ffee33;
+          filter: brightness(1.17) drop-shadow(0 0 14px #7de7fd88);
+          border-color: #7de7fd;
+        }
         .neon-pill-btn {
           box-shadow: 0 2px 16px #1cf6c233, 0 2px 10px #7265ff88;
           background: linear-gradient(92deg,#1cf6c2 18%,#7265ff 92%);
