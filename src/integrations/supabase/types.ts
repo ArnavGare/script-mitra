@@ -81,6 +81,89 @@ export type Database = {
         }
         Relationships: []
       }
+      product_downloads: {
+        Row: {
+          downloaded_at: string
+          id: number
+          product_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          downloaded_at?: string
+          id?: number
+          product_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          downloaded_at?: string
+          id?: number
+          product_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_downloads_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          file_name: string | null
+          file_path: string | null
+          file_type: string | null
+          icon: string | null
+          id: string
+          popular: boolean | null
+          tag: string | null
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_type?: string | null
+          icon?: string | null
+          id?: string
+          popular?: boolean | null
+          tag?: string | null
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_type?: string | null
+          icon?: string | null
+          id?: string
+          popular?: boolean | null
+          tag?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      Products: {
+        Row: {
+          created_at: string
+        }
+        Insert: {
+          created_at: string
+        }
+        Update: {
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
