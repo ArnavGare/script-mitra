@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -82,7 +81,7 @@ export default function StorePage() {
     <>
       <Header />
       <div className="min-h-screen transition-all duration-500 relative">
-        {/* --- Animated Scriptmitra-Style Background --- */}
+        {/* --- Scriptmitra-style Animated Background --- */}
         <div className="fixed inset-0 bg-gradient-to-br from-[#131832] via-[#121728] to-[#312d4e] dark:from-[#080818] dark:via-[#111235] dark:to-[#24245a] overflow-hidden z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x"></div>
           <div className="absolute inset-0">
@@ -125,11 +124,13 @@ export default function StorePage() {
               <div className="absolute left-0 bottom-0 bg-cyan-400/20 blur-2xl w-48 h-24 rounded-full opacity-60" />
             </div>
             <div className="relative z-10 flex flex-col items-center px-6 text-center w-full">
-              <h1 className="font-playfair font-bold text-3xl md:text-5xl mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-200 to-white shadow-lg drop-shadow-lg headline-glow">
-                <OGFlyInText>
-                  The Store – Tools to Power Your Financial Content Journey
-                </OGFlyInText>
-              </h1>
+              <div className="inline-block rounded-xl bg-gradient-to-r from-blue-500/40 via-fuchsia-400/20 to-purple-400/40 shadow-lg px-4 py-3 md:px-8 md:py-5 mb-3">
+                <h1 className="font-playfair font-bold text-3xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-200 to-white headline-glow">
+                  <OGFlyInText>
+                    The Store – Tools to Power Your Financial Content Journey
+                  </OGFlyInText>
+                </h1>
+              </div>
             </div>
           </div>
 
