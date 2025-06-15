@@ -2,7 +2,7 @@
 import Header from "@/components/Header";
 
 export default function GenerateScriptsPage() {
-  // NO login checks, everyone with access key can use this page
+  // No login, signup, or user checks anywhere.
   return (
     <>
       <Header />

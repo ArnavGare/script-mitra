@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,6 @@ import NotFound from "./pages/NotFound";
 import HashtagsMitra from "./pages/HashtagsMitra";
 import { AccessKeyProvider } from "@/context/AccessKeyContext";
 import AccessKeyGate from "@/components/AccessKeyGate";
-// Dummy pages for demonstration (since you mentioned /generate-scripts and /store)
 import GenerateScriptsPage from "./pages/GenerateScriptsPage";
 import StorePage from "./pages/StorePage";
 
