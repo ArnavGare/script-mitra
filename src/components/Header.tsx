@@ -1,17 +1,18 @@
-
 import React from "react";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
+import HeaderMobileMenu from "./HeaderMobileMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAccessKey } from "@/context/AccessKeyContext";
-import MotionGridBg from "./MotionGridBg";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Header() {
   const { hasAccess } = useAccessKey();
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isLoading } = useSupabaseUser();
+  const isMobile = useIsMobile();
 
   const handleCTA = () => {
     if (hasAccess) {
@@ -45,11 +46,12 @@ export default function Header() {
           <div className="flex items-center gap-4">
             <Logo />
           </div>
-          <nav className="flex items-center flex-1 justify-center gap-3">
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center flex-1 justify-center gap-3">
             <NavLinks />
           </nav>
-          {/* Right section: Email (if logged in) or Login button */}
-          <div className="flex items-center min-w-[110px] justify-end">
+          {/* Desktop User/CTA */}
+          <div className="hidden md:flex items-center min-w-[110px] justify-end">
             {isLoading ? (
               <span className="w-[110px] animate-pulse text-cyan-400">Loading...</span>
             ) : user ? (
@@ -94,6 +96,13 @@ export default function Header() {
                 Login
               </button>
             )}
+          </div>
+          {/* Mobile Hamburger Menu */}
+          <div className="flex md:hidden items-center justify-end w-full">
+            <HeaderMobileMenu
+              hasAccess={!!user}
+              // Optionally pass nav/logout handlers if needed
+            />
           </div>
         </div>
         <style>{`
