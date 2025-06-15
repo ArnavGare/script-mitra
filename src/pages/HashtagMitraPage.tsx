@@ -34,7 +34,7 @@ export default function HashtagMitraPage() {
       <main className="min-h-screen py-10">
         <section className="max-w-2xl mx-auto px-4 pb-6">
           <div className="flex justify-center mb-3">
-            <h1 className="text-3xl md:text-4xl font-bold text-center flex items-center gap-2 headline-glow">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair text-center flex items-center gap-2 headline-glow">
               <OGFlyInText>
                 <span role="img" aria-label="hashtag-mitra">#️⃣</span>
                 Hashtag Mitra – Discover Trending, High-Performing Hashtags

@@ -12,7 +12,7 @@ export default function GenerateScriptsPage() {
       <Header />
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="mb-3">
-          <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-200 text-center headline-glow">
+          <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-200 text-center headline-glow font-playfair">
             <OGFlyInText>
               Script Generation has moved!
             </OGFlyInText>
