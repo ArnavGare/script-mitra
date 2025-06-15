@@ -6,6 +6,7 @@ import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useNavigate } from "react-router-dom";
 import { useLastGenerations } from "@/hooks/useLastGenerations";
 import { useLoginActivity } from "@/hooks/useLoginActivity";
+import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
 
 export default function AccountPage() {
   const { user, isLoading } = useSupabaseUser();
@@ -14,6 +15,36 @@ export default function AccountPage() {
   // fetch real login activity and generations
   const { data: generations, isLoading: gensLoading } = useLastGenerations(user?.id);
   const { data: logins, isLoading: loginsLoading } = useLoginActivity(user?.id);
+
+  // Quota/cooldown
+  const { loading: quotaLoading, error: quotaError, script, caption } = useDailyQuotaCooldown();
+
+  // Calculating time to next reset (midnight)
+  const [timeToReset, setTimeToReset] = React.useState<string>("");
+
+  React.useEffect(() => {
+    // Midnight at user's local timezone
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0); // Next midnight
+    function updateReset() {
+      const now = new Date();
+      const diff = midnight.getTime() - now.getTime();
+      if (diff > 0) {
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+        setTimeToReset(
+          `${hours > 0 ? `${hours}h ` : ""}${minutes}m ${seconds}s`
+        );
+      } else {
+        setTimeToReset("resetting...");
+      }
+    }
+    updateReset();
+    const interval = setInterval(updateReset, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   React.useEffect(() => {
     if (!isLoading && !user) {
@@ -41,6 +72,36 @@ export default function AccountPage() {
               </div>
             ) : (
               <div className="text-red-600">Not logged in</div>
+            )}
+          </Card>
+
+          {/* Generations Quota Info */}
+          <Card className="mb-5 p-6 rounded-2xl bg-white/70 dark:bg-[#232244]/60 shadow-md backdrop-blur">
+            <div className="mb-2 flex items-center gap-3">
+              <span className="font-semibold text-lg text-gray-900 dark:text-white">Today's Generations Usage</span>
+            </div>
+            {quotaLoading ? (
+              <div className="text-cyan-600">Loading quota...</div>
+            ) : quotaError ? (
+              <div className="text-red-600">Error: {quotaError}</div>
+            ) : (
+              <ul className="mt-2 text-base space-y-1">
+                <li>
+                  <span className="font-medium">Script generations left:&nbsp;</span>
+                  <span>{10 - script.count} / 10</span>
+                  {script.disabled && (<span className="ml-2 text-xs text-red-500">(Limit reached)</span>)}
+                </li>
+                <li>
+                  <span className="font-medium">Caption generations left:&nbsp;</span>
+                  <span>{10 - caption.count} / 10</span>
+                  {caption.disabled && (<span className="ml-2 text-xs text-red-500">(Limit reached)</span>)}
+                </li>
+                <li className="text-sm mt-2 text-sky-800 dark:text-sky-200">
+                  <span>Reset in: </span>
+                  <span className="font-mono">{timeToReset}</span>
+                  <span className="ml-2 text-xs text-gray-500">(at midnight)</span>
+                </li>
+              </ul>
             )}
           </Card>
 
