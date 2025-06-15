@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/index/HeroSection";
@@ -43,7 +44,7 @@ const Index = () => {
           <div className="pt-10 pb-4 flex justify-center">
             <h1 className="text-4xl md:text-5xl font-bold font-playfair text-center max-w-2xl mx-auto headline-glow">
               <OGFlyInText>
-                Script Mitra: The Ultimate AI Toolkit for Finance Creators
+                Automation Mitra
               </OGFlyInText>
             </h1>
           </div>
@@ -62,3 +63,4 @@ const Index = () => {
 };
 
 export default Index;
+
