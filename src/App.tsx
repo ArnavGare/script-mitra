@@ -12,7 +12,8 @@ import StorePage from "./pages/StorePage";
 import LoginPage from "./pages/LoginPage";
 import PrivateRoute from "@/components/PrivateRoute";
 import ForbiddenPage from "@/pages/ForbiddenPage";
-// Removed AccessKeyProvider and AccessKeyGate import
+import ScriptMitraPage from "@/pages/ScriptMitraPage";
+import HashtagMitraPage from "@/pages/HashtagMitraPage";
 
 const queryClient = new QueryClient();
 
@@ -34,18 +35,18 @@ const App = () => (
             }
           />
           <Route
-            path="/hashtags-mitra"
+            path="/scriptmitra"
             element={
               <PrivateRoute>
-                <HashtagsMitra />
+                <ScriptMitraPage />
               </PrivateRoute>
             }
           />
           <Route
-            path="/generate-scripts"
+            path="/hashtagmitra"
             element={
               <PrivateRoute>
-                <GenerateScriptsPage />
+                <HashtagMitraPage />
               </PrivateRoute>
             }
           />
@@ -66,4 +67,3 @@ const App = () => (
 );
 
 export default App;
-
