@@ -1,17 +1,24 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
-import { User, CalendarCheck, BadgeCheck, BarChart2, ShieldCheck, Timer, UserCircle2, KeyRound, Settings2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { User, CalendarCheck, BadgeCheck, BarChart2, ShieldCheck, Timer, UserCircle2, KeyRound, Settings2, LogOut, Copy } from "lucide-react";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 import { useNavigate } from "react-router-dom";
 import { useLastGenerations } from "@/hooks/useLastGenerations";
 import { useLoginActivity } from "@/hooks/useLoginActivity";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
 import DailyQuotaBox from "@/components/DailyQuotaBox";
+import { useAccessKey } from "@/context/AccessKeyContext";
+import { toast } from "sonner";
+import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 
 export default function AccountPage() {
   const { user, isLoading } = useSupabaseUser();
+  const { logout } = useAccessKey();
   const navigate = useNavigate();
+  const { copy, copiedIdx } = useCopyToClipboard();
 
   // fetch real login activity and generations
   const { data: generations, isLoading: gensLoading } = useLastGenerations(user?.id);
@@ -53,6 +60,22 @@ export default function AccountPage() {
     }
   }, [isLoading, user, navigate]);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully!");
+      navigate("/auth/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout. Please try again.");
+    }
+  };
+
+  const handleCopyGeneration = (content: string, index: number) => {
+    copy(content, index);
+    toast.success("Generation copied to clipboard!");
+  };
+
   return (
     <>
       <Header />
@@ -71,16 +94,27 @@ export default function AccountPage() {
             <DailyQuotaBox />
           </div>
 
-          {/* Authentication Details */}
+          {/* Authentication Details with Logout Button */}
           <Card className="mb-3 animate-fade-in shadow-smooth border border-pastelindigo/40 dark:border-[#232244]/70 p-6 rounded-2xl bg-white/70 dark:bg-[#232244]/70 backdrop-blur-sm">
-            <div className="flex items-center gap-3 border-b border-gray-100 dark:border-[#363553]/60 pb-2">
-              <BadgeCheck className="text-sky-500" />
-              <span className="font-semibold text-lg text-gray-900 dark:text-white">Authentication</span>
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-[#363553]/60 pb-2 mb-3">
+              <div className="flex items-center gap-3">
+                <BadgeCheck className="text-sky-500" />
+                <span className="font-semibold text-lg text-gray-900 dark:text-white">Authentication</span>
+              </div>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 hover:bg-red-50 hover:border-red-200 hover:text-red-600 dark:hover:bg-red-950 dark:hover:border-red-800"
+              >
+                <LogOut className="size-4" />
+                Logout
+              </Button>
             </div>
             {isLoading ? (
               <div className="text-cyan-800 mt-2">Loading...</div>
             ) : user ? (
-              <div className="flex flex-wrap items-center gap-3 mt-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <div className="text-base flex items-center gap-2">
                   <KeyRound className="size-5 text-emerald-500" />
                   <span className="font-medium text-gray-700 dark:text-pastelmint">Email:</span>
@@ -154,7 +188,7 @@ export default function AccountPage() {
             )}
           </Card>
 
-          {/* Last 5 Generations */}
+          {/* Last 5 Generations with Copy Buttons */}
           <Card className="animate-fade-in shadow-smooth border border-pastelindigo/40 dark:border-[#232244]/70 p-6 rounded-2xl bg-white/85 dark:bg-[#232244]/85 backdrop-blur-sm">
             <div className="flex items-center gap-3 border-b border-gray-100 dark:border-[#363553]/60 pb-2 mb-1">
               <BarChart2 className="text-indigo-500" />
@@ -163,25 +197,39 @@ export default function AccountPage() {
             {gensLoading ? (
               <div className="text-cyan-600 mt-2">Loading...</div>
             ) : generations && generations.length > 0 ? (
-              <ul className="mt-2 text-base divide-y divide-gray-100 dark:divide-cyan-900/20">
-                {generations.slice(0, 5).map((gen) => (
-                  <li key={gen.id} className="flex flex-col sm:flex-row justify-between py-1">
-                    <span>
-                      <span className={`inline-block rounded px-2 py-0.5 text-xs font-semibold mr-2
-                        ${gen.type === "script"
-                        ? "bg-emerald-200/40 text-emerald-800 dark:bg-emerald-700/60 dark:text-emerald-100"
-                        : "bg-indigo-200/50 text-indigo-800 dark:bg-indigo-700/70 dark:text-indigo-100"}
-                      `}>
-                        {gen.type === "script" ? "Script" : "Hashtag"}
-                      </span>
-                      {gen.title}
-                    </span>
-                    <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      {new Date(gen.created_at).toLocaleDateString()}
-                    </span>
-                  </li>
+              <div className="mt-2 space-y-3">
+                {generations.slice(0, 5).map((gen, index) => (
+                  <div key={gen.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-[#1a1a2e] border border-gray-200 dark:border-gray-700">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className={`inline-block rounded px-2 py-0.5 text-xs font-semibold
+                          ${gen.type === "script"
+                          ? "bg-emerald-200/40 text-emerald-800 dark:bg-emerald-700/60 dark:text-emerald-100"
+                          : "bg-indigo-200/50 text-indigo-800 dark:bg-indigo-700/70 dark:text-indigo-100"}
+                        `}>
+                          {gen.type === "script" ? "Script" : "Caption"}
+                        </span>
+                        <span className="text-gray-500 dark:text-gray-400 text-sm">
+                          {new Date(gen.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <h4 className="font-medium text-gray-900 dark:text-white truncate">{gen.title}</h4>
+                      {gen.description && (
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">{gen.description}</p>
+                      )}
+                    </div>
+                    <Button
+                      onClick={() => handleCopyGeneration(gen.description || gen.title, index)}
+                      variant="outline"
+                      size="sm"
+                      className="ml-3 flex-shrink-0"
+                    >
+                      <Copy className="size-4" />
+                      {copiedIdx === index ? "Copied!" : "Copy"}
+                    </Button>
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : (
               <div className="text-gray-500 mt-2">No recent generations.</div>
             )}
