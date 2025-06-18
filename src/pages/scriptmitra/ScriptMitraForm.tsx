@@ -43,7 +43,7 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
       topic: value,
       customTopic: ""
     });
-    onShowCustomTopic(false);
+    onShowCustomTopic(value === "Custom Topic");
   }
 
   return (
@@ -64,11 +64,24 @@ const ScriptMitraForm: React.FC<ScriptMitraFormProps> = ({
                 <SelectContent className="rounded-lg border-2 border-blue-300/60 dark:border-blue-800 bg-white dark:bg-gray-900/95 backdrop-blur-sm">
                   {topics.map(topic => 
                     <SelectItem key={topic} value={topic} className="rounded-md hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors duration-200 flex items-center gap-2 text-gray-800 dark:text-gray-200">
+                      {topic === "Custom Topic" && <Plus className="w-4 h-4" />}
                       {topic}
                     </SelectItem>
                   )}
                 </SelectContent>
               </Select>
+              {/* Custom Topic Input */}
+              {showCustomTopic && (
+                <Input
+                  placeholder="Enter your custom topic..."
+                  value={formData.customTopic}
+                  onChange={(e) => onFormChange({
+                    ...formData,
+                    customTopic: e.target.value
+                  })}
+                  className="h-10 border-2 border-blue-300/60 dark:border-blue-800 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg bg-white dark:bg-gray-800/50 text-gray-800 dark:text-gray-200"
+                />
+              )}
             </div>
             {/* Style Selection */}
             <div className="space-y-2">

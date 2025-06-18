@@ -11,7 +11,7 @@ import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptm
 import { Button } from "@/components/ui/button";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
 
-const topics = ["Life Insurance", "Term Insurance", "Health Insurance", "Mutual Fund", "ULIP vs SIP", "Tax Saving Tips", "Retirement planning", "Daughter Marriage", "Children's Higher Education Planning"];
+const topics = ["Custom Topic", "Life Insurance", "Term Insurance", "Health Insurance", "Mutual Fund", "ULIP vs SIP", "Tax Saving Tips", "Retirement planning", "Daughter Marriage", "Children's Higher Education Planning"];
 const styles = ["Educational", "Story/Narrative", "Conversational", "Funny/Reel Style", "Dramatic/Emotional", "Latest Financial News"];
 const languages = ["English", "Hindi", "Hinglish", "Marathi"];
 const lengths = ["60 sec", "120 sec", "180 sec"];
