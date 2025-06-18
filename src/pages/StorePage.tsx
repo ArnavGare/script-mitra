@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -7,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { ProductCard } from "@/components/ProductCard";
-import GlowHoverCard from "@/components/GlowHoverCard";
+import TiltedCard from "@/components/TiltedCard";
 
 // CATEGORY MAPPING for filter usability
 const categories = ["All", "Templates", "Hooks", "Scripts", "Workflows", "PDFs"];
@@ -20,6 +21,7 @@ function getCategoryFromTag(tag?: string | null) {
   if (tag.toLowerCase().includes("hook")) return "Hooks";
   return "";
 }
+
 export default function StorePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -147,9 +149,26 @@ export default function StorePage() {
                   Digital Library
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
-                  {filteredProducts.map((prod: any, i: number) => <GlowHoverCard key={prod.id}>
-                      <ProductCard item={prod} delay={i * 0.03} downloadCount={downloadsData?.[prod.id] || 0} />
-                    </GlowHoverCard>)}
+                  {filteredProducts.map((prod: any, i: number) => (
+                    <TiltedCard
+                      key={prod.id}
+                      containerHeight="300px"
+                      containerWidth="100%"
+                      imageHeight="300px"
+                      imageWidth="100%"
+                      rotateAmplitude={8}
+                      scaleOnHover={1.05}
+                      showMobileWarning={false}
+                      showTooltip={false}
+                      displayOverlayContent={false}
+                    >
+                      <ProductCard 
+                        item={prod} 
+                        delay={i * 0.03} 
+                        downloadCount={downloadsData?.[prod.id] || 0} 
+                      />
+                    </TiltedCard>
+                  ))}
                 </div>
               </section>
             </>}
