@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
@@ -78,7 +79,7 @@ export function ProductCard({
 
   return (
     <div
-      className="group relative flex flex-col items-center justify-between h-full min-h-[230px] bg-white/80 dark:bg-gray-800/70 border border-blue-100 dark:border-blue-800 rounded-2xl shadow-smooth hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-md"
+      className="group relative flex flex-col items-center justify-between h-full min-h-[230px] bg-white/80 dark:bg-gray-800/70 border border-blue-100 dark:border-blue-800 rounded-2xl shadow-smooth hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-md glow-hover-card"
       style={{ animation: "fade-in 0.36s", animationDelay: `${delay}s` }}
       tabIndex={0}
     >
