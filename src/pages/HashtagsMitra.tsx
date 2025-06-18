@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import Header from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
@@ -13,7 +12,7 @@ import TipsSection from "@/components/hashtags-mitra/TipsSection";
 import NotionDarkBg from "@/components/hashtags-mitra/NotionDarkBg";
 import MotionGridBg from "@/components/MotionGridBg";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
-import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
+import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 
 export default function HashtagsMitra() {
   const [input, setInput] = useState("");
