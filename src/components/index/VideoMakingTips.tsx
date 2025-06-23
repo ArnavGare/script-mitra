@@ -13,9 +13,9 @@ const tips = [
 ];
 
 const VideoMakingTips = () => (
-  <section id="video-tips" className="max-w-6xl mx-auto px-4 py-12 scroll-mt-24">
-    <div className="text-center mb-8 animate-fade-in-up">
-      <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center gap-3">
+  <section id="video-tips" className="max-w-6xl mx-auto px-4 py-16 mt-12 scroll-mt-24 relative z-10">
+    <div className="text-center mb-12 animate-fade-in-up">
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
         <Video className="w-8 h-8 text-blue-300" />
         Smart Video-Making Tips for Financial Advisors
       </h2>

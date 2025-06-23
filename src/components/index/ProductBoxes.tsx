@@ -29,7 +29,7 @@ const PRODUCTS = [
 ];
 
 const ProductBoxes = () => (
-  <section className="max-w-4xl mx-auto px-4 pb-8">
+  <section className="max-w-4xl mx-auto px-4 pb-16 mb-8 relative z-20">
     <div className="flex flex-col sm:flex-row justify-center gap-6 mt-8">
       {PRODUCTS.map((product, idx) => (
         <TiltedCard
