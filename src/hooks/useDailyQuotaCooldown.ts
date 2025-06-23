@@ -1,175 +1,167 @@
 
-import { useEffect, useState, useCallback, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useSupabaseUser } from "@/hooks/useSupabaseUser";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useSupabaseUser } from './useSupabaseUser';
 
-// Helper: get local midnight in ISO string (for SQL)
-function todayMidnightISO() {
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  return now.toISOString();
+interface QuotaState {
+  disabled: boolean;
+  tooltip: string;
 }
 
-type UsageType = "script" | "caption";
-
-type QuotaData = {
-  script: {
-    todayCount: number;
-    lastGeneratedAt: string | null;
-  };
-  caption: {
-    todayCount: number;
-    lastGeneratedAt: string | null;
-  };
-  loading: boolean;
-  error?: string | null;
-};
-
 export function useDailyQuotaCooldown() {
+  const [loading, setLoading] = useState(false);
+  const [cooldownActive, setCooldownActive] = useState(false);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  
+  const [script, setScript] = useState<QuotaState>({ disabled: false, tooltip: "" });
+  const [caption, setCaption] = useState<QuotaState>({ disabled: false, tooltip: "" });
+  
   const { user } = useSupabaseUser();
-  const [data, setData] = useState<QuotaData>({
-    script: { todayCount: 0, lastGeneratedAt: null },
-    caption: { todayCount: 0, lastGeneratedAt: null },
-    loading: true,
-  });
-  const [cooldownEnd, setCooldownEnd] = useState<Date | null>(null);
-  const [now, setNow] = useState(new Date());
 
-  const timer = useRef<number | null>(null);
-
-  // Refresh timer
+  // Check current quota status on mount and user change
   useEffect(() => {
-    timer.current = window.setInterval(() => setNow(new Date()), 1000);
-    return () => {
-      if (timer.current) clearInterval(timer.current);
-    };
-  }, []);
-
-  // Query counts & cooldown
-  const refresh = useCallback(async () => {
-    if (!user?.id) {
-      setData(d => ({ ...d, loading: false, error: null }));
-      setCooldownEnd(null);
-      return;
-    }
-    setData(d => ({ ...d, loading: true }));
-    try {
-      const midnight = todayMidnightISO();
-
-      // Get all logs from today for this user (both types)
-      const { data: logs, error } = await supabase
-        .from("usage_logs")
-        .select("type, created_at")
-        .eq("user_id", user.id)
-        .gte("created_at", midnight);
-
-      if (error) throw error;
-
-      let scriptCount = 0;
-      let scriptLast: string | null = null;
-      let captionCount = 0;
-      let captionLast: string | null = null;
-      let maxLast: string | null = null;
-
-      logs.forEach((log: { type: string; created_at: string }) => {
-        if (log.type === "script") {
-          scriptCount += 1;
-          if (!scriptLast || log.created_at > scriptLast) scriptLast = log.created_at;
-        } else if (log.type === "caption") {
-          captionCount += 1;
-          if (!captionLast || log.created_at > captionLast) captionLast = log.created_at;
-        }
-        if (!maxLast || log.created_at > maxLast) maxLast = log.created_at;
-      });
-
-      // Cooldown: if most recent log < 60s ago, start countdown
-      let cooldown: Date | null = null;
-      if (maxLast) {
-        const last = new Date(maxLast);
-        const cd = new Date(last.getTime() + 60 * 1000);
-        if (cd > new Date()) cooldown = cd;
-      }
-      setCooldownEnd(cooldown);
-
-      setData({
-        script: { todayCount: scriptCount, lastGeneratedAt: scriptLast },
-        caption: { todayCount: captionCount, lastGeneratedAt: captionLast },
-        loading: false,
-      });
-    } catch (error: any) {
-      setData(d => ({ ...d, loading: false, error: error.message || "Failed to check quotas" }));
+    if (user?.id) {
+      refresh();
     }
   }, [user?.id]);
 
-  // Initial & periodic refresh
+  // Cooldown timer effect
   useEffect(() => {
-    refresh();
-    // Fast poll after every minute just in case
-    const id = setInterval(() => refresh(), 10000);
-    return () => clearInterval(id);
-  }, [refresh]);
+    let interval: NodeJS.Timeout;
+    
+    if (cooldownActive && cooldownSeconds > 0) {
+      interval = setInterval(() => {
+        setCooldownSeconds(prev => {
+          if (prev <= 1) {
+            setCooldownActive(false);
+            setScript({ disabled: false, tooltip: "" });
+            setCaption({ disabled: false, tooltip: "" });
+            return 0;
+          }
+          
+          // Update tooltips with new format
+          const newTooltip = `Wait ${prev - 1} seconds for next generation`;
+          setScript(prev => ({ ...prev, tooltip: newTooltip }));
+          setCaption(prev => ({ ...prev, tooltip: newTooltip }));
+          
+          return prev - 1;
+        });
+      }, 1000);
+    }
 
-  // Log a generation (adds usage log for the given type, then re-check all)
-  const logGeneration = useCallback(
-    async (type: UsageType) => {
-      if (!user?.id) {
-        setData(d => ({ ...d, error: "No user ID" }));
-        return;
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [cooldownActive, cooldownSeconds]);
+
+  const refresh = async () => {
+    if (!user?.id) return;
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const { data, error } = await supabase
+        .from('daily_generations')
+        .select('*')
+        .eq('user_id', user.id)
+        .gte('created_at', new Date().toISOString().split('T')[0])
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const now = new Date();
+      const scriptGenerations = data?.filter(g => g.type === 'script') || [];
+      const captionGenerations = data?.filter(g => g.type === 'caption') || [];
+
+      // Check if user is in cooldown for scripts
+      const lastScriptGen = scriptGenerations[0];
+      if (lastScriptGen) {
+        const lastGenTime = new Date(lastScriptGen.created_at);
+        const timeDiff = now.getTime() - lastGenTime.getTime();
+        const cooldownMs = 60 * 1000; // 60 seconds
+        
+        if (timeDiff < cooldownMs) {
+          const remainingSeconds = Math.ceil((cooldownMs - timeDiff) / 1000);
+          setScript({ 
+            disabled: true, 
+            tooltip: `Wait ${remainingSeconds} seconds for next generation`
+          });
+          setCooldownActive(true);
+          setCooldownSeconds(remainingSeconds);
+        }
       }
-      const { error } = await supabase.from("usage_logs").insert({
-        user_id: user.id,
-        type,
-      });
-      if (error) {
-        setData(d => ({ ...d, error: error.message || "Failed to log usage" }));
-        return;
+
+      // Check if user is in cooldown for captions  
+      const lastCaptionGen = captionGenerations[0];
+      if (lastCaptionGen) {
+        const lastGenTime = new Date(lastCaptionGen.created_at);
+        const timeDiff = now.getTime() - lastGenTime.getTime();
+        const cooldownMs = 60 * 1000; // 60 seconds
+        
+        if (timeDiff < cooldownMs) {
+          const remainingSeconds = Math.ceil((cooldownMs - timeDiff) / 1000);
+          setCaption({ 
+            disabled: true, 
+            tooltip: `Wait ${remainingSeconds} seconds for next generation`
+          });
+          setCooldownActive(true);
+          setCooldownSeconds(Math.max(cooldownSeconds, remainingSeconds));
+        }
       }
-      await refresh();
-    },
-    [user?.id, refresh]
-  );
 
-  // Quota/cooldown logic
-  const cooldownActive = cooldownEnd && cooldownEnd > now;
-  const cooldownSeconds = cooldownActive
-    ? Math.ceil((cooldownEnd.getTime() - now.getTime()) / 1000)
-    : 0;
+    } catch (err) {
+      console.error('Error checking quota:', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Quota reach logic (10/day)
-  const scriptDisabled = data.script.todayCount >= 10 || cooldownActive;
-  const captionDisabled = data.caption.todayCount >= 10 || cooldownActive;
+  const logGeneration = async (type: 'script' | 'caption') => {
+    if (!user?.id) return;
 
-  // Tooltip/feedback/messages
-  const scriptTooltip =
-    data.script.todayCount >= 10
-      ? "Daily script quota reached. Resets at 00:00."
-      : cooldownActive
-      ? `Wait ${cooldownSeconds}s…`
-      : "";
+    try {
+      const { error } = await supabase
+        .from('daily_generations')
+        .insert({
+          user_id: user.id,
+          type: type,
+          created_at: new Date().toISOString()
+        });
 
-  const captionTooltip =
-    data.caption.todayCount >= 10
-      ? "Daily captions quota reached. Resets at 00:00."
-      : cooldownActive
-      ? `Wait ${cooldownSeconds}s…`
-      : "";
+      if (error) throw error;
+
+      // Start cooldown
+      setCooldownActive(true);
+      setCooldownSeconds(60);
+      
+      if (type === 'script') {
+        setScript({ 
+          disabled: true, 
+          tooltip: "Wait 60 seconds for next generation"
+        });
+      } else {
+        setCaption({ 
+          disabled: true, 
+          tooltip: "Wait 60 seconds for next generation"
+        });
+      }
+
+    } catch (err) {
+      console.error('Error logging generation:', err);
+    }
+  };
 
   return {
-    loading: data.loading,
-    error: data.error,
-    script: {
-      count: data.script.todayCount,
-      disabled: scriptDisabled,
-      tooltip: scriptTooltip,
-    },
-    caption: {
-      count: data.caption.todayCount,
-      disabled: captionDisabled,
-      tooltip: captionTooltip,
-    },
+    loading,
+    script,
+    caption,
     cooldownActive,
     cooldownSeconds,
     logGeneration,
     refresh,
+    error
   };
 }

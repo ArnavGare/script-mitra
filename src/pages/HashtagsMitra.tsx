@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -14,13 +15,17 @@ import OGFlyInText from "@/components/OGFlyInText";
 import GlowHoverCard from "@/components/GlowHoverCard";
 import StructuredOutput from "@/components/hashtags-mitra/StructuredOutput";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
+import { useSupabaseUser } from "@/hooks/useSupabaseUser";
+
 const WEBHOOK_URL = "https://arnavgare01.app.n8n.cloud/webhook/97113ca3-e1f0-4004-930c-add542e8b8c5";
+
 interface StructuredResponse {
   title?: string;
   caption?: string;
   hashtags?: string;
   description?: string;
 }
+
 const STORAGE_KEY = 'captions_mitra_latest';
 
 // Add this cleanText utility at the top of the file (after imports)
@@ -55,6 +60,7 @@ export default function HashtagsMitra() {
   const [isLoading, setIsLoading] = useState(false);
   const [webhookResponse, setWebhookResponse] = useState<any>(null);
   const [outputText, setOutputText] = useState(""); // <--- New state for displaying raw output
+  const { user } = useSupabaseUser();
   const {
     copy,
     copiedIdx
@@ -121,13 +127,14 @@ export default function HashtagsMitra() {
     try {
       console.log("Sending script to webhook:", input);
 
-      // Send the script to the webhook
+      // Send the script to the webhook with user_id
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          user_id: user?.id,
           script: input,
           type: "captions"
         })
@@ -138,54 +145,60 @@ export default function HashtagsMitra() {
       const data = await res.json();
       console.log("Webhook response:", data);
 
-      // Store the full webhook response for debugging
-      setWebhookResponse(data);
+      // Check if the user_id matches
+      if (data.user_id && data.user_id === user?.id) {
+        // Store the full webhook response for debugging
+        setWebhookResponse(data);
 
-      // --- MODIFIED SECTION FOR ATTRACTIVE, CLEAN OUTPUT ---
-      // Check if we have structured output (title, caption, hashtags, description)
-      if (data.title || data.caption || data.hashtags || data.description) {
-        setStructuredOutput({
-          // Clean markdown from all fields
-          title: cleanText(data.title),
-          caption: cleanText(data.caption),
-          hashtags: cleanText(data.hashtags),
-          description: cleanText(data.description)
-        });
-        setCaptions([]); // clear captions when structuredOutput is set
-        let rawOut = "";
-        if (data.title) rawOut += `Title: ${cleanText(data.title)}\n\n`;
-        if (data.caption) rawOut += `Caption: ${cleanText(data.caption)}\n\n`;
-        if (data.hashtags) rawOut += `Hashtags: ${cleanText(data.hashtags)}\n\n`;
-        if (data.description) rawOut += `Description: ${cleanText(data.description)}\n\n`;
-        setOutputText(rawOut.trim());
-        toast.success("Content generated successfully!");
-      } else {
-        // Fall back to original captions list format
-        let finalCaptions: string[] = [];
-        if (data.output && typeof data.output === "string") {
-          finalCaptions = data.output.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
-        } else if (Array.isArray(data.captions)) {
-          finalCaptions = data.captions.map(cleanText);
-        } else if (Array.isArray(data.text)) {
-          finalCaptions = data.text.map(cleanText);
-        } else if (typeof data === "string") {
-          finalCaptions = data.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
-        }
-        setCaptions(finalCaptions);
-        setStructuredOutput(null); // clear structured when captions are set
-        if (finalCaptions.length > 0) {
-          setOutputText(finalCaptions.join('\n\n'));
-          toast.success(`Generated ${finalCaptions.length} captions!`);
-        } else if (typeof data === "string" && data.trim() !== "") {
-          setOutputText(cleanText(data));
+        // --- MODIFIED SECTION FOR ATTRACTIVE, CLEAN OUTPUT ---
+        // Check if we have structured output (title, caption, hashtags, description)
+        if (data.title || data.caption || data.hashtags || data.description) {
+          setStructuredOutput({
+            // Clean markdown from all fields
+            title: cleanText(data.title),
+            caption: cleanText(data.caption),
+            hashtags: cleanText(data.hashtags),
+            description: cleanText(data.description)
+          });
+          setCaptions([]); // clear captions when structuredOutput is set
+          let rawOut = "";
+          if (data.title) rawOut += `Title: ${cleanText(data.title)}\n\n`;
+          if (data.caption) rawOut += `Caption: ${cleanText(data.caption)}\n\n`;
+          if (data.hashtags) rawOut += `Hashtags: ${cleanText(data.hashtags)}\n\n`;
+          if (data.description) rawOut += `Description: ${cleanText(data.description)}\n\n`;
+          setOutputText(rawOut.trim());
+          toast.success("Content generated successfully!");
         } else {
-          setOutputText(""); // nothing to show
-          toast.error("No captions found in response. Please check your script and try again.");
-          console.log("Full webhook response for debugging:", data);
+          // Fall back to original captions list format
+          let finalCaptions: string[] = [];
+          if (data.output && typeof data.output === "string") {
+            final Captions = data.output.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
+          } else if (Array.isArray(data.captions)) {
+            finalCaptions = data.captions.map(cleanText);
+          } else if (Array.isArray(data.text)) {
+            finalCaptions = data.text.map(cleanText);
+          } else if (typeof data === "string") {
+            finalCaptions = data.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
+          }
+          setCaptions(finalCaptions);
+          setStructuredOutput(null); // clear structured when captions are set
+          if (finalCaptions.length > 0) {
+            setOutputText(finalCaptions.join('\n\n'));
+            toast.success(`Generated ${finalCaptions.length} captions!`);
+          } else if (typeof data === "string" && data.trim() !== "") {
+            setOutputText(cleanText(data));
+          } else {
+            setOutputText(""); // nothing to show
+            toast.error("No captions found in response. Please check your script and try again.");
+            console.log("Full webhook response for debugging:", data);
+          }
         }
+        // On success, log the generation and refresh (triggers cooldown)
+        await logGeneration("caption");
+      } else {
+        // Wait for the correct user_id
+        console.log("Waiting for correct user_id match...");
       }
-      // On success, log the generation and refresh (triggers cooldown)
-      await logGeneration("caption");
     } catch (err) {
       console.error("Error generating captions:", err);
       setOutputText(""); // Clear on error
@@ -193,6 +206,7 @@ export default function HashtagsMitra() {
     }
     setIsLoading(false);
   }
+
   return <>
       {/* Notion-style dark mode gradient + edge glow - dark mode only */}
       <div className="dark:block hidden">
