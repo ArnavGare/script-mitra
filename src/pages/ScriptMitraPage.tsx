@@ -10,12 +10,10 @@ import ScriptMitraInfoBoxes from "./scriptmitra/ScriptMitraInfoBoxes";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
 import { Button } from "@/components/ui/button";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
-
-const topics = ["Life Insurance", "Term Insurance", "Health Insurance", "Mutual Fund", "ULIP vs SIP", "Tax Saving Tips", "Retirement planning", "Daughter Marriage", "Children's Higher Education Planning"];
+const topics = ["Mutual Fund Basics", "SIP Ka Magic", "Retirement Planning", "Term Insurance Facts", "ULIP vs SIP", "Loan ka Gyaan", "Tax Saving Tips", "Custom Topic"];
 const styles = ["Educational", "Story/Narrative", "Conversational", "Funny/Reel Style", "Dramatic/Emotional", "Latest Financial News"];
 const languages = ["English", "Hindi", "Hinglish", "Marathi"];
 const lengths = ["60 sec", "120 sec", "180 sec"];
-
 export default function ScriptMitraPage() {
   const [formData, setFormData] = useState({
     topic: "",
@@ -78,11 +76,19 @@ export default function ScriptMitraPage() {
       navigate("/auth/login");
       return;
     }
-    const finalTopic = formData.topic;
+    const finalTopic = formData.topic === "Custom Topic" ? formData.customTopic : formData.topic;
     if (!finalTopic || !formData.style || !formData.language || !formData.length) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields before generating your script.",
+        variant: "destructive"
+      });
+      return;
+    }
+    if (formData.topic === "Custom Topic" && !formData.customTopic.trim()) {
+      toast({
+        title: "Custom Topic Required",
+        description: "Please enter your custom topic.",
         variant: "destructive"
       });
       return;
@@ -95,7 +101,6 @@ export default function ScriptMitraPage() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          user_id: user.id,
           topic: finalTopic,
           style: formData.style,
           language: formData.language,
@@ -108,21 +113,14 @@ export default function ScriptMitraPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
-      
-      // Check if the user_id matches
-      if (result.user_id && result.user_id === user.id) {
-        setScript(result.output || "");
-        saveScriptMemory(result.output || "", formData);
-        toast({
-          title: "Script Generated!",
-          description: "Your personalized video script is ready to use."
-        });
-        // Log usage and trigger cooldown
-        await logGeneration("script");
-      } else {
-        // Wait for the correct user_id match...
-        console.log("Waiting for correct user_id match...");
-      }
+      setScript(result.output || "");
+      saveScriptMemory(result.output || "", formData);
+      toast({
+        title: "Script Generated!",
+        description: "Your personalized video script is ready to use."
+      });
+      // Log usage and trigger cooldown
+      await logGeneration("script");
     } catch (error) {
       console.error("Error generating script:", error);
       toast({
