@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
@@ -172,7 +171,7 @@ export default function HashtagsMitra() {
           // Fall back to original captions list format
           let finalCaptions: string[] = [];
           if (data.output && typeof data.output === "string") {
-            final Captions = data.output.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
+            finalCaptions = data.output.split(/\n/).map(s => cleanText(s)).filter(Boolean).filter(caption => caption.length > 10);
           } else if (Array.isArray(data.captions)) {
             finalCaptions = data.captions.map(cleanText);
           } else if (Array.isArray(data.text)) {
@@ -253,10 +252,6 @@ export default function HashtagsMitra() {
                       0 8px 48px #4f95ff33,
                       0 0px 28px #009fea23
                     `,
-                    // Remove gradient background and text clipping to make text solid white
-                    // backgroundClip: "text",
-                    // WebkitBackgroundClip: "text",
-                    // WebkitTextFillColor: "transparent",
                     filter: "drop-shadow(0 3px 30px #38e0ff60)"
                   }}
                 >
@@ -299,9 +294,6 @@ export default function HashtagsMitra() {
               placeholder={placeholder}
               tooltip={caption.tooltip}
             />
-
-            {/* Always show the output box */}
-            
             
             <TipCarousel className="my-7" />
             
