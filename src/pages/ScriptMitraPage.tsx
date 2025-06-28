@@ -115,9 +115,11 @@ export default function ScriptMitraPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
+      console.log("Webhook response:", result);
       
-      // Check if the user_id in response matches the original user_id
-      if (result.user_id && result.user_id === user.id) {
+      // Check if the user_id in response matches the original user_id (if provided)
+      // If no user_id in response, proceed (for backward compatibility)
+      if (!result.user_id || result.user_id === user.id) {
         setScript(result.output || "");
         saveScriptMemory(result.output || "", formData);
         toast({
@@ -129,8 +131,6 @@ export default function ScriptMitraPage() {
       } else {
         // If user_id doesn't match, wait for another response
         console.log("User ID mismatch, waiting for correct response...");
-        // You might want to implement polling or websocket connection here
-        // For now, we'll just show a waiting message
         toast({
           title: "Processing...",
           description: "Waiting for your script to be generated."

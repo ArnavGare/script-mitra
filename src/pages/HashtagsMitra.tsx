@@ -149,8 +149,9 @@ export default function HashtagsMitra() {
       const data = await res.json();
       console.log("Webhook response:", data);
 
-      // Check if the user_id in response matches the original user_id
-      if (data.user_id && data.user_id === user.id) {
+      // Check if the user_id in response matches the original user_id (if provided)
+      // If no user_id in response, proceed (for backward compatibility)
+      if (!data.user_id || data.user_id === user.id) {
         // Store the full webhook response for debugging
         setWebhookResponse(data);
 
@@ -211,6 +212,7 @@ export default function HashtagsMitra() {
     }
     setIsLoading(false);
   }
+
   return <>
       {/* Notion-style dark mode gradient + edge glow - dark mode only */}
       <div className="dark:block hidden">
@@ -294,7 +296,8 @@ export default function HashtagsMitra() {
                 />
               </div>
             </div>
-            
+            {/* Hero section with fly-in headline */}
+            {/* Input form */}
             <ScriptForm
               input={input}
               setInput={setInput}
@@ -305,10 +308,9 @@ export default function HashtagsMitra() {
             />
 
             {/* Always show the output box */}
-            
-            
+            {/* Tip carousel */}
             <TipCarousel className="my-7" />
-            
+            {/* Structured output */}
             {/* Attractive output layout: "Title: Content" card style, for structured output only */}
             {structuredOutput && (
               <div className="w-full my-9 space-y-6 animate-fade-in">
@@ -355,15 +357,15 @@ export default function HashtagsMitra() {
                 ))}
               </div>
             )}
-            
+            {/* Caption list */}
             {/* Fallback to classic caption list if not structured */}
             {!structuredOutput && captions.length > 0 && (
               <CaptionList captions={captions} copy={copy} copiedIdx={copiedIdx} />
             )}
-            
+            {/* Debug information */}
             {/* Debug information (remove in production) */}
             {webhookResponse && process.env.NODE_ENV === 'development'}
-            
+            {/* Tips section */}
             <TipsSection />
           </GlowHoverCard>
         </div>
