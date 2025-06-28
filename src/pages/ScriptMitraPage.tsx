@@ -96,7 +96,7 @@ export default function ScriptMitraPage() {
     }
     setIsLoading(true);
     try {
-      const response = await fetch("https://thearnavgare.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
+      const response = await fetch("https://thearnavgare.app.n8n.cloud/webhook-test/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
