@@ -10,6 +10,7 @@ import ScriptMitraInfoBoxes from "./scriptmitra/ScriptMitraInfoBoxes";
 import { loadScriptMemory, saveScriptMemory, clearScriptMemory } from "./scriptmitra/ScriptMitraMemory";
 import { Button } from "@/components/ui/button";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
+
 const topics = ["Mutual Fund Basics", "SIP Ka Magic", "Retirement Planning", "Term Insurance Facts", "ULIP vs SIP", "Loan ka Gyaan", "Tax Saving Tips", "Custom Topic"];
 const styles = ["Educational", "Story/Narrative", "Conversational", "Funny/Reel Style", "Dramatic/Emotional", "Latest Financial News"];
 const languages = ["English", "Hindi", "Hinglish", "Marathi"];
@@ -95,12 +96,13 @@ export default function ScriptMitraPage() {
     }
     setIsLoading(true);
     try {
-      const response = await fetch("https://arnavgare01.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
+      const response = await fetch("https://thearnavgare.app.n8n.cloud/webhook/1986a54c-73ce-4f24-a35b-0a9bae4b4950", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          user_id: user.id,
           topic: finalTopic,
           style: formData.style,
           language: formData.language,
@@ -113,14 +115,27 @@ export default function ScriptMitraPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
-      setScript(result.output || "");
-      saveScriptMemory(result.output || "", formData);
-      toast({
-        title: "Script Generated!",
-        description: "Your personalized video script is ready to use."
-      });
-      // Log usage and trigger cooldown
-      await logGeneration("script");
+      
+      // Check if the user_id in response matches the original user_id
+      if (result.user_id && result.user_id === user.id) {
+        setScript(result.output || "");
+        saveScriptMemory(result.output || "", formData);
+        toast({
+          title: "Script Generated!",
+          description: "Your personalized video script is ready to use."
+        });
+        // Log usage and trigger cooldown
+        await logGeneration("script");
+      } else {
+        // If user_id doesn't match, wait for another response
+        console.log("User ID mismatch, waiting for correct response...");
+        // You might want to implement polling or websocket connection here
+        // For now, we'll just show a waiting message
+        toast({
+          title: "Processing...",
+          description: "Waiting for your script to be generated."
+        });
+      }
     } catch (error) {
       console.error("Error generating script:", error);
       toast({
