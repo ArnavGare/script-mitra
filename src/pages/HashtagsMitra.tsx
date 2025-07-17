@@ -16,7 +16,7 @@ import StructuredOutput from "@/components/hashtags-mitra/StructuredOutput";
 import { useDailyQuotaCooldown } from "@/hooks/useDailyQuotaCooldown";
 import { useSupabaseUser } from "@/hooks/useSupabaseUser";
 
-const WEBHOOK_URL = "https://thearnavgare.app.n8n.cloud/webhook/97113ca3-e1f0-4004-930c-add542e8b8c5";
+const WEBHOOK_URL = "https://rekhagare.app.n8n.cloud/webhook/97113ca3-e1f0-4004-930c-add542e8b8c5";
 
 interface StructuredResponse {
   title?: string;
